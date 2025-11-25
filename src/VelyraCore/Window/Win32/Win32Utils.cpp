@@ -140,9 +140,7 @@ namespace Velyra::Core {
                 if (HIWORD(flags) & KF_EXTENDED){
                     return VL_KEY_RIGHT_CONTROL;
                 }
-                else{
-                    return VL_KEY_LEFT_CONTROL;
-                }
+                return VL_KEY_LEFT_CONTROL;
             }
             case VK_RCONTROL:   return VL_KEY_RIGHT_CONTROL;
             case VK_LCONTROL:   return VL_KEY_LEFT_CONTROL;
