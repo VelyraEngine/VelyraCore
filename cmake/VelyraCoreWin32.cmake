@@ -17,3 +17,7 @@ set(VELYRA_CORE_PLATFORM_SRC
     src/VelyraCore/Window/Win32/WindowWin32.cpp
     src/VelyraCore/Window/Win32/Win32Utils.cpp
 )
+
+set(VELYRA_CORE_PLATFORM_TEST_SRC
+    test/Window/Win32/TestWin32Utils.cpp
+)

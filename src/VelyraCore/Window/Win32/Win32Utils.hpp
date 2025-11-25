@@ -1,5 +1,7 @@
 #pragma once
 
+#include <VelyraCore/Window/KeyboardButtons.hpp>
+
 namespace Velyra::Core {
 
     void setProcessDPIAware();

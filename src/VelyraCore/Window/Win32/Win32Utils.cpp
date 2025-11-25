@@ -99,13 +99,25 @@ namespace Velyra::Core {
     }
 
     std::string fromWideString(const std::wstring& source) {
-        int len = WideCharToMultiByte(CP_ACP, 0, source.c_str(), source.size(), nullptr, 0, nullptr, nullptr);
+        int len = WideCharToMultiByte(CP_ACP, 0,
+                                   source.c_str(),
+                                   static_cast<int>(source.size()),
+                                   nullptr, 0,
+                                   nullptr, nullptr);
+
         if (len == 0) {
             return "";
         }
-        const auto buf = createUP<char[]>(len);
-        WideCharToMultiByte(CP_ACP, 0, source.c_str(), source.size(), buf.get(), len, nullptr, nullptr);
-        return std::string(buf.get());
+
+        std::string result(len, '\0');
+        WideCharToMultiByte(CP_ACP, 0,
+                            source.c_str(),
+                            static_cast<int>(source.size()),
+                            result.data(),
+                            len,
+                            nullptr, nullptr);
+
+        return result;
     }
 
     VL_KEYBOARD_KEY convertVirtualKey(const WPARAM key, const LPARAM flags) {

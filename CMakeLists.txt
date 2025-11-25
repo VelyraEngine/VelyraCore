@@ -8,8 +8,11 @@ include_or_fetch(VelyraUtils VELYRA_UTILS_PATH)
 message(STATUS "VelyraUtils found at ${VELYRA_UTILS_PATH}")
 
 set(VELYRA_CORE_LIBS)
+
 set(VELYRA_CORE_PLATFORM_HEADERS)
 set(VELYRA_CORE_PLATFORM_SRC)
+
+set(VELYRA_CORE_PLATFORM_TEST_SRC)
 
 if (WIN32)
     include(cmake/VelyraCoreWin32.cmake)
@@ -60,15 +63,19 @@ target_link_libraries(VelyraCoreMain PRIVATE VelyraCore)
 ################# Testing #################
 
 set(VELYRA_CORE_TEST_SRC
+    ${VELYRA_CORE_PLATFORM_TEST_SRC}
+
     test/Window/TestWindow.cpp
 )
 
 if (BUILD_TESTING)
     fetch_gtest()
 
-    add_executable(TestVelyraCore ${VELYRA_CORE_TEST_SRC})
+    add_executable(TestVelyraCore ${VELYRA_CORE_HEADERS} ${VELYRA_CORE_SRC} ${VELYRA_CORE_TEST_SRC})
     target_include_directories(TestVelyraCore PUBLIC include)
-    target_link_libraries(TestVelyraCore PUBLIC VelyraCore GTest::gtest GTest::gtest_main)
+    target_precompile_headers(TestVelyraCore PUBLIC test/TestPch.hpp)
+    target_link_libraries(TestVelyraCore PUBLIC ${VELYRA_CORE_LIBS} GTest::gtest GTest::gtest_main VelyraUtils)
+    target_include_directories(TestVelyraCore PUBLIC include)
     add_test(NAME CTestVelyraCore COMMAND ${PROOT} $<TARGET_FILE:TestVelyraCore>)
     set_tests_properties(CTestVelyraCore PROPERTIES
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

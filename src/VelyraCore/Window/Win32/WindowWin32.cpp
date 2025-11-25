@@ -87,9 +87,13 @@ namespace Velyra::Core {
     }
 
     std::string WindowWin32::getTitle() const {
-        const Size length = GetWindowTextLengthW(m_HWND);
-        std::wstring wideTitle(length + 1, L'\0');
-        GetWindowTextW(m_HWND, wideTitle.data(), static_cast<int>(length + 1));
+        const int length = GetWindowTextLengthW(m_HWND);
+
+        std::wstring wideTitle(length, L'\0');
+        GetWindowTextW(m_HWND, wideTitle.data(), length + 1);
+
+        wideTitle.resize(length); // REMOVE null terminator, we add it ourselves in fromWideString
+
         return fromWideString(wideTitle);
     }
 
