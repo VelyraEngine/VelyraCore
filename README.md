@@ -23,5 +23,6 @@ Install MSVC using the installer found on the microsoft webpage.
 The project is build with CMake, optional flags:
 
 - `BUILD_TESTING`: When set to =ON, unit tests are build.
+- `BUILD_SANDBOX`: When set to =ON, the sandbox application is build, allowing to test certain features.
 - `VELYRA_COMPILE_STRICT`: When set to =ON, enables strict compilation flags, such as `-Wall -Wextra -Werror` on GCC/Clang and `/W4 /WX` on MSVC.
 - `VELYRA_COMPILE_RELAXED`: When set to =ON, build the project with no extra compilation flags. This results in faster compilation times, but less strict error checking.

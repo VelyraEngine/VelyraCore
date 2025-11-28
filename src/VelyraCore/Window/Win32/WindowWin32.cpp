@@ -47,7 +47,7 @@ namespace Velyra::Core {
 
         registerRawInputDevices();
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created Win32 window '{}' with size ({}x{}) at position ({}, {})", desc.title, desc.width, desc.height, desc.xPosition, desc.yPosition);
+        SPDLOG_LOGGER_INFO(m_Logger, "Created Win32 window '{}' with size ({}x{}) at position ({}, {})", desc.title, desc.width, desc.height, desc.xPosition, desc.yPosition);
 
         VL_POSTCONDITION(m_HWND != nullptr, "WindowWin32", "Window handle is null after creation");
     }

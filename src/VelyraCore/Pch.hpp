@@ -4,6 +4,8 @@
 
 #include <VelyraUtils/VelyraUtils.hpp>
 
+#include <glad/glad.h>
+
 #if defined(VL_PLATFORM_WINDOWS)
 
     #if !defined(NOMINMAX)
@@ -14,6 +16,8 @@
     #include <dshow.h>
     #include <commdlg.h>
     #include <comdef.h>
+
+    #include <glad/glad_wgl.h>
 
     #include <d3d11.h>
     #include <dxgi.h>

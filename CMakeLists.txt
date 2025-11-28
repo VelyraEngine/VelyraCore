@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(VelyraCore DESCRIPTION "Velyra Core components (like window manager and context manager)")
 
 include(VelyraBuildUtils/VelyraBuildUtils.cmake)
+include(cmake/Dependencies.cmake)
 
 set(VELYRA_UTILS_PATH)
 include_or_fetch(VelyraUtils VELYRA_UTILS_PATH)
@@ -57,8 +58,30 @@ target_include_directories(VelyraCore PUBLIC include)
 target_link_libraries(VelyraCore PUBLIC VelyraUtils)
 target_link_libraries(VelyraCore PRIVATE ${VELYRA_CORE_LIBS})
 
-add_executable(VelyraCoreMain main.cpp)
-target_link_libraries(VelyraCoreMain PRIVATE VelyraCore)
+################# Sandbox #################
+
+set(VELYRA_CORE_SANDBOX_SRC
+    src/VelyraCoreSandBox/SandBox.cpp
+    src/VelyraCoreSandBox/SandBox.hpp
+    src/VelyraCoreSandBox/SandBoxInclude.hpp
+    src/VelyraCoreSandBox/DataTypes.hpp
+    src/VelyraCoreSandBox/IComponent.hpp
+    src/VelyraCoreSandBox/IProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/EventProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/EventProcedure.hpp
+    src/VelyraCoreSandBox/DataContainer.cpp
+    src/VelyraCoreSandBox/DataContainer.hpp
+    src/VelyraCoreSandBox/ProcedureExecutor.cpp
+    src/VelyraCoreSandBox/ProcedureExecutor.hpp
+)
+
+if (BUILD_SANDBOX)
+    fetch_glm()
+
+    add_executable(VelyraCoreSandBox main.cpp ${VELYRA_CORE_SANDBOX_SRC})
+    target_link_libraries(VelyraCoreSandBox PRIVATE VelyraCore glm::glm)
+
+endif ()
 
 ################# Testing #################
 

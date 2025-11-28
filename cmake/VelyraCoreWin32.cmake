@@ -1,8 +1,8 @@
 if (MINGW)
-    set(VELYRA_CORE_LIBS -limm32 -ldwmapi -luser32 -ldxgi -lopenGL32 -ld3d11 -ld3dcompiler_47)
+    set(VELYRA_CORE_LIBS -limm32 -ldwmapi -luser32 -ldxgi -lopenGL32 -ld3d11 -ld3dcompiler_47 glad)
 
 elseif(MSVC)
-    set(VELYRA_CORE_LIBS imm32 dwmapi user32 dxgi dxguid openGL32 d3d11 d3dcompiler)
+    set(VELYRA_CORE_LIBS imm32 dwmapi user32 dxgi dxguid openGL32 d3d11 d3dcompiler glad)
 else ()
     message(FATAL_ERROR "Unsupported compiler for WIN32!")
 endif()
