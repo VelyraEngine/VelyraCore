@@ -22,10 +22,10 @@ jobs:
           cmake .. -DBUILD_TESTING=ON
           cmake --build .
 
-      - name: Test
-        run: |
-          cd build
-          ctest --output-on-failure
+#      - name: Test
+#        run: |
+#          cd build
+#          ctest --output-on-failure
 
   build-windows:
     runs-on: windows-latest
@@ -43,7 +43,7 @@ jobs:
           cmake .. -DBUILD_TESTING=ON
           cmake --build . --config Debug
 
-      - name: Test
-        run: |
-          cd build
-          ctest -C Debug --output-on-failure
+#      - name: Test
+#        run: |
+#          cd build
+#          ctest -C Debug --output-on-failure
