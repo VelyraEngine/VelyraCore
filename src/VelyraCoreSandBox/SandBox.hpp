@@ -21,7 +21,7 @@ namespace Velyra::SandBox {
 
         void update();
 
-        void renderImGui();
+        void renderImGui(const UP<Core::Context>& context);
 
     private:
         Core::ContextDesc m_ContextDesc;

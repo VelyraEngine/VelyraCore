@@ -335,6 +335,8 @@ namespace Velyra::Core {
             const auto window = reinterpret_cast<LONG_PTR>(reinterpret_cast<CREATESTRUCT *>(lparam)->lpCreateParams);
             SetWindowLongPtrW(hwnd, GWLP_USERDATA, window);
         }
+        ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
+
         WindowWin32* window = hwnd ? reinterpret_cast<WindowWin32*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
         if (window != nullptr){
             window->handleEvent(msg, wparam, lparam);

@@ -1,0 +1,14 @@
+#include "ImGuiProcedure.hpp"
+
+namespace Velyra::SandBox {
+
+    void ImGuiProcedure::onImGui(DataContainer& dataContainer, const UP<Core::Context>& context) {
+        ImGui::Begin("Hello, VelyraCore!");
+
+        ImGui::Text("This is an example of ImGui integration in VelyraCore SandBox.");
+        ImGui::Text("Context API: %s", toString(context->getType()).c_str());
+
+        ImGui::End();
+    }
+
+}

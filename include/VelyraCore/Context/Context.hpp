@@ -16,12 +16,25 @@ namespace Velyra::Core {
         bool enableStencilTest = false;
     };
 
+    struct VL_API ImGuiDesc {
+        VL_IMGUI_STYLE style = VL_IMGUI_STYLE_DEFAULT;
+        bool useImPlot = true;
+    };
+
     class VL_API Context {
     public:
         virtual ~Context() = default;
 
         [[nodiscard]] VL_GRAPHICS_API getType() const {
             return m_Type;
+        }
+
+        [[nodiscard]] bool isImGuiEnabled() const {
+            return m_ImGuiEnabled;
+        }
+
+        [[nodiscard]] bool isImPlotEnabled() const {
+            return m_ImPlotEnabled;
         }
 
         /**
@@ -49,11 +62,25 @@ namespace Velyra::Core {
          */
         virtual void makeCurrent() = 0;
 
+        virtual void initImGui(const ImGuiDesc& desc);
+
+        virtual void terminateImGui();
+
+        virtual void onImGuiBegin() = 0;
+
+        virtual void onImGuiEnd() = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
+        void imGuiSetStyle(VL_IMGUI_STYLE style);
+
     protected:
         const VL_GRAPHICS_API m_Type;
+
+        bool m_ImGuiEnabled = false;
+        bool m_ImPlotEnabled = false;
+        bool m_ImGuiRendering = false;
     };
 
 

@@ -14,6 +14,8 @@ namespace Velyra::SandBox {
         virtual void onUpdate(DataContainer& container, Duration deltaTime) {}
 
         virtual void onEvent(DataContainer& container,const Core::Event& event) {}
+
+        virtual void onImGui(DataContainer& container, const UP<Core::Context>& context) {}
     };
 
     class IProcedureFactory {

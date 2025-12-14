@@ -63,13 +63,19 @@ namespace Velyra::SandBox {
 
         const UP<Core::Context>& context = m_Window->createContext(m_ContextDesc);
         context->setVerticalSynchronisation(true);
+        Core::ImGuiDesc imGuiDesc;
+        imGuiDesc.style = VL_IMGUI_STYLE_DARK;
+        context->initImGui(imGuiDesc);
+
         while (m_Window->isOpen()) {
             processEvents();
             update();
-            renderImGui();
+            renderImGui(context);
 
             context->swapBuffers();
         }
+
+        context->terminateImGui();
     }
 
     void SandBox::processEvents() {
@@ -90,8 +96,10 @@ namespace Velyra::SandBox {
         m_ProcedureExecutor.onUpdate(deltaTime);
     }
 
-    void SandBox::renderImGui() {
-
+    void SandBox::renderImGui(const UP<Core::Context>& context) {
+        context->onImGuiBegin();
+        m_ProcedureExecutor.onImGui(context);
+        context->onImGuiEnd();
     }
 
 }

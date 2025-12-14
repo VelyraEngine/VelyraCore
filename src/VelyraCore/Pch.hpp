@@ -4,6 +4,10 @@
 
 #include <VelyraUtils/VelyraUtils.hpp>
 
+#include <VelyraCore/ImGui/imgui.h>
+#include <VelyraCore/ImGui/implot.h>
+#include "ImGui/imgui_impl_opengl3.h"
+
 #include <glad/glad.h>
 
 #if defined(VL_PLATFORM_WINDOWS)
@@ -24,5 +28,7 @@
     #include <d3dcompiler.h>
     #include <dxgiformat.h>
     #include <dxgidebug.h>
+
+    #include "ImGui/imgui_impl_win32.h"
 
 #endif

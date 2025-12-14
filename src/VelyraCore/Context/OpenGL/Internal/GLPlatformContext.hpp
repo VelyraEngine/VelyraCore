@@ -27,6 +27,14 @@ namespace Velyra::Core {
             return m_Type;
         }
 
+        virtual void initPlatformImGui(const ImGuiDesc& desc) = 0;
+
+        virtual void terminatePlatformImGui() = 0;
+
+        virtual void onPlatformImGuiBegin() = 0;
+
+        virtual void onPlatformImGuiEnd() = 0;
+
     protected:
         explicit GLPlatformContext(const VL_GL_PLATFORM_API type): m_Type(type) {}
 

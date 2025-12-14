@@ -18,6 +18,14 @@ namespace Velyra::Core {
 
         void makeCurrent() override;
 
+        void initImGui(const ImGuiDesc& desc) override;
+
+        void terminateImGui() override;
+
+        void onImGuiBegin() override;
+
+        void onImGuiEnd() override;
+
     private:
 
         void initGlad();

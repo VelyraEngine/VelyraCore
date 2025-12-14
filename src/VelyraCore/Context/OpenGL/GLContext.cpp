@@ -2,6 +2,7 @@
 
 #include "GLContext.hpp"
 #include "../../../Logging/LoggerNames.hpp"
+#include "../../../Logging/GLLogging.hpp"
 
 namespace Velyra::Core {
 
@@ -84,13 +85,47 @@ namespace Velyra::Core {
     void GLContext::swapBuffers() {
         VL_PRECONDITION(m_PlatformContext != nullptr, "Platform context is null")
 
-        m_PlatformContext->swapBuffers();
+        VL_CORE_OPENGL_CALL(m_PlatformContext->swapBuffers())
     }
 
     void GLContext::makeCurrent() {
         VL_PRECONDITION(m_PlatformContext != nullptr, "Platform context is null")
 
         m_PlatformContext->makeCurrent();
+    }
+
+    void GLContext::initImGui(const ImGuiDesc &desc) {
+        Context::initImGui(desc);
+        m_PlatformContext->initPlatformImGui(desc);
+        ImGui_ImplOpenGL3_Init("#version 150");
+    }
+
+    void GLContext::terminateImGui() {
+        ImGui_ImplOpenGL3_Shutdown();
+        m_PlatformContext->terminatePlatformImGui();
+        Context::terminateImGui();
+    }
+
+    void GLContext::onImGuiBegin() {
+        VL_PRECONDITION(m_ImGuiEnabled, "There is no ImGui context created!")
+        VL_PRECONDITION(!m_ImGuiRendering, "ImGui rendering already started!")
+
+        ImGui_ImplOpenGL3_NewFrame();
+        m_PlatformContext->onPlatformImGuiBegin();
+        ImGui::NewFrame();
+
+        m_ImGuiRendering = true;
+    }
+
+    void GLContext::onImGuiEnd() {
+        VL_PRECONDITION(m_ImGuiEnabled, "There is no ImGui context created!")
+        VL_PRECONDITION(m_ImGuiRendering, "ImGui rendering already started!")
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        m_PlatformContext->onPlatformImGuiEnd();
+
+        m_ImGuiRendering = false;
     }
 
     void GLContext::initGlad() {
@@ -113,7 +148,6 @@ namespace Velyra::Core {
     }
 
     void GLContext::terminateGlad() {
-
         if (m_ContextCount == 0) {
             return;
         }

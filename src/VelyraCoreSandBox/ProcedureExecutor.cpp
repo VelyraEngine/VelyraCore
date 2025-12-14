@@ -1,12 +1,13 @@
 #include "ProcedureExecutor.hpp"
 
 #include "Procedures/EventProcedure.hpp"
+#include "Procedures/ImGuiProcedure.hpp"
 
 namespace Velyra::SandBox {
 
     ProcedureExecutor::ProcedureExecutor() {
         registerProcedureFactory<EventProcedureFactory>();
-
+        registerProcedureFactory<ImGuiProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {
@@ -39,4 +40,9 @@ namespace Velyra::SandBox {
         }
     }
 
+    void ProcedureExecutor::onImGui(const UP<Core::Context> &context) {
+        for (const auto& procedure: m_ProceduresOrder) {
+            procedure->onImGui(m_DataContainer, context);
+        }
+    }
 }

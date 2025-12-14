@@ -93,6 +93,23 @@ namespace Velyra::Core {
         wglMakeCurrent(m_HDC, m_Context);
     }
 
+    void WglPlatformContext::initPlatformImGui(const ImGuiDesc &desc) {
+        ImGui_ImplWin32_Init(m_Hwnd);
+
+    }
+
+    void WglPlatformContext::terminatePlatformImGui() {
+        ImGui_ImplWin32_Shutdown();
+    }
+
+    void WglPlatformContext::onPlatformImGuiBegin() {
+        ImGui_ImplWin32_NewFrame();
+    }
+
+    void WglPlatformContext::onPlatformImGuiEnd() {
+        // Nothing to do here for WGL
+    }
+
     void WglPlatformContext::initWGL() const {
         // Although gladLoadWGL can be called multiple times, with different HDCs, we only want to initialize it once
         // for the application since it uses the HDC only to retrieve function pointers.

@@ -18,6 +18,14 @@ namespace Velyra::Core {
 
         void makeCurrent() override;
 
+        void initPlatformImGui(const ImGuiDesc& desc) override;
+
+        void terminatePlatformImGui() override;
+
+        void onPlatformImGuiBegin() override;
+
+        void onPlatformImGuiEnd() override;
+
     private:
 
         void initWGL() const;
