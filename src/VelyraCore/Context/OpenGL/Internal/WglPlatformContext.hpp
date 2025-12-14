@@ -12,15 +12,23 @@ namespace Velyra::Core {
 
         void setVerticalSynchronisation(bool enable) override;
 
+        bool isVerticalSynchronisationEnabled() const override;
+
         void swapBuffers() override;
 
         void makeCurrent() override;
 
     private:
 
-        void initWGL();
+        void initWGL() const;
 
-        void terminateWGL();
+        static void terminateWGL();
+
+        HGLRC createModernContext(HGLRC tempContext) const;
+
+        void loadExtensions();
+
+        bool isExtensionSupported(std::string_view extensionName) const;
 
     private:
         static U64 m_WglContextCount;
@@ -29,5 +37,8 @@ namespace Velyra::Core {
         HWND& m_Hwnd;
         HDC m_HDC;
         HGLRC m_Context;
+
+        PFNWGLSWAPINTERVALEXTPROC wglSwapIntervalEXT = nullptr;
+        PFNWGLGETSWAPINTERVALEXTPROC wglGetSwapIntervalEXT = nullptr;
     };
 }

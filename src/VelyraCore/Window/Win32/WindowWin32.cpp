@@ -278,6 +278,7 @@ namespace Velyra::Core {
             case VL_API_OPENGL: {
                 UP<GLPlatformContext> platformContext = createUP<WglPlatformContext>(desc, m_HWND);
                 m_Context = createUP<GLContext>(desc, std::move(platformContext));
+                break;
             }
             default: {
                 SPDLOG_LOGGER_ERROR(m_Logger, "Unsupported graphics API {} for Win32Window", api);

@@ -21,7 +21,7 @@ namespace Velyra::Core {
     bool GLContext::isVerticalSynchronisationEnabled() const {
         VL_PRECONDITION(m_PlatformContext != nullptr, "Platform context is null")
 
-        VL_NOT_IMPLEMENTED();
+        return m_PlatformContext->isVerticalSynchronisationEnabled();
     }
 
     void GLContext::swapBuffers() {

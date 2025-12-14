@@ -17,6 +17,8 @@ namespace Velyra::Core {
 
         virtual void setVerticalSynchronisation(bool enable) = 0;
 
+        virtual bool isVerticalSynchronisationEnabled() const = 0;
+
         virtual void swapBuffers() = 0;
 
         virtual void makeCurrent() = 0;

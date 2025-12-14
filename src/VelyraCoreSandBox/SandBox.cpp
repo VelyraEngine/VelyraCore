@@ -32,6 +32,12 @@ namespace Velyra::SandBox {
                     i++;
                 }
             }
+            else if (arg == "-api") {
+                if (i + 1 < args.size()) {
+                    m_ContextDesc.api = fromString<VL_GRAPHICS_API>(std::string(args[i + 1]));
+                    i++;
+                }
+            }
             else {
                 const std::string argStr = std::string(arg);
                 const VL_SBX_PROCEDURE_TYPE procedureType = fromString<VL_SBX_PROCEDURE_TYPE>(argStr);
@@ -54,12 +60,16 @@ namespace Velyra::SandBox {
 
     void SandBox::run() {
         m_ProcedureExecutor.constructStrategy();
+
+        const UP<Core::Context>& context = m_Window->createContext(m_ContextDesc);
+        context->setVerticalSynchronisation(true);
         while (m_Window->isOpen()) {
             processEvents();
             update();
             renderImGui();
-        }
 
+            context->swapBuffers();
+        }
     }
 
     void SandBox::processEvents() {
@@ -71,7 +81,6 @@ namespace Velyra::SandBox {
             }
             m_ProcedureExecutor.onEvent(event);
         }
-
     }
 
     void SandBox::update() {

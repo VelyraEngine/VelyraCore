@@ -107,6 +107,7 @@ set(VELYRA_CORE_TEST_SRC
     ${VELYRA_CORE_PLATFORM_TEST_SRC}
 
     test/Window/TestWindow.cpp
+    test/Context/TestContext.cpp
 )
 
 if (BUILD_TESTING)
