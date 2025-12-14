@@ -3,6 +3,9 @@
 #include "WindowWin32.hpp"
 #include "Win32Utils.hpp"
 
+#include "../../Context/OpenGL/Internal/WglPlatformContext.hpp"
+#include "../../Context/OpenGL/GLContext.hpp"
+
 namespace Velyra::Core {
 
     constexpr auto VL_CORE_WIN32_CLASS_NAME = L"VelyraWindowClass";
@@ -257,16 +260,30 @@ namespace Velyra::Core {
         return 1.0f;
     }
 
-    std::optional<fs::path> WindowWin32::save_file_dialog(const SaveFileDesc &desc) {
+    std::optional<fs::path> WindowWin32::save_file_dialog(const SaveFileDesc &/*desc*/) {
         return {};
     }
 
-    std::optional<fs::path> WindowWin32::open_file_dialog(const OpenFileDesc &desc) {
+    std::optional<fs::path> WindowWin32::open_file_dialog(const OpenFileDesc &/*desc*/) {
         return {};
     }
 
-    std::optional<fs::path> WindowWin32::open_folder_dialog(const OpenFolderDesc &desc) {
+    std::optional<fs::path> WindowWin32::open_folder_dialog(const OpenFolderDesc &/*desc*/) {
         return {};
+    }
+
+    const UP<Context> &WindowWin32::createContext(const ContextDesc &desc) {
+        const VL_GRAPHICS_API api = desc.api;
+        switch (api) {
+            case VL_API_OPENGL: {
+                UP<GLPlatformContext> platformContext = createUP<WglPlatformContext>(desc, m_HWND);
+                m_Context = createUP<GLContext>(desc, std::move(platformContext));
+            }
+            default: {
+                SPDLOG_LOGGER_ERROR(m_Logger, "Unsupported graphics API {} for Win32Window", api);
+            }
+        }
+        return m_Context;
     }
 
     void WindowWin32::registerWindowClass() const {

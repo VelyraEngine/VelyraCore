@@ -1,7 +1,7 @@
 #pragma once
 
 #include <VelyraCore/Window/Window.hpp>
-#include "../../LoggerNames.hpp"
+#include "../../Logging/LoggerNames.hpp"
 
 #include <deque>
 
@@ -79,6 +79,8 @@ namespace Velyra::Core {
         std::optional<fs::path> open_file_dialog(const OpenFileDesc& desc) override;
 
         std::optional<fs::path> open_folder_dialog(const OpenFolderDesc& desc) override;
+
+        const UP<Context>& createContext(const ContextDesc &desc) override;
 
     private:
 

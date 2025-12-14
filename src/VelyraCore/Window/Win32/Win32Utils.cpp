@@ -2,7 +2,7 @@
 
 #include <VelyraCore/Window/Window.hpp>
 #include "Win32Utils.hpp"
-#include "../../LoggerNames.hpp"
+#include "../../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {
 

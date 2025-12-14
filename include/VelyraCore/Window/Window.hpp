@@ -2,6 +2,8 @@
 
 #include <VelyraCore/Core/CoreInclude.hpp>
 #include <VelyraCore/Window/Event.hpp>
+#include <VelyraCore/Context/Context.hpp>
+
 #include <optional>
 
 VL_ENUM(VL_WINDOW_STYLE, int,
@@ -119,8 +121,13 @@ namespace Velyra::Core {
 
         virtual std::optional<fs::path> open_folder_dialog(const OpenFolderDesc& desc) = 0;
 
+        virtual const UP<Context>& createContext(const ContextDesc& desc) = 0;
+
     protected:
         Window() = default;
+
+    protected:
+        UP<Context> m_Context;
 
     };
 }

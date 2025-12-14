@@ -2,11 +2,15 @@ cmake_minimum_required(VERSION 3.22)
 project(VelyraCore DESCRIPTION "Velyra Core components (like window manager and context manager)")
 
 include(VelyraBuildUtils/VelyraBuildUtils.cmake)
-include(cmake/Dependencies.cmake)
+include(cmake/Glad.cmake)
 
 set(VELYRA_UTILS_PATH)
 include_or_fetch(VelyraUtils VELYRA_UTILS_PATH)
 message(STATUS "VelyraUtils found at ${VELYRA_UTILS_PATH}")
+
+set(VELYRA_IMAGE_PATH)
+include_or_fetch(VelyraImage VELYRA_IMAGE_PATH)
+message(STATUS "VelyraImage found at ${VELYRA_IMAGE_PATH}")
 
 set(VELYRA_CORE_LIBS)
 
@@ -33,20 +37,34 @@ set(VELYRA_CORE_WINDOW_SRC
     src/VelyraCore/Window/WindowFactory.cpp
 )
 
+set(VELYRA_CORE_CONTEXT_HEADERS
+    include/VelyraCore/Context/Definitions.hpp
+    include/VelyraCore/Context/Device.hpp
+    include/VelyraCore/Context/Context.hpp
+
+    src/VelyraCore/Context/OpenGL/GLContext.hpp
+    src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
+)
+
+set(VELYRA_CORE_CONTEXT_SRC
+    src/VelyraCore/Context/OpenGL/GLContext.cpp
+)
+
 set(VELYRA_CORE_HEADERS
     ${VELYRA_CORE_PLATFORM_HEADERS}
     ${VELYRA_CORE_WINDOW_HEADERS}
+    ${VELYRA_CORE_CONTEXT_HEADERS}
 
     include/VelyraCore/VelyraCore.hpp
 
-    include/VelyraCore/Core/GraphicsAPI.hpp
     src/VelyraCore/Pch.hpp
-    src/VelyraCore/LoggerNames.hpp
+    src/VelyraCore/Logging/LoggerNames.hpp
 )
 
 set(VELYRA_CORE_SRC
     ${VELYRA_CORE_PLATFORM_SRC}
     ${VELYRA_CORE_WINDOW_SRC}
+    ${VELYRA_CORE_CONTEXT_SRC}
 
     src/VelyraCore/VelyraCore.cpp
 )
@@ -98,7 +116,6 @@ if (BUILD_TESTING)
     target_include_directories(TestVelyraCore PUBLIC include)
     target_precompile_headers(TestVelyraCore PUBLIC test/TestPch.hpp)
     target_link_libraries(TestVelyraCore PUBLIC ${VELYRA_CORE_LIBS} GTest::gtest GTest::gtest_main VelyraUtils)
-    target_include_directories(TestVelyraCore PUBLIC include)
     add_test(NAME CTestVelyraCore COMMAND ${PROOT} $<TARGET_FILE:TestVelyraCore>)
     set_tests_properties(CTestVelyraCore PROPERTIES
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
