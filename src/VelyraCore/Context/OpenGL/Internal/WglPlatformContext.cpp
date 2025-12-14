@@ -69,6 +69,7 @@ namespace Velyra::Core {
             return;
         }
         wglSwapIntervalEXT(enable);
+        SPDLOG_LOGGER_INFO(m_Logger, "Vertical synchronization {}", enable ? "enabled" : "disabled");
     }
 
     bool WglPlatformContext::isVerticalSynchronisationEnabled() const {
@@ -160,7 +161,7 @@ namespace Velyra::Core {
     }
 
     bool WglPlatformContext::isExtensionSupported(const std::string_view extensionName) const {
-        const auto wglGetExtensionsStringEXT = reinterpret_cast<PFNWGLGETEXTENSIONSSTRINGEXTPROC>(wglGetProcAddress("wglGetExtensionsStringEXT"));
+        wglGetExtensionsStringEXT = reinterpret_cast<PFNWGLGETEXTENSIONSSTRINGEXTPROC>(wglGetProcAddress("wglGetExtensionsStringEXT"));
         if (!wglGetExtensionsStringEXT) {
             SPDLOG_LOGGER_WARN(m_Logger, "wglGetExtensionsStringEXT not available");
             return false;

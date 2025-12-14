@@ -19,6 +19,15 @@ namespace Velyra::Core {
         void makeCurrent() override;
 
     private:
+
+        void initGlad();
+
+        void terminateGlad();
+
+    private:
+        static U64 m_ContextCount;
+
         UP<GLPlatformContext> m_PlatformContext;
+        Utils::LogPtr m_Logger;
     };
 }
