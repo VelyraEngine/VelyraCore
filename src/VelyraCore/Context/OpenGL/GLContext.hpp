@@ -28,7 +28,7 @@ namespace Velyra::Core {
 
     private:
 
-        void initGlad();
+        void initGlad() const;
 
         void terminateGlad();
 

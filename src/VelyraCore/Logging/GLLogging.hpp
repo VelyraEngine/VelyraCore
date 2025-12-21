@@ -10,6 +10,9 @@ namespace Velyra::Core {
 
     void logOpenGLErrors();
 
+    void openGLMessageCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length,
+        const GLchar* message, const void* userParam);
+
 }
 
 #if defined(VL_DEBUG)

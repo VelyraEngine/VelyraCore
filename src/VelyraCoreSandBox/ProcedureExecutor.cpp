@@ -2,12 +2,14 @@
 
 #include "Procedures/EventProcedure.hpp"
 #include "Procedures/ImGuiProcedure.hpp"
+#include "Procedures/ContextInfoProcedure.hpp"
 
 namespace Velyra::SandBox {
 
     ProcedureExecutor::ProcedureExecutor() {
         registerProcedureFactory<EventProcedureFactory>();
         registerProcedureFactory<ImGuiProcedureFactory>();
+        registerProcedureFactory<ContextInfoProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {

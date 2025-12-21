@@ -2,6 +2,8 @@
 
 #include <VelyraCore/Context/Definitions.hpp>
 
+#include "Device.hpp"
+
 namespace Velyra::Core {
 
     struct VL_API ContextDesc {
@@ -35,6 +37,12 @@ namespace Velyra::Core {
 
         [[nodiscard]] bool isImPlotEnabled() const {
             return m_ImPlotEnabled;
+        }
+
+        [[nodiscard]] const Device& getDevice() const {
+            VL_PRECONDITION(m_Device != nullptr, "Device is null")
+
+            return *m_Device;
         }
 
         /**
@@ -81,6 +89,8 @@ namespace Velyra::Core {
         bool m_ImGuiEnabled = false;
         bool m_ImPlotEnabled = false;
         bool m_ImGuiRendering = false;
+
+        UP<Device> m_Device = nullptr;
     };
 
 

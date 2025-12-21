@@ -53,12 +53,16 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/Context.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
+    src/VelyraCore/Context/OpenGL/GLDevice.hpp
+
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
 )
 
 set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/Context.cpp
+
     src/VelyraCore/Context/OpenGL/GLContext.cpp
+    src/VelyraCore/Context/OpenGL/GLDevice.cpp
 )
 
 set(VELYRA_CORE_HEADERS
@@ -107,6 +111,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/EventProcedure.hpp
     src/VelyraCoreSandBox/Procedures/ImGuiProcedure.cpp
     src/VelyraCoreSandBox/Procedures/ImGuiProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/ContextInfoProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/ContextInfoProcedure.hpp
 )
 
 if (BUILD_SANDBOX)
