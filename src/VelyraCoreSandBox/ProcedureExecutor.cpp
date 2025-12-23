@@ -3,6 +3,7 @@
 #include "Procedures/EventProcedure.hpp"
 #include "Procedures/ImGuiProcedure.hpp"
 #include "Procedures/ContextInfoProcedure.hpp"
+#include "Procedures/ClearDefaultFrameBufferProcedure.hpp"
 
 namespace Velyra::SandBox {
 
@@ -10,6 +11,7 @@ namespace Velyra::SandBox {
         registerProcedureFactory<EventProcedureFactory>();
         registerProcedureFactory<ImGuiProcedureFactory>();
         registerProcedureFactory<ContextInfoProcedureFactory>();
+        registerProcedureFactory<ClearDefaultFrameBufferProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {
@@ -30,9 +32,9 @@ namespace Velyra::SandBox {
         }
     }
 
-    void ProcedureExecutor::onUpdate(const Duration deltaTime) {
+    void ProcedureExecutor::onUpdate(const Duration deltaTime, const UP<Core::Context>& context) {
         for (const auto& procedure: m_ProceduresOrder) {
-            procedure->onUpdate(m_DataContainer, deltaTime);
+            procedure->onUpdate(m_DataContainer, deltaTime, context);
         }
     }
 

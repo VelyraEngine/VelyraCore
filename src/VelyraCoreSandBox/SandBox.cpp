@@ -69,7 +69,7 @@ namespace Velyra::SandBox {
 
         while (m_Window->isOpen()) {
             processEvents();
-            update();
+            update(context);
             renderImGui(context);
 
             context->swapBuffers();
@@ -89,11 +89,11 @@ namespace Velyra::SandBox {
         }
     }
 
-    void SandBox::update() {
+    void SandBox::update(const UP<Core::Context>& context) {
         const TimePoint currentTime = getTime();
         const Duration deltaTime = currentTime - m_LastFrameTime;
         m_LastFrameTime = currentTime;
-        m_ProcedureExecutor.onUpdate(deltaTime);
+        m_ProcedureExecutor.onUpdate(deltaTime, context);
     }
 
     void SandBox::renderImGui(const UP<Core::Context>& context) {

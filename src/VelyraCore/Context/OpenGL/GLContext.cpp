@@ -94,6 +94,16 @@ namespace Velyra::Core {
         return m_PlatformContext->getClientHeight();
     }
 
+    void GLContext::beginFrame() {
+        // TODO: Temporary clear, configure this with framebuffers later
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+    }
+
+    void GLContext::endFrame() {
+
+    }
+
     void GLContext::initGlad() const {
         if (m_ContextCount == 0) {
             const int version = gladLoadGL();

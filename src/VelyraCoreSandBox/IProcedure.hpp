@@ -11,7 +11,7 @@ namespace Velyra::SandBox {
     public:
         virtual ~IProcedure() = default;
 
-        virtual void onUpdate(DataContainer& container, Duration deltaTime) {}
+        virtual void onUpdate(DataContainer& container, Duration deltaTime, const UP<Core::Context>& context) {}
 
         virtual void onEvent(DataContainer& container,const Core::Event& event) {}
 

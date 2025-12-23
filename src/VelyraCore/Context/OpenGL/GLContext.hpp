@@ -30,6 +30,10 @@ namespace Velyra::Core {
 
         [[nodiscard]] U32 getClientHeight() const override;
 
+        void beginFrame() override;
+
+        void endFrame() override;
+
     private:
 
         void initGlad() const;

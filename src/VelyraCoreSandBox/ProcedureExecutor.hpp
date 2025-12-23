@@ -16,7 +16,7 @@ namespace Velyra::SandBox {
 
         void constructStrategy();
 
-        void onUpdate(Duration deltaTime);
+        void onUpdate(Duration deltaTime, const UP<Core::Context>& context);
 
         void onEvent(const Core::Event& event);
 

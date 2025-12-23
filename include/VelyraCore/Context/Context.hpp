@@ -82,6 +82,10 @@ namespace Velyra::Core {
 
         [[nodiscard]] virtual U32 getClientHeight() const = 0;
 
+        virtual void beginFrame() = 0;
+
+        virtual void endFrame() = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 

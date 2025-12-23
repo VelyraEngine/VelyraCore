@@ -19,7 +19,7 @@ namespace Velyra::SandBox {
 
         void processEvents();
 
-        void update();
+        void update(const UP<Core::Context>& context);
 
         void renderImGui(const UP<Core::Context>& context);
 

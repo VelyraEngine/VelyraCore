@@ -116,6 +116,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/ImGuiProcedure.hpp
     src/VelyraCoreSandBox/Procedures/ContextInfoProcedure.cpp
     src/VelyraCoreSandBox/Procedures/ContextInfoProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/ClearDefaultFrameBufferProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/ClearDefaultFrameBufferProcedure.cpp
 )
 
 if (BUILD_SANDBOX)
