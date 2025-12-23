@@ -18,7 +18,7 @@ namespace Velyra::Core {
         bool enableStencilTest = false;
     };
 
-    struct VL_API ImGuiDesc {
+    struct VL_API ImGuiContextDesc {
         VL_IMGUI_STYLE style = VL_IMGUI_STYLE_DEFAULT;
         bool useImPlot = true;
     };
@@ -56,7 +56,7 @@ namespace Velyra::Core {
          * @brief Checks if vertical synchronization (V-Sync) is currently enabled for the context.
          * @return
          */
-        virtual bool isVerticalSynchronisationEnabled() const = 0;
+        [[nodiscard]] virtual bool isVerticalSynchronisationEnabled() const = 0;
 
         /**
          * @brief Swaps the front and back buffers of the context, presenting the rendered image to the display.
@@ -70,13 +70,17 @@ namespace Velyra::Core {
          */
         virtual void makeCurrent() = 0;
 
-        virtual void initImGui(const ImGuiDesc& desc);
+        virtual void createImGuiContext(const ImGuiContextDesc& desc);
 
-        virtual void terminateImGui();
+        virtual void DestroyImGuiContext();
 
         virtual void onImGuiBegin() = 0;
 
         virtual void onImGuiEnd() = 0;
+
+        [[nodiscard]] virtual U32 getClientWidth() const = 0;
+
+        [[nodiscard]] virtual U32 getClientHeight() const = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}

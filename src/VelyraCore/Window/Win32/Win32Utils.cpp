@@ -15,6 +15,13 @@ namespace Velyra::Core {
     void setProcessDPIAware() {
         const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WINDOW);
 
+        // Windows 10 Anniversary Update+
+        if (auto setContext = reinterpret_cast<decltype(&SetProcessDpiAwarenessContext)>(GetProcAddress(GetModuleHandleW(L"user32.dll"), "SetProcessDpiAwarenessContext"))) {
+            setContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+            SPDLOG_LOGGER_INFO(logger, "Set process DPI awareness using user32.dll SetProcessDpiAwarenessContext");
+            return;
+        }
+
         HINSTANCE shCoreDll = LoadLibraryW(L"Shcore.dll");
         if (shCoreDll){
             using SetProcessDPIAwareFuncType = HRESULT(WINAPI*)(int);
@@ -25,6 +32,7 @@ namespace Velyra::Core {
                 }
                 else{
                     FreeLibrary(shCoreDll);
+                    SPDLOG_LOGGER_INFO(logger, "Set process DPI awareness using shCore.dll SetProcessDpiAwareness");
                     return;
                 }
             }

@@ -17,23 +17,27 @@ namespace Velyra::Core {
 
         virtual void setVerticalSynchronisation(bool enable) = 0;
 
-        virtual bool isVerticalSynchronisationEnabled() const = 0;
+        [[nodiscard]] virtual bool isVerticalSynchronisationEnabled() const = 0;
 
         virtual void swapBuffers() = 0;
 
         virtual void makeCurrent() = 0;
 
-        [[nodiscard]] VL_GL_PLATFORM_API getType() const {
-            return m_Type;
-        }
-
-        virtual void initPlatformImGui(const ImGuiDesc& desc) = 0;
+        virtual void initPlatformImGui(const ImGuiContextDesc& desc) = 0;
 
         virtual void terminatePlatformImGui() = 0;
 
         virtual void onPlatformImGuiBegin() = 0;
 
         virtual void onPlatformImGuiEnd() = 0;
+
+        [[nodiscard]] virtual U32 getClientWidth() const = 0;
+
+        [[nodiscard]] virtual U32 getClientHeight() const = 0;
+
+        [[nodiscard]] VL_GL_PLATFORM_API getType() const {
+            return m_Type;
+        }
 
     protected:
         explicit GLPlatformContext(const VL_GL_PLATFORM_API type): m_Type(type) {}

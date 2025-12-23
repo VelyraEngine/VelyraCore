@@ -93,7 +93,7 @@ namespace Velyra::Core {
         wglMakeCurrent(m_HDC, m_Context);
     }
 
-    void WglPlatformContext::initPlatformImGui(const ImGuiDesc &desc) {
+    void WglPlatformContext::initPlatformImGui(const ImGuiContextDesc &desc) {
         ImGui_ImplWin32_Init(m_Hwnd);
 
     }
@@ -108,6 +108,18 @@ namespace Velyra::Core {
 
     void WglPlatformContext::onPlatformImGuiEnd() {
         // Nothing to do here for WGL
+    }
+
+    U32 WglPlatformContext::getClientWidth() const {
+        RECT rect;
+        GetClientRect(m_Hwnd, &rect);
+        return static_cast<U32>(rect.right - rect.left);
+    }
+
+    U32 WglPlatformContext::getClientHeight() const {
+        RECT rect;
+        GetClientRect(m_Hwnd, &rect);
+        return static_cast<U32>(rect.bottom - rect.top);
     }
 
     void WglPlatformContext::initWGL() const {

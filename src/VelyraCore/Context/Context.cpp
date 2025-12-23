@@ -4,7 +4,7 @@
 
 namespace Velyra::Core {
 
-    void Context::initImGui(const ImGuiDesc &desc) {
+    void Context::createImGuiContext(const ImGuiContextDesc &desc) {
         VL_PRECONDITION(!m_ImGuiEnabled, "ImGui context already initialized!");
 
         IMGUI_CHECKVERSION();
@@ -17,12 +17,14 @@ namespace Velyra::Core {
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+        io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;
+        io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports;
 
         imGuiSetStyle(desc.style);
         m_ImGuiEnabled = true;
     }
 
-    void Context::terminateImGui() {
+    void Context::DestroyImGuiContext() {
         VL_PRECONDITION(m_ImGuiEnabled, "There does not exists an ImGui context");
 
         if (!m_ImGuiEnabled){

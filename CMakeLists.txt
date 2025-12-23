@@ -51,9 +51,11 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/Definitions.hpp
     include/VelyraCore/Context/Device.hpp
     include/VelyraCore/Context/Context.hpp
+    include/VelyraCore/Context/Viewport.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
+    src/VelyraCore/Context/OpenGL/GLViewport.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
 )
@@ -63,6 +65,7 @@ set(VELYRA_CORE_CONTEXT_SRC
 
     src/VelyraCore/Context/OpenGL/GLContext.cpp
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
+    src/VelyraCore/Context/OpenGL/GLViewport.cpp
 )
 
 set(VELYRA_CORE_HEADERS

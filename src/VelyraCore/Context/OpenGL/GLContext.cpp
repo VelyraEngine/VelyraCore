@@ -48,16 +48,16 @@ namespace Velyra::Core {
         m_PlatformContext->makeCurrent();
     }
 
-    void GLContext::initImGui(const ImGuiDesc &desc) {
-        Context::initImGui(desc);
+    void GLContext::createImGuiContext(const ImGuiContextDesc &desc) {
+        Context::createImGuiContext(desc);
         m_PlatformContext->initPlatformImGui(desc);
         ImGui_ImplOpenGL3_Init("#version 150");
     }
 
-    void GLContext::terminateImGui() {
+    void GLContext::DestroyImGuiContext() {
         ImGui_ImplOpenGL3_Shutdown();
         m_PlatformContext->terminatePlatformImGui();
-        Context::terminateImGui();
+        Context::DestroyImGuiContext();
     }
 
     void GLContext::onImGuiBegin() {
@@ -80,6 +80,18 @@ namespace Velyra::Core {
         m_PlatformContext->onPlatformImGuiEnd();
 
         m_ImGuiRendering = false;
+    }
+
+    U32 GLContext::getClientWidth() const {
+        VL_PRECONDITION(m_PlatformContext != nullptr, "Platform context is null")
+
+        return m_PlatformContext->getClientWidth();
+    }
+
+    U32 GLContext::getClientHeight() const {
+        VL_PRECONDITION(m_PlatformContext != nullptr, "Platform context is null")
+
+        return m_PlatformContext->getClientHeight();
     }
 
     void GLContext::initGlad() const {

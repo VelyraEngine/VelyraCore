@@ -18,13 +18,17 @@ namespace Velyra::Core {
 
         void makeCurrent() override;
 
-        void initImGui(const ImGuiDesc& desc) override;
+        void createImGuiContext(const ImGuiContextDesc& desc) override;
 
-        void terminateImGui() override;
+        void DestroyImGuiContext() override;
 
         void onImGuiBegin() override;
 
         void onImGuiEnd() override;
+
+        [[nodiscard]] U32 getClientWidth() const override;
+
+        [[nodiscard]] U32 getClientHeight() const override;
 
     private:
 
