@@ -123,6 +123,10 @@ namespace Velyra::Core {
 
         virtual const UP<Context>& createContext(const ContextDesc& desc) = 0;
 
+        const UP<Context>& getContext() const {
+            return m_Context;
+        }
+
     protected:
         Window() = default;
 

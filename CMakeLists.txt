@@ -52,12 +52,15 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/Device.hpp
     include/VelyraCore/Context/Context.hpp
     include/VelyraCore/Context/Viewport.hpp
+    include/VelyraCore/Context/ShaderModule.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
     src/VelyraCore/Context/OpenGL/GLViewport.hpp
+    src/VelyraCore/Context/OpenGL/GLShaderModule.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
+    src/VelyraCore/Context/OpenGL/Internal/Translations.hpp
 )
 
 set(VELYRA_CORE_CONTEXT_SRC
@@ -66,6 +69,9 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLContext.cpp
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
     src/VelyraCore/Context/OpenGL/GLViewport.cpp
+    src/VelyraCore/Context/OpenGL/GLShaderModule.cpp
+
+    src/VelyraCore/Context/OpenGL/Internal/Translations.cpp
 )
 
 set(VELYRA_CORE_HEADERS
@@ -134,17 +140,21 @@ set(VELYRA_CORE_TEST_SRC
     ${VELYRA_CORE_PLATFORM_TEST_SRC}
 
     test/Window/TestWindow.cpp
+
     test/Context/TestContext.cpp
+    test/Context/TestShaderModule.cpp
+
+    test/Context/OpenGL/TestGLTranslations.cpp
 )
 
 if (BUILD_TESTING)
     fetch_gtest()
 
-    add_executable(TestVelyraCore ${VELYRA_CORE_HEADERS} ${VELYRA_CORE_SRC} ${VELYRA_CORE_TEST_SRC})
+    add_executable(TestVelyraCore ${VELYRA_CORE_TEST_SRC})
     target_include_directories(TestVelyraCore PUBLIC include)
     target_include_directories(TestVelyraCore PRIVATE include/VelyraCore/ImGui)
     target_precompile_headers(TestVelyraCore PUBLIC test/TestPch.hpp)
-    target_link_libraries(TestVelyraCore PUBLIC ${VELYRA_CORE_LIBS} GTest::gtest GTest::gtest_main VelyraUtils ImLib)
+    target_link_libraries(TestVelyraCore PUBLIC ${VELYRA_CORE_LIBS} GTest::gtest GTest::gtest_main VelyraCore)
     add_test(NAME CTestVelyraCore COMMAND ${PROOT} $<TARGET_FILE:TestVelyraCore>)
     set_tests_properties(CTestVelyraCore PROPERTIES
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")

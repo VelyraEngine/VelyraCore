@@ -1,6 +1,8 @@
 #pragma once
 
 #include <VelyraCore/Context/Definitions.hpp>
+#include <VelyraCore/Context/Viewport.hpp>
+#include <VelyraCore/Context/ShaderModule.hpp>
 
 #include "Device.hpp"
 
@@ -70,6 +72,10 @@ namespace Velyra::Core {
          */
         virtual void makeCurrent() = 0;
 
+        /**
+         * @brief Creates an ImGui context for the current rendering context with the specified configuration.
+         * @param desc
+         */
         virtual void createImGuiContext(const ImGuiContextDesc& desc);
 
         virtual void DestroyImGuiContext();
@@ -78,13 +84,37 @@ namespace Velyra::Core {
 
         virtual void onImGuiEnd() = 0;
 
+        /**
+         * @brief Returns the width of the client area in pixels. The client area is the drawable part of the window
+         *        (without borders, title bar, etc.).
+         * @return Width of the client area in pixels.
+         */
         [[nodiscard]] virtual U32 getClientWidth() const = 0;
 
+        /**
+         * @brief Returns the width of the client area in pixels. The client area is the drawable part of the window
+         *        (without borders, title bar, etc.).
+         * @return Width of the client area in pixels.
+         */
         [[nodiscard]] virtual U32 getClientHeight() const = 0;
 
         virtual void beginFrame() = 0;
 
         virtual void endFrame() = 0;
+
+        /**
+         * @brief Creates a shader module and compiles the code from a std::string.
+         * @param desc
+         * @return
+         */
+        virtual SP<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) = 0;
+
+        /**
+         * @brief Creates a shader module and compiles the code from a file.
+         * @param desc
+         * @return
+         */
+        virtual SP<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
@@ -99,6 +129,8 @@ namespace Velyra::Core {
         bool m_ImGuiRendering = false;
 
         UP<Device> m_Device = nullptr;
+
+        std::vector<SP<ShaderModule>> m_ShaderModules;
     };
 
 

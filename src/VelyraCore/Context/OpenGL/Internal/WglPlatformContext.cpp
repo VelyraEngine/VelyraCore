@@ -93,9 +93,8 @@ namespace Velyra::Core {
         wglMakeCurrent(m_HDC, m_Context);
     }
 
-    void WglPlatformContext::initPlatformImGui(const ImGuiContextDesc &desc) {
+    void WglPlatformContext::initPlatformImGui(const ImGuiContextDesc& /*desc*/) {
         ImGui_ImplWin32_Init(m_Hwnd);
-
     }
 
     void WglPlatformContext::terminatePlatformImGui() {

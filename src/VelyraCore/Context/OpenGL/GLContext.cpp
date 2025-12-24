@@ -4,8 +4,17 @@
 #include "../../../Logging/LoggerNames.hpp"
 #include "../../../Logging/GLLogging.hpp"
 #include "GLDevice.hpp"
+#include "GLShaderModule.hpp"
 
 namespace Velyra::Core {
+
+    template<typename T>
+    void clearResources(std::vector<SP<T>>& resources) {
+        for (auto& resource : resources) {
+            resource.reset();
+        }
+        resources.clear();
+    }
 
     U64 GLContext::m_ContextCount = 0;
 
@@ -20,8 +29,9 @@ namespace Velyra::Core {
     }
 
     GLContext::~GLContext() {
-        terminateGlad();
+        clearResources(m_ShaderModules);
 
+        terminateGlad();
     }
 
     void GLContext::setVerticalSynchronisation(const bool enable) {
@@ -102,6 +112,16 @@ namespace Velyra::Core {
 
     void GLContext::endFrame() {
 
+    }
+
+    SP<ShaderModule> GLContext::createShaderModule(const ShaderModuleDesc &desc) {
+        m_ShaderModules.emplace_back(createSP<GLShaderModule>(desc));
+        return m_ShaderModules.back();
+    }
+
+    SP<ShaderModule> GLContext::createShaderModule(const ShaderModuleFileDesc &desc) {
+        m_ShaderModules.emplace_back(createSP<GLShaderModule>(desc));
+        return m_ShaderModules.back();
     }
 
     void GLContext::initGlad() const {

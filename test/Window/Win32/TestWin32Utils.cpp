@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "../../TestPch.hpp"
 
 #include "../../../src/VelyraCore/Window/Win32/Win32Utils.hpp"
 

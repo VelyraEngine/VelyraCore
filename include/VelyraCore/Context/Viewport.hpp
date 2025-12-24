@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Definitions.hpp"
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
 

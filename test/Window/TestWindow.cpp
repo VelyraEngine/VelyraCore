@@ -1,4 +1,4 @@
-#include <gtest/gtest.h>
+#include "../TestPch.hpp"
 
 #include <VelyraCore/VelyraCore.hpp>
 
