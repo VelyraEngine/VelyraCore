@@ -5,6 +5,7 @@
 #include "../../../Logging/GLLogging.hpp"
 #include "GLDevice.hpp"
 #include "GLShaderModule.hpp"
+#include "GLShader.hpp"
 
 namespace Velyra::Core {
 
@@ -122,6 +123,11 @@ namespace Velyra::Core {
     SP<ShaderModule> GLContext::createShaderModule(const ShaderModuleFileDesc &desc) {
         m_ShaderModules.emplace_back(createSP<GLShaderModule>(desc));
         return m_ShaderModules.back();
+    }
+
+    SP<Shader> GLContext::createShader(const ShaderDesc &desc) {
+        m_Shaders.emplace_back(createSP<GLShader>(desc));
+        return m_Shaders.back();
     }
 
     void GLContext::initGlad() const {

@@ -48,6 +48,10 @@ namespace Velyra::Core {
             SPDLOG_LOGGER_WARN(m_Logger, "Shader code is empty, cannot create shader module");
             return;
         }
+        if (m_ShaderModuleID != 0) {
+            glDeleteShader(m_ShaderModuleID);
+        }
+
         m_ShaderModuleID = glCreateShader(gelGLShaderType(m_ShaderType));
         const GLchar* codePtr = code.c_str();
         // It if same to pass nulltr for length, as the strings are null-terminated
@@ -60,12 +64,11 @@ namespace Velyra::Core {
         if (!success) {
             GLint logLength = 0;
             glGetShaderiv(m_ShaderModuleID, GL_INFO_LOG_LENGTH, &logLength);
-            std::string infoLog(logLength, '\0');
-            glGetShaderInfoLog(m_ShaderModuleID, logLength, nullptr, infoLog.data());
+            std::string log(logLength, '\0');
+            // Safe to pass nullptr for length as std::string is null-terminated
+            glGetShaderInfoLog(m_ShaderModuleID, logLength, nullptr, log.data());
 
-            SPDLOG_LOGGER_ERROR(m_Logger, "Failed to compile shader! ID = {}, type = {}, error = {}", m_ShaderModuleID, m_ShaderType, infoLog);
+            SPDLOG_LOGGER_ERROR(m_Logger, "Failed to compile shader! ID = {}, type = {}, error = {}", m_ShaderModuleID, m_ShaderType, log);
         }
     }
-
-
 }

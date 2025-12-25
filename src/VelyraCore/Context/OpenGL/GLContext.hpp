@@ -38,6 +38,8 @@ namespace Velyra::Core {
 
         SP<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
 
+        SP<Shader> createShader(const ShaderDesc& desc) override;
+
     private:
 
         void initGlad() const;

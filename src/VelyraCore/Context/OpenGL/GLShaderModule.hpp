@@ -21,8 +21,8 @@ namespace Velyra::Core {
         void createShader(const std::string& code);
 
     private:
+        const Utils::LogPtr m_Logger;
         GLuint m_ShaderModuleID = 0;
-        Utils::LogPtr m_Logger;
 
     };
 }

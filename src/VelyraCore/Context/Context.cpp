@@ -17,6 +17,8 @@ namespace Velyra::Core {
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+        // Enable DPI scaling (looks better on high-DPI monitors like my 4K one)
         io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;
         io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports;
 

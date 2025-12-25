@@ -53,11 +53,13 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/Context.hpp
     include/VelyraCore/Context/Viewport.hpp
     include/VelyraCore/Context/ShaderModule.hpp
+    include/VelyraCore/Context/Shader.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
     src/VelyraCore/Context/OpenGL/GLViewport.hpp
     src/VelyraCore/Context/OpenGL/GLShaderModule.hpp
+    src/VelyraCore/Context/OpenGL/GLShader.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/Translations.hpp
@@ -70,6 +72,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
     src/VelyraCore/Context/OpenGL/GLViewport.cpp
     src/VelyraCore/Context/OpenGL/GLShaderModule.cpp
+    src/VelyraCore/Context/OpenGL/GLShader.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/Translations.cpp
 )
@@ -143,6 +146,7 @@ set(VELYRA_CORE_TEST_SRC
 
     test/Context/TestContext.cpp
     test/Context/TestShaderModule.cpp
+    test/Context/TestShader.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
 )

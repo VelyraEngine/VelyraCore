@@ -3,6 +3,7 @@
 #include <VelyraCore/Context/Definitions.hpp>
 #include <VelyraCore/Context/Viewport.hpp>
 #include <VelyraCore/Context/ShaderModule.hpp>
+#include <VelyraCore/Context/Shader.hpp>
 
 #include "Device.hpp"
 
@@ -116,6 +117,14 @@ namespace Velyra::Core {
          */
         virtual SP<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) = 0;
 
+        /**
+         * @brief Creates a shader given a valid vertex and fragment shader module.
+         *        (with extra optional shaders)
+         * @param desc
+         * @return
+         */
+        virtual SP<Shader> createShader(const ShaderDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -131,6 +140,7 @@ namespace Velyra::Core {
         UP<Device> m_Device = nullptr;
 
         std::vector<SP<ShaderModule>> m_ShaderModules;
+        std::vector<SP<Shader>> m_Shaders;
     };
 
 

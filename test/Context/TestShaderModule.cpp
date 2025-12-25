@@ -2,6 +2,7 @@
 
 #include <VelyraCore/VelyraCore.hpp>
 #include "Environment.hpp"
+#include "TestShaders.hpp"
 
 using namespace Velyra;
 using namespace Velyra::Core;
@@ -32,18 +33,8 @@ TYPED_TEST(TestShaderModule, CreateShaderModuleFromString) {
     ShaderModuleDesc desc;
     desc.entryPoint = "main";
     desc.shaderType = VL_SHADER_FRAGMENT;
+    desc.code = Test::getSimpleFragmentShader<TypeParam::value>();
 
-    if constexpr (this->m_API == VL_API_OPENGL) {
-        desc.code =
-                "#version 330 core\n"
-                "out vec4 FragColor;\n"
-                "void main() {\n"
-                "   FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
-                "}\n";
-    }
-    else {
-        VL_NOT_IMPLEMENTED();
-    }
     auto shaderModule = Environment<TypeParam>::m_Window->getContext()->createShaderModule(desc);
     ASSERT_NE(shaderModule, nullptr);
     EXPECT_EQ(shaderModule->getShaderModuleType(), VL_SHADER_FRAGMENT);
@@ -53,18 +44,8 @@ TYPED_TEST(TestShaderModule, SyntaxError) {
     ShaderModuleDesc desc;
     desc.entryPoint = "main";
     desc.shaderType = VL_SHADER_FRAGMENT;
+    desc.code = Test::getFragmentShaderWithError<TypeParam::value>();
 
-    if constexpr (this->m_API == VL_API_OPENGL) {
-        desc.code =
-                "#version 330 core\n"
-                "out vec4 FragColor;\n"
-                "void main() \n" // Missing opening brace
-                "   FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
-                "}\n";
-    }
-    else {
-        VL_NOT_IMPLEMENTED();
-    }
     auto shaderModule = Environment<TypeParam>::m_Window->getContext()->createShaderModule(desc);
     ASSERT_NE(shaderModule, nullptr);
 }
