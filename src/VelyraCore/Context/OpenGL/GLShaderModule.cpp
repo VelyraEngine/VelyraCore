@@ -2,7 +2,7 @@
 
 #include "GLShaderModule.hpp"
 #include "../../../Logging/LoggerNames.hpp"
-#include "Internal/Translations.hpp"
+#include "Internal/GLTranslations.hpp"
 
 namespace Velyra::Core {
 
@@ -52,7 +52,7 @@ namespace Velyra::Core {
             glDeleteShader(m_ShaderModuleID);
         }
 
-        m_ShaderModuleID = glCreateShader(gelGLShaderType(m_ShaderType));
+        m_ShaderModuleID = glCreateShader(getGLShaderType(m_ShaderType));
         const GLchar* codePtr = code.c_str();
         // It if same to pass nulltr for length, as the strings are null-terminated
         // Guaranteed by the std::string container
@@ -69,6 +69,9 @@ namespace Velyra::Core {
             glGetShaderInfoLog(m_ShaderModuleID, logLength, nullptr, log.data());
 
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to compile shader! ID = {}, type = {}, error = {}", m_ShaderModuleID, m_ShaderType, log);
+        }
+        else {
+            SPDLOG_LOGGER_TRACE(m_Logger, "Shader Module {} created!", m_ShaderModuleID);
         }
     }
 }

@@ -4,6 +4,8 @@
 #include <VelyraCore/Context/Viewport.hpp>
 #include <VelyraCore/Context/ShaderModule.hpp>
 #include <VelyraCore/Context/Shader.hpp>
+#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/VertexBuffer.hpp>
 
 #include "Device.hpp"
 
@@ -125,6 +127,14 @@ namespace Velyra::Core {
          */
         virtual SP<Shader> createShader(const ShaderDesc& desc) = 0;
 
+        /**
+         * @brief Creates a vertex layout object, used to configure vertex buffers.
+         * @return
+         */
+        virtual SP<VertexLayout> createVertexLayout() = 0;
+
+        virtual SP<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -141,6 +151,8 @@ namespace Velyra::Core {
 
         std::vector<SP<ShaderModule>> m_ShaderModules;
         std::vector<SP<Shader>> m_Shaders;
+        std::vector<SP<VertexLayout>> m_VertexLayouts;
+        std::vector<SP<VertexBuffer>> m_VertexBuffers;
     };
 
 

@@ -6,6 +6,7 @@
 #include "GLDevice.hpp"
 #include "GLShaderModule.hpp"
 #include "GLShader.hpp"
+#include "GLVertexBuffer.hpp"
 
 namespace Velyra::Core {
 
@@ -31,6 +32,8 @@ namespace Velyra::Core {
 
     GLContext::~GLContext() {
         clearResources(m_ShaderModules);
+        clearResources(m_Shaders);
+        clearResources(m_VertexLayouts);
 
         terminateGlad();
     }
@@ -128,6 +131,20 @@ namespace Velyra::Core {
     SP<Shader> GLContext::createShader(const ShaderDesc &desc) {
         m_Shaders.emplace_back(createSP<GLShader>(desc));
         return m_Shaders.back();
+    }
+
+    SP<VertexLayout> GLContext::createVertexLayout() {
+        m_VertexLayouts.emplace_back(createSP<VertexLayout>(*m_Device));
+        return m_VertexLayouts.back();
+    }
+
+    SP<VertexBuffer> GLContext::createVertexBuffer(const VertexBufferDesc &desc) {
+        if (desc.count > m_Device->getMaxVertexCount()) {
+            SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} vertices, but {} requested", m_Device->getMaxVertexCount(), desc.count);
+            return nullptr;
+        }
+        m_VertexBuffers.emplace_back(createSP<GLVertexBuffer>(desc));
+        return m_VertexBuffers.back();
     }
 
     void GLContext::initGlad() const {

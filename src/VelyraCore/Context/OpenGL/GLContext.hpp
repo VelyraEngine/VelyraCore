@@ -40,6 +40,10 @@ namespace Velyra::Core {
 
         SP<Shader> createShader(const ShaderDesc& desc) override;
 
+        SP<VertexLayout> createVertexLayout() override;
+
+        SP<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
+
     private:
 
         void initGlad() const;

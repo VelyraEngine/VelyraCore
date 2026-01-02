@@ -3,6 +3,9 @@
 #include <filesystem>
 #include <string>
 #include <fstream>
+#include <sstream>
+#include <algorithm>
+#include <ranges>
 
 #include <VelyraUtils/VelyraUtils.hpp>
 

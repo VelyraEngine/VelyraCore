@@ -36,8 +36,8 @@ namespace Velyra::Core {
         }
 
         m_ShaderID = glCreateProgram();
-        glAttachShader(m_ShaderID, desc.vertexShader->getIdentifier());
-        glAttachShader(m_ShaderID, desc.fragmentShader->getIdentifier());
+        glAttachShader(m_ShaderID, static_cast<GLuint>(desc.vertexShader->getIdentifier()));
+        glAttachShader(m_ShaderID, static_cast<GLuint>(desc.fragmentShader->getIdentifier()));
 
         glLinkProgram(m_ShaderID);
         GLint success;
@@ -50,6 +50,9 @@ namespace Velyra::Core {
             glGetProgramInfoLog(m_ShaderID, logLength, nullptr, log.data());
 
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to link shader program ({}), error: {}", m_ShaderID, log);
+        }
+        else {
+            SPDLOG_LOGGER_TRACE(m_Logger, "Shader program {} created!", m_ShaderID);
         }
     }
 }

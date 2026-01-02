@@ -3,6 +3,9 @@
 #include <VelyraCore/Core/CoreInclude.hpp>
 #include <VelyraUtils/VelyraEnum.hpp>
 
+#define VL_GL_MAJOR_VERSION 4
+#define VL_GL_MINOR_VERSION 6
+
 VL_ENUM(VL_GRAPHICS_API, int,
     VL_API_NONE,
     VL_API_BEST,
@@ -28,5 +31,18 @@ VL_ENUM(VL_SHADER_TYPE, int,
     VL_SHADER_COMPUTE                = 0x06
 );
 
-#define VL_GL_MAJOR_VERSION 4
-#define VL_GL_MINOR_VERSION 6
+VL_ENUM(VL_BUFFER_USAGE, int,
+    VL_BUFFER_USAGE_DEFAULT       = 0x00,   // GPU read/write
+    VL_BUFFER_USAGE_DYNAMIC       = 0x01,   // CPU write, GPU read
+    VL_BUFFER_USAGE_STATIC        = 0x02,   // GPU read, CPU write only when initializing
+    VL_BUFFER_USAGE_COPY          = 0x03    // GPU read/write, CPU read/write
+);
+
+VL_ENUM(VL_DRAW_MODE, int,
+    VL_DRAW_NONE            = 0x00,
+    VL_DRAW_POINTS          = 0x01,
+    VL_DRAW_LINES           = 0x02,
+    VL_DRAW_LINES_STRIP     = 0x03,
+    VL_DRAW_TRIANGLES       = 0x04,
+    VL_DRAW_TRIANGLE_STRIP  = 0x05
+);
