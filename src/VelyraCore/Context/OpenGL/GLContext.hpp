@@ -44,6 +44,8 @@ namespace Velyra::Core {
 
         SP<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
 
+        SP<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;
+
     private:
 
         void initGlad() const;

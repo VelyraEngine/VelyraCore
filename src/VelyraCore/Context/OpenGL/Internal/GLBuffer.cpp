@@ -105,8 +105,8 @@ namespace Velyra::Core {
             copySize, other.m_BufferID, m_BufferID);
     }
 
-    std::vector<UByte> GLBuffer::getData() const {
-        std::vector<UByte> buffer(m_Size);
+    std::vector<std::byte> GLBuffer::getData() const {
+        std::vector<std::byte> buffer(m_Size);
         const void* pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to map buffer object {}", m_BufferID);

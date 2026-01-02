@@ -6,6 +6,7 @@
 #include <VelyraCore/Context/Shader.hpp>
 #include <VelyraCore/Context/VertexLayout.hpp>
 #include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
 
 #include "Device.hpp"
 
@@ -133,7 +134,19 @@ namespace Velyra::Core {
          */
         virtual SP<VertexLayout> createVertexLayout() = 0;
 
+        /**
+         * @brief Creates a vertex buffer given a valid description.
+         * @param desc Description of the vertex buffer
+         * @return
+         */
         virtual SP<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) = 0;
+
+        /**
+         * @brief Creates an index buffer given a valid description.
+         * @param desc Description of the index buffer
+         * @return
+         */
+        virtual SP<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
@@ -153,6 +166,7 @@ namespace Velyra::Core {
         std::vector<SP<Shader>> m_Shaders;
         std::vector<SP<VertexLayout>> m_VertexLayouts;
         std::vector<SP<VertexBuffer>> m_VertexBuffers;
+        std::vector<SP<IndexBuffer>> m_IndexBuffers;
     };
 
 

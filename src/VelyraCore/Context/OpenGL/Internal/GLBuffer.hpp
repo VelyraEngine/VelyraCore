@@ -20,7 +20,7 @@ namespace Velyra::Core {
 
         void copyFrom(const GLBuffer& other);
 
-        [[nodiscard]] std::vector<UByte> getData() const;
+        [[nodiscard]] std::vector<std::byte> getData() const;
 
         [[nodiscard]] GLuint getBufferID() const {
             return m_BufferID;

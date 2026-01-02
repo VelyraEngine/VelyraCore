@@ -7,6 +7,7 @@
 #include "GLShaderModule.hpp"
 #include "GLShader.hpp"
 #include "GLVertexBuffer.hpp"
+#include "GLIndexBuffer.hpp"
 
 namespace Velyra::Core {
 
@@ -145,6 +146,15 @@ namespace Velyra::Core {
         }
         m_VertexBuffers.emplace_back(createSP<GLVertexBuffer>(desc));
         return m_VertexBuffers.back();
+    }
+
+    SP<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {
+        if (desc.count > m_Device->getMaxIndexCount()) {
+            SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} indices, but {} requested", m_Device->getMaxIndexCount(), desc.count);
+            return nullptr;
+        }
+        m_IndexBuffers.emplace_back(createSP<GLIndexBuffer>(desc));
+        return m_IndexBuffers.back();
     }
 
     void GLContext::initGlad() const {

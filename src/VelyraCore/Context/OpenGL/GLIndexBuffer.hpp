@@ -1,21 +1,21 @@
 #pragma once
 
-#include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
 #include "Internal/GLBuffer.hpp"
 
 namespace Velyra::Core {
 
-    class GLVertexBuffer : public VertexBuffer {
+    class GLIndexBuffer : public IndexBuffer {
     public:
-        explicit GLVertexBuffer(const VertexBufferDesc& desc);
+        explicit GLIndexBuffer(const IndexBufferDesc& desc);
 
-        ~GLVertexBuffer() override = default;
+        ~GLIndexBuffer() override = default;
 
         void bind() override;
 
         void setData(U64 offset, const void *data, U64 count) override;
 
-        void copyFrom(const SP<VertexBuffer> &other) override;
+        void copyFrom(const SP<IndexBuffer> &other) override;
 
         [[nodiscard]] std::vector<std::byte> getData() const override;
 

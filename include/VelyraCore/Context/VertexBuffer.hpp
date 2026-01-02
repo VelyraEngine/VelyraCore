@@ -43,7 +43,7 @@ namespace Velyra::Core {
          * @brief Retrieves the vertex buffer data by reading the data from the GPU.
          * @return A Byte array containing the vertex buffer data.
          */
-        [[nodiscard]] virtual std::vector<UByte> getData() const = 0;
+        [[nodiscard]] virtual std::vector<std::byte> getData() const = 0;
 
         /**
          * @brief Returns the unique identifier of the vertex buffer (e.g., OpenGL buffer ID).
@@ -75,6 +75,10 @@ namespace Velyra::Core {
             return m_Layout;
         }
 
+        /**
+         * @brief Returns the usage pattern of the vertex buffer.
+         * @return
+         */
         [[nodiscard]] VL_BUFFER_USAGE getUsage() const {
             return m_Usage;
         }

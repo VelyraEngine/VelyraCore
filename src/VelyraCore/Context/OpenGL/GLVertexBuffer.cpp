@@ -32,7 +32,7 @@ namespace Velyra::Core {
         m_Buffer.copyFrom(glBuffer->m_Buffer);
     }
 
-    std::vector<UByte> GLVertexBuffer::getData() const {
+    std::vector<std::byte> GLVertexBuffer::getData() const {
         return m_Buffer.getData();
     }
 
