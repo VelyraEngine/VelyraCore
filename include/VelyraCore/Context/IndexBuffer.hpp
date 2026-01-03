@@ -67,12 +67,12 @@ namespace Velyra::Core {
             return m_Count * Utils::getTypeSize(m_DataType);
         }
 
-        /**
-         * @brief Returns the usage pattern of the index buffer.
-         * @return
-         */
         [[nodiscard]] VL_BUFFER_USAGE getUsage() const {
             return m_Usage;
+        }
+
+        [[nodiscard]] VL_TYPE getDataType() const {
+            return m_DataType;
         }
 
     protected:

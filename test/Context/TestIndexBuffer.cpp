@@ -33,6 +33,7 @@ TYPED_TEST(TestIndexBuffer, CreateIndexBuffer) {
     EXPECT_EQ(ib->getCount(), 3);
     EXPECT_EQ(ib->getSize(), sizeof(U32) * Test::s_TriangleIndices.size());
     EXPECT_EQ(ib->getUsage(), VL_BUFFER_USAGE_DEFAULT);
+    EXPECT_EQ(ib->getDataType(), VL_UINT32);
 }
 
 TYPED_TEST(TestIndexBuffer, CreateIndexBufferNoData) {
@@ -48,6 +49,7 @@ TYPED_TEST(TestIndexBuffer, CreateIndexBufferNoData) {
     EXPECT_EQ(ib->getCount(), 3);
     EXPECT_EQ(ib->getSize(), sizeof(U32) * Test::s_TriangleIndices.size());
     EXPECT_EQ(ib->getUsage(), VL_BUFFER_USAGE_DEFAULT);
+    EXPECT_EQ(ib->getDataType(), VL_UINT32);
 }
 
 TYPED_TEST(TestIndexBuffer, GetData) {

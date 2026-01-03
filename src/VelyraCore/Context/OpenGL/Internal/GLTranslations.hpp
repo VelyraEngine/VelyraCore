@@ -8,4 +8,8 @@ namespace Velyra::Core {
 
     GLenum getGLBufferUsage(VL_BUFFER_USAGE usage);
 
+    GLenum getGLDrawMode(VL_DRAW_MODE mode);
+
+    GLenum getGLDataType(VL_TYPE type);
+
 }

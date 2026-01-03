@@ -7,6 +7,7 @@
 #include <VelyraCore/Context/VertexLayout.hpp>
 #include <VelyraCore/Context/VertexBuffer.hpp>
 #include <VelyraCore/Context/IndexBuffer.hpp>
+#include <VelyraCore/Context/MeshBinding.hpp>
 
 #include "Device.hpp"
 
@@ -148,6 +149,13 @@ namespace Velyra::Core {
          */
         virtual SP<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) = 0;
 
+        /**
+         * @brief Creates a mesh binding given a valid description.
+         * @param desc
+         * @return
+         */
+        virtual SP<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -167,6 +175,7 @@ namespace Velyra::Core {
         std::vector<SP<VertexLayout>> m_VertexLayouts;
         std::vector<SP<VertexBuffer>> m_VertexBuffers;
         std::vector<SP<IndexBuffer>> m_IndexBuffers;
+        std::vector<SP<MeshBinding>> m_MeshBindings;
     };
 
 

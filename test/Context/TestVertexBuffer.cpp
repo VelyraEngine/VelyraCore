@@ -35,7 +35,7 @@ TYPED_TEST(TestVertexBuffer, CreateVertexBuffer) {
     auto vb = Environment<TypeParam>::m_Window->getContext()->createVertexBuffer(desc);
 
     ASSERT_NE(vb, nullptr);
-    EXPECT_EQ(vb->getVertexCount(), 3);
+    EXPECT_EQ(vb->getCount(), 3);
     EXPECT_EQ(vb->getSize(), sizeof(float) * Test::s_TriangleVertices.size());
     EXPECT_EQ(vb->getUsage(), VL_BUFFER_USAGE_DEFAULT);
 }
@@ -50,7 +50,7 @@ TYPED_TEST(TestVertexBuffer, CreateVertexBufferNoData) {
     auto vb = Environment<TypeParam>::m_Window->getContext()->createVertexBuffer(desc);
 
     ASSERT_NE(vb, nullptr);
-    EXPECT_EQ(vb->getVertexCount(), 3);
+    EXPECT_EQ(vb->getCount(), 3);
     EXPECT_EQ(vb->getSize(), sizeof(float) * Test::s_TriangleVertices.size());
     EXPECT_EQ(vb->getUsage(), VL_BUFFER_USAGE_DEFAULT);
 }

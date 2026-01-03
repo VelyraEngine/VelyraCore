@@ -8,6 +8,7 @@
 #include "GLShader.hpp"
 #include "GLVertexBuffer.hpp"
 #include "GLIndexBuffer.hpp"
+#include "GLMeshBinding.hpp"
 
 namespace Velyra::Core {
 
@@ -146,6 +147,21 @@ namespace Velyra::Core {
         }
         m_VertexBuffers.emplace_back(createSP<GLVertexBuffer>(desc));
         return m_VertexBuffers.back();
+    }
+
+    SP<MeshBinding> GLContext::createMeshBinding(const MeshBindingDesc &desc) {
+        if (desc.vertexBuffer == nullptr) {
+            SPDLOG_LOGGER_ERROR(m_Logger, "Cannot create MeshBinding: VertexBuffer is nullptr");
+            return nullptr;
+        }
+
+        if (desc.indexBuffer != nullptr) {
+            m_MeshBindings.emplace_back(createSP<GLIndexedMeshBinding>(desc));
+        }
+        else {
+            m_MeshBindings.emplace_back(createSP<GLArrayMeshBinding>(desc));
+        }
+        return m_MeshBindings.back();
     }
 
     SP<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {

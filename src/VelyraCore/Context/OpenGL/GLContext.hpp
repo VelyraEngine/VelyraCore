@@ -46,6 +46,8 @@ namespace Velyra::Core {
 
         SP<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;
 
+        SP<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) override;
+
     private:
 
         void initGlad() const;

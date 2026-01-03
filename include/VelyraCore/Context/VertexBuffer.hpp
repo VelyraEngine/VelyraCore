@@ -63,7 +63,7 @@ namespace Velyra::Core {
          * @brief Returns the amount of vertices stored in the vertex buffer.
          * @return
          */
-        [[nodiscard]] Size getVertexCount() const {
+        [[nodiscard]] Size getCount() const {
             return m_Count;
         }
 
