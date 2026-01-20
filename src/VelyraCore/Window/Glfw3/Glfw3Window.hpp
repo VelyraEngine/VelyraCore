@@ -1,24 +1,17 @@
 #pragma once
 
 #include <VelyraCore/Window/Window.hpp>
-#include "../../Logging/LoggerNames.hpp"
 
 #include <deque>
+#include <mutex>
 
 namespace Velyra::Core {
 
-    struct FullScreenInfo {
-        bool maximized = false;
-        LONG_PTR style = 0;
-        LONG_PTR exStyle = 0;
-        RECT rect = {0, 0, 0, 0};
-    };
-
-    class WindowWin32 : public Window {
+    class Glfw3Window : public Window {
     public:
-        WindowWin32(const WindowDesc& desc);
+        explicit Glfw3Window(const WindowDesc& desc);
 
-        ~WindowWin32() override;
+        ~Glfw3Window() override;
 
         I32 getPositionX() const override;
 
@@ -83,39 +76,10 @@ namespace Velyra::Core {
         const UP<Context>& createContext(const ContextDesc &desc) override;
 
     private:
-
-        void registerWindowClass() const;
-
-        void unregisterWindowClass() const;
-
-        void registerRawInputDevices() const;
-
-        static LRESULT CALLBACK windowEventProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
-
-        void handleEvent(UINT msg, WPARAM wparam, LPARAM lparam);
-
-        void mouseTracker(bool enableTracking) const;
-
-    private:
-        static Size m_WindowCount;
-
-        Utils::LogPtr m_Logger = Utils::getLogger(VL_LOGGER_WINDOW);
-
-        HWND m_HWND = nullptr;
-        HINSTANCE m_HInstance = nullptr;
+        static Size m_GlfwWindowCount;
 
         std::deque<Event> m_EventQueue;
-
-        FullScreenInfo m_FullScreenInfo;
-
-        bool m_Open = false;
-        bool m_Focused = false;
-        bool m_Fullscreen = false;
-        bool m_MouseGrabbed = false;
-        bool m_Moving = false;
-        bool m_Resizing = false;
-        bool m_MouseInside = false;
-
+        std::mutex m_EventQueueMutex; // Since GLFW callbacks can be called from different threads
     };
 
 }

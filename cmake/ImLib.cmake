@@ -59,7 +59,9 @@ if (WIN32)
         ${VELYRA_CORE_IMGUI_SRC_DIR}/imgui_impl_win32.cpp
     )
 elseif (UNIX)
-    message(WARNING "Please add UNIX configuration")
+    set(IMGUI_PLATFORM_SRC
+        ${VELYRA_CORE_IMGUI_SRC_DIR}/imgui_impl_glfw.cpp
+    )
 endif ()
 
 set(IMGUI_SRC
@@ -84,3 +86,8 @@ set(IMPLOT_SRC
 
 add_library(ImLib STATIC ${IMGUI_SRC} ${IMPLOT_SRC})
 target_include_directories(ImLib PUBLIC ${VELYRA_CORE_IMGUI_INCLUDE_DIR})
+
+# we have to link glfw in ImLib
+if (UNIX)
+    target_link_libraries(ImLib PRIVATE glfw)
+endif ()

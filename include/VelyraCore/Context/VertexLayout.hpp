@@ -9,7 +9,7 @@ namespace Velyra::Core {
         VL_SCALAR_TYPE type;
 
         VertexAttribute() = default;
-        VertexAttribute(const std::string& name, VL_SCALAR_TYPE type)
+        VertexAttribute(const std::string& name, const VL_SCALAR_TYPE type)
             : name(name), type(type) {}
     };
 

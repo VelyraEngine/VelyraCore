@@ -115,11 +115,11 @@ namespace Velyra::Core {
 
         virtual float getDpiScale() const = 0;
 
-        virtual std::optional<fs::path> save_file_dialog(const SaveFileDesc& desc) = 0;
+        virtual std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) = 0;
 
-        virtual std::optional<fs::path> open_file_dialog(const OpenFileDesc& desc) = 0;
+        virtual std::optional<fs::path> openFileDialog(const OpenFileDesc& desc) = 0;
 
-        virtual std::optional<fs::path> open_folder_dialog(const OpenFolderDesc& desc) = 0;
+        virtual std::optional<fs::path> openFolderDialog(const OpenFolderDesc& desc) = 0;
 
         virtual const UP<Context>& createContext(const ContextDesc& desc) = 0;
 

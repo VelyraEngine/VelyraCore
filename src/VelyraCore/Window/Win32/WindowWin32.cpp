@@ -260,7 +260,7 @@ namespace Velyra::Core {
         return 1.0f;
     }
 
-    std::optional<fs::path> WindowWin32::save_file_dialog(const SaveFileDesc &/*desc*/) {
+    std::optional<fs::path> WindowWin32::saveFileDialog(const SaveFileDesc &/*desc*/) {
         return {};
     }
 

@@ -23,7 +23,7 @@ set(VELYRA_CORE_PLATFORM_TEST_SRC)
 if (WIN32)
     include(cmake/VelyraCoreWin32.cmake)
 elseif (UNIX)
-    message(WARNING "Please add UNIX configuration")
+    include(cmake/VelyraCoreUnix.cmake)
 endif ()
 
 set(VELYRA_CORE_LOGGING_HEADERS
@@ -165,6 +165,8 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestIndexBuffer.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
+    src/VelyraCore/Window/Glfw3/Glfw3Utils.cpp
+    src/VelyraCore/Window/Glfw3/Glfw3Utils.hpp
 )
 
 if (BUILD_TESTING)

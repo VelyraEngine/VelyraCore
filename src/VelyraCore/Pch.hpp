@@ -36,4 +36,8 @@
 
     #include "ImGui/imgui_impl_win32.h"
 
+#elif defined(VL_PLATFORM_LINUX)
+
+    #define GLFW_INCLUDE_NONE
+    #include <GLFW/glfw3.h>
 #endif
