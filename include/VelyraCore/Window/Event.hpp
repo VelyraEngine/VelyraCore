@@ -53,8 +53,8 @@ namespace Velyra::Core {
 
         Event() = default;
 
-        Event(VL_EVENT_CLASS eventClass, VL_EVENT_TYPE type, I32 val1 = 0, I32 val2 = 0, char keyTyped = 0):
-        eventClass(eventClass), type(type), xParam(val1), yParam(val2), keyTyped(keyTyped) {}
+        Event(VL_EVENT_CLASS eventClass_, VL_EVENT_TYPE type_, I32 xParam_ = 0, I32 yParam_ = 0, char keyTyped_ = 0):
+        eventClass(eventClass_), type(type_), xParam(xParam_), yParam(yParam_), keyTyped(keyTyped_) {}
     };
     
 }

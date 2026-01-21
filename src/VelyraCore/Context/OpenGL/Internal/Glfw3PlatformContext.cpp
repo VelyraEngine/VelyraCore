@@ -4,9 +4,10 @@
 
 namespace Velyra::Core {
 
-    Glfw3PlatformContext::Glfw3PlatformContext(const ContextDesc& desc, GLFWwindow* window):
+    Glfw3PlatformContext::Glfw3PlatformContext(const ContextDesc& /*desc*/, GLFWwindow* window):
     GLPlatformContext(VL_GL_PLATFORM_GLFW3),
     m_Window(window) {
+        glfwMakeContextCurrent(m_Window);
     }
 
     Glfw3PlatformContext::~Glfw3PlatformContext() {
