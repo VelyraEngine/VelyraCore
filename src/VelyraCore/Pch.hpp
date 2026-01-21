@@ -40,4 +40,6 @@
 
     #define GLFW_INCLUDE_NONE
     #include <GLFW/glfw3.h>
+
+    #include "ImGui/imgui_impl_glfw.h"
 #endif

@@ -5,6 +5,8 @@
 #include <deque>
 #include <mutex>
 
+#include "../../Logging/LoggerNames.hpp"
+
 namespace Velyra::Core {
 
     class Glfw3Window : public Window {
@@ -76,10 +78,43 @@ namespace Velyra::Core {
         const UP<Context>& createContext(const ContextDesc &desc) override;
 
     private:
+        static void setWindowStyleHints(VL_WINDOW_STYLE style);
+
+        void createGlfwWindow(const WindowDesc &desc);
+
+        void destroyGlfwWindow();
+
+        void dispatchEvent(const Event& event);
+
+        static void positionCallback(GLFWwindow* window, int xpos, int ypos);
+
+        static void resizeCallback(GLFWwindow* window, int width, int height);
+
+        static void closeCallback(GLFWwindow* window);
+
+        static void refreshCallback(GLFWwindow* window);
+
+        static void focusCallback(GLFWwindow* window, int focused);
+
+        static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+
+        static void keyTypedCallback(GLFWwindow* window, unsigned int codepoint);
+
+        static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
+
+        static void mousePositionCallback(GLFWwindow* window, double xpos, double ypos);
+
+        static void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+
+    private:
         static Size m_GlfwWindowCount;
 
         std::deque<Event> m_EventQueue;
         std::mutex m_EventQueueMutex; // Since GLFW callbacks can be called from different threads
-    };
 
+        Utils::LogPtr m_Logger = Utils::getLogger(VL_LOGGER_WINDOW);
+
+        GLFWwindow* m_Window = nullptr;
+        WindowDesc m_Desc; // Store it since we will be recreating the window if context switches happen
+    };
 }
