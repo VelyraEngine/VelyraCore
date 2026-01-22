@@ -35,8 +35,9 @@ namespace Velyra::Core {
         glfwMakeContextCurrent(m_Window);
     }
 
-    void Glfw3PlatformContext::initPlatformImGui(const ImGuiContextDesc& /*desc*/) {
+    void Glfw3PlatformContext::initPlatformImGui(const ImGuiContextDesc& desc) {
         ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
+        m_ImGuiDesc = desc;
     }
 
     void Glfw3PlatformContext::terminatePlatformImGui() {
@@ -48,7 +49,14 @@ namespace Velyra::Core {
     }
 
     void Glfw3PlatformContext::onPlatformImGuiEnd() {
-        // Nothing to do here for Glfw3
+        // Since OpenGL works with global functions, we have to switch contexts for every window ImGui creates
+        // So we store our context, let ImGui do its thing and then restore our context
+        if (m_ImGuiDesc.useViewports) {
+            GLFWwindow* backup = glfwGetCurrentContext();
+            ImGui::UpdatePlatformWindows();
+            ImGui::RenderPlatformWindowsDefault();
+            glfwMakeContextCurrent(backup);
+        }
     }
 
     U32 Glfw3PlatformContext::getClientWidth() const {

@@ -35,5 +35,7 @@ namespace Velyra::Core {
     private:
         bool m_VSyncEnabled = false;
         GLFWwindow* m_Window = nullptr;
+
+        ImGuiContextDesc m_ImGuiDesc{};
     };
 }

@@ -28,6 +28,8 @@ namespace Velyra::Core {
     struct VL_API ImGuiContextDesc {
         VL_IMGUI_STYLE style = VL_IMGUI_STYLE_DEFAULT;
         bool useImPlot = true;
+        bool useDocking = false;
+        bool useViewports = false;
     };
 
     class VL_API Context {
@@ -43,7 +45,7 @@ namespace Velyra::Core {
         }
 
         [[nodiscard]] bool isImPlotEnabled() const {
-            return m_ImPlotEnabled;
+            return m_ImGuiDesc.useImPlot;
         }
 
         [[nodiscard]] const Device& getDevice() const {
@@ -159,13 +161,15 @@ namespace Velyra::Core {
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
-        void imGuiSetStyle(VL_IMGUI_STYLE style);
+        static void imGuiSetStyle(VL_IMGUI_STYLE style);
 
     protected:
         const VL_GRAPHICS_API m_Type;
 
+        // ImGui Stuff
+        ImGuiContextDesc m_ImGuiDesc{};
+
         bool m_ImGuiEnabled = false;
-        bool m_ImPlotEnabled = false;
         bool m_ImGuiRendering = false;
 
         UP<Device> m_Device = nullptr;

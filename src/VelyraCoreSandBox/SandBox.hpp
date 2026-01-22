@@ -25,6 +25,7 @@ namespace Velyra::SandBox {
 
     private:
         Core::ContextDesc m_ContextDesc;
+        Core::ImGuiContextDesc m_ImGuiContextDesc;
         Utils::LogPtr m_Logger = Utils::getLogger(VL_SANDBOX_LOGGER);
         UP<Core::Window> m_Window = nullptr;
         TimePoint m_LastFrameTime = getTime();

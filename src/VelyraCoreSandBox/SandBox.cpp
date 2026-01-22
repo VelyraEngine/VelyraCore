@@ -38,8 +38,11 @@ namespace Velyra::SandBox {
                     i++;
                 }
             }
+            else if (arg == "-use-imgui-viewports") {
+                m_ImGuiContextDesc.useViewports = true;
+            }
             else {
-                const std::string argStr = std::string(arg);
+                const auto argStr = std::string(arg);
                 const VL_SBX_PROCEDURE_TYPE procedureType = fromString<VL_SBX_PROCEDURE_TYPE>(argStr);
                 if (procedureType == VL_SBX_PROCEDURE_TYPE_MAX_VALUE) {
                     SPDLOG_LOGGER_ERROR(m_Logger, "Unknown procedure type argument: {}", argStr);
@@ -63,9 +66,7 @@ namespace Velyra::SandBox {
 
         const UP<Core::Context>& context = m_Window->createContext(m_ContextDesc);
         context->setVerticalSynchronisation(true);
-        Core::ImGuiContextDesc imGuiDesc;
-        imGuiDesc.style = VL_IMGUI_STYLE_DARK;
-        context->createImGuiContext(imGuiDesc);
+        context->createImGuiContext(m_ImGuiContextDesc);
 
         while (m_Window->isOpen()) {
             processEvents();

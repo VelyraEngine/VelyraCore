@@ -7,11 +7,12 @@ namespace Velyra::Core {
     void Context::createImGuiContext(const ImGuiContextDesc &desc) {
         VL_PRECONDITION(!m_ImGuiEnabled, "ImGui context already initialized!");
 
+        m_ImGuiDesc = desc;
+
         IMGUI_CHECKVERSION();
         ImGui::CreateContext();
         if (desc.useImPlot) {
             ImPlot::CreateContext();
-            m_ImPlotEnabled = true;
         }
 
         ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -21,6 +22,13 @@ namespace Velyra::Core {
         // Enable DPI scaling (looks better on high-DPI monitors like my 4K one)
         io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;
         io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports;
+
+        if (desc.useDocking) {
+            io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;       // Enable docking
+        }
+        if (desc.useViewports) {
+            io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;     // Enable Multi-Viewport / Platform Windows
+        }
 
         imGuiSetStyle(desc.style);
         m_ImGuiEnabled = true;
@@ -32,9 +40,8 @@ namespace Velyra::Core {
         if (!m_ImGuiEnabled){
             return;
         }
-        if (m_ImPlotEnabled) {
+        if (m_ImGuiDesc.useImPlot) {
             ImPlot::DestroyContext();
-            m_ImPlotEnabled = false;
         }
         ImGui::DestroyContext();
         m_ImGuiEnabled = false;
