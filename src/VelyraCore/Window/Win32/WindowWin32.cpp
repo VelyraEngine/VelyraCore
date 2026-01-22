@@ -264,11 +264,11 @@ namespace Velyra::Core {
         return {};
     }
 
-    std::optional<fs::path> WindowWin32::open_file_dialog(const OpenFileDesc &/*desc*/) {
+    std::optional<fs::path> WindowWin32::openFileDialog(const OpenFileDesc &/*desc*/) {
         return {};
     }
 
-    std::optional<fs::path> WindowWin32::open_folder_dialog(const OpenFolderDesc &/*desc*/) {
+    std::optional<fs::path> WindowWin32::openFolderDialog(const OpenFolderDesc &/*desc*/) {
         return {};
     }
 
