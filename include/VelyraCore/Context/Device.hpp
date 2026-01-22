@@ -110,13 +110,6 @@ namespace Velyra::Core {
         [[nodiscard]] virtual U32 getMaxShaderStorageBufferSlots() const = 0;
 
         /**
-         * @brief Retrieves the maximum number of bits in the depth buffer. On current hardware, this value is nearly
-         *        always 32.
-         * @return U32 containing the maximum number of bits in the depth buffer
-         */
-        [[nodiscard]] virtual U32 getMaxDepthBufferBits() const = 0;
-
-        /**
          * @brief Retrieves the maximum number of attributes that a single vertex can have.
          *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16.
          * @return U32 containing the maximum number of vertex attributes.

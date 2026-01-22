@@ -68,10 +68,6 @@ namespace Velyra::Core {
         return getGlConstantInt(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS);
     }
 
-    U32 GLDevice::getMaxDepthBufferBits() const {
-        return getGlConstantInt(GL_DEPTH_BITS);
-    }
-
     U32 GLDevice::getMaxVertexAttributes() const {
         return getGlConstantInt(GL_MAX_VERTEX_ATTRIBS);
     }

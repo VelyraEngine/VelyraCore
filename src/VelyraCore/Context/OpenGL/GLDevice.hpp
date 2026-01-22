@@ -40,8 +40,6 @@ namespace Velyra::Core {
 
         [[nodiscard]] U32 getMaxShaderStorageBufferSlots() const override;
 
-        [[nodiscard]] U32 getMaxDepthBufferBits() const override;
-
         [[nodiscard]] U32 getMaxVertexAttributes() const override;
 
         [[nodiscard]] U64 getMaxVertexCount() const override;
