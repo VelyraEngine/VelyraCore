@@ -42,4 +42,6 @@
     #include <GLFW/glfw3.h>
 
     #include "ImGui/imgui_impl_glfw.h"
+
+    #include <tinyfiledialogs.h>
 #endif

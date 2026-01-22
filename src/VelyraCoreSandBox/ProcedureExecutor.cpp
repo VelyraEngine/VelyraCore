@@ -4,6 +4,7 @@
 #include "Procedures/ImGuiProcedure.hpp"
 #include "Procedures/ContextInfoProcedure.hpp"
 #include "Procedures/ClearDefaultFrameBufferProcedure.hpp"
+#include "Procedures/FileDialogProcedure.hpp"
 
 namespace Velyra::SandBox {
 
@@ -12,6 +13,7 @@ namespace Velyra::SandBox {
         registerProcedureFactory<ImGuiProcedureFactory>();
         registerProcedureFactory<ContextInfoProcedureFactory>();
         registerProcedureFactory<ClearDefaultFrameBufferProcedureFactory>();
+        registerProcedureFactory<FileDialogProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {
@@ -44,9 +46,9 @@ namespace Velyra::SandBox {
         }
     }
 
-    void ProcedureExecutor::onImGui(const UP<Core::Context> &context) {
+    void ProcedureExecutor::onImGui(const UP<Core::Context> &context, const UP<Core::Window>& window) {
         for (const auto& procedure: m_ProceduresOrder) {
-            procedure->onImGui(m_DataContainer, context);
+            procedure->onImGui(m_DataContainer, context, window);
         }
     }
 }

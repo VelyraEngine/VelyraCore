@@ -15,7 +15,7 @@ namespace Velyra::SandBox {
 
         virtual void onEvent(DataContainer& container,const Core::Event& event) {}
 
-        virtual void onImGui(DataContainer& container, const UP<Core::Context>& context) {}
+        virtual void onImGui(DataContainer& container, const UP<Core::Context>& context, const UP<Core::Window>& window) {}
     };
 
     class IProcedureFactory {

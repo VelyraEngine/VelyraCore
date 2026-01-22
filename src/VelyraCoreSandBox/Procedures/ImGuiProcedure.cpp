@@ -2,7 +2,7 @@
 
 namespace Velyra::SandBox {
 
-    void ImGuiProcedure::onImGui(DataContainer& dataContainer, const UP<Core::Context>& context) {
+    void ImGuiProcedure::onImGui(DataContainer& dataContainer, const UP<Core::Context>& context, const UP<Core::Window>& window) {
         ImGui::Begin("Hello, VelyraCore!");
 
         ImGui::Text("This is an example of ImGui integration in VelyraCore SandBox.");

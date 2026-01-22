@@ -161,14 +161,71 @@ namespace Velyra::Core {
     }
 
     std::optional<fs::path> Glfw3Window::saveFileDialog(const SaveFileDesc &desc) {
+        // Convert filter patterns to the format expected by tinyfiledialogs
+        std::vector<const char*> raw_filter_patterns;
+        raw_filter_patterns.reserve(desc.filterPatterns.size());
+        for (const auto& pattern : desc.filterPatterns) {
+            raw_filter_patterns.push_back(pattern.data());
+        }
+
+        char const* aTitle = desc.title.empty()? "Open File" : desc.title.c_str();
+        char const* aDefaultPathAndFile = desc.defaultPath.empty()? "" : desc.defaultPath.c_str();
+        const int aNumOfFilterPatterns = static_cast<int>(raw_filter_patterns.size());
+        char const* const* const aFilterPatterns = aNumOfFilterPatterns > 0 ? raw_filter_patterns.data() : nullptr;
+        char const* aSingleFilterDescription = desc.filterDescription.empty() ? nullptr : desc.filterDescription.c_str();
+
+        char const* result = tinyfd_saveFileDialog(
+            aTitle,
+            aDefaultPathAndFile,
+            aNumOfFilterPatterns,
+            aFilterPatterns,
+            aSingleFilterDescription
+        );
+        if (result) {
+            return fs::path(result);
+        }
         return std::nullopt;
     }
 
     std::optional<fs::path> Glfw3Window::openFileDialog(const OpenFileDesc &desc) {
+        // Convert filter patterns to the format expected by tinyfiledialogs
+        std::vector<const char*> raw_filter_patterns;
+        raw_filter_patterns.reserve(desc.filterPatterns.size());
+        for (const auto& pattern : desc.filterPatterns) {
+            raw_filter_patterns.push_back(pattern.data());
+        }
+
+        char const* aTitle = desc.title.empty()? "Open File" : desc.title.c_str();
+        char const* aDefaultPathAndFile = desc.defaultPath.empty()? "" : desc.defaultPath.c_str();
+        const int aNumOfFilterPatterns = static_cast<int>(raw_filter_patterns.size());
+        char const* const* const aFilterPatterns = aNumOfFilterPatterns > 0 ? raw_filter_patterns.data() : nullptr;
+        char const* aSingleFilterDescription = desc.filterDescription.empty() ? nullptr : desc.filterDescription.c_str();
+        const int aAllowMultipleSelects = desc.allowMultipleSelects;
+
+        char const* result = tinyfd_openFileDialog(
+            aTitle,
+            aDefaultPathAndFile,
+            aNumOfFilterPatterns,
+            aFilterPatterns,
+            aSingleFilterDescription,
+            aAllowMultipleSelects
+        );
+        if (result) {
+            return fs::path(result);
+        }
         return std::nullopt;
     }
 
     std::optional<fs::path> Glfw3Window::openFolderDialog(const OpenFolderDesc &desc) {
+        char const* aTitle = desc.title.empty()? "Open Folder" : desc.title.c_str();
+        char const* aDefaultPath = desc.defaultPath.empty()? "" : desc.defaultPath.c_str();
+        char const* result = tinyfd_selectFolderDialog(
+            aTitle,
+            aDefaultPath
+        );
+        if (result) {
+            return fs::path(result);
+        }
         return std::nullopt;
     }
 

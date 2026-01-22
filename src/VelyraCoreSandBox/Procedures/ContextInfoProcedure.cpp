@@ -3,7 +3,7 @@
 
 namespace Velyra::SandBox {
 
-    void ContextInfoProcedure::onImGui(DataContainer& /*dataContainer*/, const UP<Core::Context>& context) {
+    void ContextInfoProcedure::onImGui(DataContainer& /*dataContainer*/, const UP<Core::Context>& context, const UP<Core::Window>& window) {
         ImGui::Begin("Context Information");
 
         ImGui::Text("Graphics API: %s", toString(context->getType()).c_str());

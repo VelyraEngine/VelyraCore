@@ -1,9 +1,10 @@
 include(${CMAKE_SOURCE_DIR}/VelyraBuildUtils/FetchLibs.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/TinyFileDialogs.cmake)
 
 fetch_glfw()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(VELYRA_CORE_LIBS glad glfw)
+    set(VELYRA_CORE_LIBS glad glfw tinyfiledialogs)
 else ()
     message(FATAL_ERROR "Unsupported compiler for UNIX!")
 endif()

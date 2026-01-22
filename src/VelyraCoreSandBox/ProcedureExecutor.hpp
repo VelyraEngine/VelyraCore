@@ -20,7 +20,7 @@ namespace Velyra::SandBox {
 
         void onEvent(const Core::Event& event);
 
-        void onImGui(const UP<Core::Context>& context);
+        void onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window);
 
     private:
 

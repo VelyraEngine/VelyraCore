@@ -13,7 +13,7 @@ namespace Velyra::SandBox {
 
         ~ImGuiProcedure() override = default;
 
-        void onImGui(DataContainer& dataContainer, const UP<Core::Context>& context) override;
+        void onImGui(DataContainer& dataContainer, const UP<Core::Context>& context, const UP<Core::Window>& window) override;
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(ImGuiProcedure, ImGuiDemo, {})

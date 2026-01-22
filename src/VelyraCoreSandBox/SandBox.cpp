@@ -98,7 +98,7 @@ namespace Velyra::SandBox {
 
     void SandBox::renderImGui(const UP<Core::Context>& context) {
         context->onImGuiBegin();
-        m_ProcedureExecutor.onImGui(context);
+        m_ProcedureExecutor.onImGui(context, m_Window);
         context->onImGuiEnd();
     }
 
