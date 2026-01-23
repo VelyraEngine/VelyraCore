@@ -41,6 +41,6 @@ namespace Velyra::SandBox {
         std::string m_new_filter_pattern;
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(FileDialogProcedure, FileDialog, {})
+    VL_DECLARE_PROCEDURE_FACTORY(FileDialogProcedure, FileDialog, {ClearDefaultFrameBuffer})
 
 }
