@@ -62,11 +62,12 @@ namespace Velyra::SandBox {
     }
 
     void SandBox::run() {
-        m_ProcedureExecutor.constructStrategy();
-
+        m_ContextDesc.api = VL_API_OPENGL; // TODO: Add a VL_API_BEST translation func
         const UP<Core::Context>& context = m_Window->createContext(m_ContextDesc);
         context->setVerticalSynchronisation(true);
         context->createImGuiContext(m_ImGuiContextDesc);
+
+        m_ProcedureExecutor.constructStrategy(context, m_Window);
 
         while (m_Window->isOpen()) {
             processEvents(context);

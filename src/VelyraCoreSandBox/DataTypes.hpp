@@ -9,5 +9,6 @@ VL_ENUM(VL_SBX_PROCEDURE_TYPE, int,
     ImGuiDemo,
     ContextInfo,
     ClearDefaultFrameBuffer,
-    FileDialog
+    FileDialog,
+    VertexDraw
 );

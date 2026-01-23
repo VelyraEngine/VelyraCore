@@ -54,7 +54,7 @@ namespace Velyra::Core {
 
         m_ShaderModuleID = glCreateShader(getGLShaderType(m_ShaderType));
         const GLchar* codePtr = code.c_str();
-        // It if same to pass nulltr for length, as the strings are null-terminated
+        // It if safe to pass nullptr for length, as the strings are null-terminated
         // Guaranteed by the std::string container
         glShaderSource(m_ShaderModuleID, 1, &codePtr, nullptr);
         glCompileShader(m_ShaderModuleID);

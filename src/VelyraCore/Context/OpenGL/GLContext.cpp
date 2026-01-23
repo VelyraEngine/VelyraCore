@@ -111,8 +111,13 @@ namespace Velyra::Core {
     }
 
     void GLContext::beginFrame() {
+        // Make context current if there are multiple contexts
+        if (m_ContextCount > 1) {
+            makeCurrent();
+        }
+
         // TODO: Temporary clear, configure this with framebuffers later
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.6f, 0.8f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }
 

@@ -19,7 +19,7 @@ namespace Velyra::SandBox {
 
         void addProcedure(VL_SBX_PROCEDURE_TYPE procedureType);
 
-        void constructStrategy();
+        void constructStrategy(const UP<Core::Context>& context, const UP<Core::Window>& window);
 
         void onUpdate(Duration deltaTime, const UP<Core::Context>& context, const UP<Core::Window>& window) const;
 
@@ -50,6 +50,8 @@ namespace Velyra::SandBox {
          * @return
          */
         std::vector<VL_SBX_PROCEDURE_TYPE> topologicalSort(const ProcedureGraph& graph, InDegreeMap& inDegree) const;
+
+        void attachProcedures(const UP<Core::Context>& context, const UP<Core::Window>& window) const;
 
     private:
         Utils::LogPtr m_Logger = Utils::getLogger(VL_SANDBOX_PROCEDURE_EXECUTOR_LOGGER);

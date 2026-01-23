@@ -19,6 +19,10 @@ namespace Velyra::Core {
     }
 
     Glfw3Window::~Glfw3Window() {
+        // Destroy the context before destroying the window
+        if (m_Context) {
+            m_Context.reset();
+        }
         destroyGlfwWindow();
         Glfw3Instance::destroyInstance();
     }

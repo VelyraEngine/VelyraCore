@@ -5,6 +5,7 @@
 #include "Procedures/ContextInfoProcedure.hpp"
 #include "Procedures/ClearDefaultFrameBufferProcedure.hpp"
 #include "Procedures/FileDialogProcedure.hpp"
+#include "Procedures/VertexDrawProcedure.hpp"
 
 #include <queue>
 
@@ -16,13 +17,14 @@ namespace Velyra::SandBox {
         registerProcedureFactory<ContextInfoProcedureFactory>();
         registerProcedureFactory<ClearDefaultFrameBufferProcedureFactory>();
         registerProcedureFactory<FileDialogProcedureFactory>();
+        registerProcedureFactory<VertexDrawProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {
         m_RequiredProcedures.insert(procedureType);
     }
 
-    void ProcedureExecutor::constructStrategy() {
+    void ProcedureExecutor::constructStrategy(const UP<Core::Context>& context, const UP<Core::Window>& window) {
         prepareConstructStrategy();
         ProcedureSet requiredProcedures = m_RequiredProcedures;
         ProcedureGraph graph;
@@ -44,6 +46,8 @@ namespace Velyra::SandBox {
             m_ProceduresOrder.push_back(procedure);
             SPDLOG_LOGGER_INFO(m_Logger, "Added procedure type {} to execution order", procedureType);
         }
+
+        attachProcedures(context, window);
     }
 
     void ProcedureExecutor::onUpdate(const Duration deltaTime, const UP<Core::Context>& context, const UP<Core::Window>& window) const {
@@ -138,5 +142,11 @@ namespace Velyra::SandBox {
             return {};
         }
         return sortedProcedures;
+    }
+
+    void ProcedureExecutor::attachProcedures(const UP<Core::Context>& context, const UP<Core::Window>& window) const {
+        for (const auto& procedure: m_ProceduresOrder) {
+            procedure->onAttach(context, window);
+        }
     }
 }

@@ -1,0 +1,28 @@
+#pragma once
+
+#include "../IProcedure.hpp"
+#include "../Utils.hpp"
+
+namespace Velyra::SandBox {
+
+    class VertexDrawProcedure : public IProcedure {
+    public:
+        VertexDrawProcedure();
+
+        ~VertexDrawProcedure() override = default;
+
+        void onAttach(const UP<Core::Context> &context, const UP<Core::Window> &window) override;
+
+        void onUpdate(Duration deltaTime, const UP<Core::Context> &context, const UP<Core::Window> &window) override;
+
+        void onImGui(const UP<Core::Context> &context, const UP<Core::Window> &window) override;
+
+    private:
+        SP<Core::VertexBuffer> m_VertexBuffer = nullptr;
+        SP<Core::MeshBinding> m_MeshBinding = nullptr;
+        ShaderProgram m_ShaderProgram;
+    };
+
+    VL_DECLARE_PROCEDURE_FACTORY(VertexDrawProcedure, VertexDraw, {ClearDefaultFrameBuffer})
+
+}

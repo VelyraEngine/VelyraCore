@@ -129,6 +129,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/IProcedure.hpp
     src/VelyraCoreSandBox/ProcedureExecutor.cpp
     src/VelyraCoreSandBox/ProcedureExecutor.hpp
+    src/VelyraCoreSandBox/Utils.cpp
+    src/VelyraCoreSandBox/Utils.hpp
 
     src/VelyraCoreSandBox/Procedures/EventProcedure.cpp
     src/VelyraCoreSandBox/Procedures/EventProcedure.hpp
@@ -140,6 +142,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/ClearDefaultFrameBufferProcedure.cpp
     src/VelyraCoreSandBox/Procedures/FileDialogProcedure.hpp
     src/VelyraCoreSandBox/Procedures/FileDialogProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/VertexDrawProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/VertexDrawProcedure.cpp
 )
 
 if (BUILD_SANDBOX)
@@ -165,8 +169,6 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestIndexBuffer.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
-    src/VelyraCore/Window/Glfw3/Glfw3Utils.cpp
-    src/VelyraCore/Window/Glfw3/Glfw3Utils.hpp
 )
 
 if (BUILD_TESTING)
