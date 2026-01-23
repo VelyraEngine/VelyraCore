@@ -17,11 +17,11 @@ namespace Velyra::SandBox {
 
     private:
 
-        void processEvents();
+        void processEvents(const UP<Core::Context>& context) const;
 
         void update(const UP<Core::Context>& context);
 
-        void renderImGui(const UP<Core::Context>& context);
+        void renderImGui(const UP<Core::Context>& context) const;
 
     private:
         Core::ContextDesc m_ContextDesc;

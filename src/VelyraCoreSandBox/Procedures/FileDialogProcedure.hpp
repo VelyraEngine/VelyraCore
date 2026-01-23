@@ -5,15 +5,13 @@
 
 namespace Velyra::SandBox {
 
-    class DataContainer;
-
     class FileDialogProcedure: public IProcedure {
     public:
         FileDialogProcedure() = default;
 
         ~FileDialogProcedure() override = default;
 
-        void onImGui(DataContainer &container, const UP<Core::Context> &context, const UP<Core::Window>& window) override;
+        void onImGui(const UP<Core::Context> &context, const UP<Core::Window>& window) override;
 
     private:
 

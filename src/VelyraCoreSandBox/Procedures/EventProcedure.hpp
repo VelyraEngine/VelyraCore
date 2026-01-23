@@ -11,7 +11,7 @@ namespace Velyra::SandBox {
 
         ~EventProcedure() override = default;
 
-        void onEvent(DataContainer& dataContainer, const Core::Event &event) override;
+        void onEvent(const Core::Event &event, const UP<Core::Context>& context, const UP<Core::Window>& window) override;
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(EventProcedure, EventPrinter, {})

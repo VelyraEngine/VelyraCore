@@ -1,9 +1,8 @@
 #include "ClearDefaultFrameBufferProcedure.hpp"
-#include "../DataContainer.hpp"
 
 namespace Velyra::SandBox {
 
-    void ClearDefaultFrameBufferProcedure::onUpdate(DataContainer &container, Duration deltaTime, const UP<Core::Context> &context) {
+    void ClearDefaultFrameBufferProcedure::onUpdate(Duration deltaTime, const UP<Core::Context>& context, const UP<Core::Window>& window) {
         context->beginFrame();
     }
 

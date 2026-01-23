@@ -5,17 +5,19 @@
 
 namespace Velyra::SandBox {
 
-    class DataContainer;
-
     class IProcedure {
     public:
         virtual ~IProcedure() = default;
 
-        virtual void onUpdate(DataContainer& container, Duration deltaTime, const UP<Core::Context>& context) {}
+        virtual void onAttach(const UP<Core::Context>& context, const UP<Core::Window>& window) {}
 
-        virtual void onEvent(DataContainer& container,const Core::Event& event) {}
+        virtual void onDetach(const UP<Core::Context>& context, const UP<Core::Window>& window) {}
 
-        virtual void onImGui(DataContainer& container, const UP<Core::Context>& context, const UP<Core::Window>& window) {}
+        virtual void onUpdate(Duration deltaTime, const UP<Core::Context>& context, const UP<Core::Window>& window) {}
+
+        virtual void onEvent(const Core::Event& event, const UP<Core::Context>& context, const UP<Core::Window>& window) {}
+
+        virtual void onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window) {}
     };
 
     class IProcedureFactory {

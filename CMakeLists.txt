@@ -127,8 +127,6 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/DataTypes.hpp
     src/VelyraCoreSandBox/IComponent.hpp
     src/VelyraCoreSandBox/IProcedure.hpp
-    src/VelyraCoreSandBox/DataContainer.cpp
-    src/VelyraCoreSandBox/DataContainer.hpp
     src/VelyraCoreSandBox/ProcedureExecutor.cpp
     src/VelyraCoreSandBox/ProcedureExecutor.hpp
 

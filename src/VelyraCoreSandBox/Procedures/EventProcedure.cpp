@@ -7,7 +7,7 @@ namespace Velyra::SandBox {
 
     }
 
-    void EventProcedure::onEvent(DataContainer&, const Core::Event &event) {
+    void EventProcedure::onEvent(const Core::Event &event, const UP<Core::Context>& context, const UP<Core::Window>& window) {
         switch (event.type){
             case VL_EVENT_WINDOW_CLOSED:
                 std::cout << "Window closed event" << std::endl;

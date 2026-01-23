@@ -5,15 +5,13 @@
 
 namespace Velyra::SandBox {
 
-    class DataContainer;
-
     class ImGuiProcedure: public IProcedure {
     public:
         ImGuiProcedure() = default;
 
         ~ImGuiProcedure() override = default;
 
-        void onImGui(DataContainer& dataContainer, const UP<Core::Context>& context, const UP<Core::Window>& window) override;
+        void onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window) override;
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(ImGuiProcedure, ImGuiDemo, {ClearDefaultFrameBuffer})

@@ -69,7 +69,7 @@ namespace Velyra::SandBox {
         context->createImGuiContext(m_ImGuiContextDesc);
 
         while (m_Window->isOpen()) {
-            processEvents();
+            processEvents(context);
             update(context);
             renderImGui(context);
 
@@ -79,14 +79,14 @@ namespace Velyra::SandBox {
         context->DestroyImGuiContext();
     }
 
-    void SandBox::processEvents() {
+    void SandBox::processEvents(const UP<Core::Context>& context) const {
         m_Window->pollEvents();
         while (m_Window->hasEvent()) {
             const Core::Event event = m_Window->getNextEvent();
             if (event.type == VL_EVENT_WINDOW_CLOSED) {
                 m_Window->close();
             }
-            m_ProcedureExecutor.onEvent(event);
+            m_ProcedureExecutor.onEvent(event, context, m_Window);
         }
     }
 
@@ -94,10 +94,10 @@ namespace Velyra::SandBox {
         const TimePoint currentTime = getTime();
         const Duration deltaTime = currentTime - m_LastFrameTime;
         m_LastFrameTime = currentTime;
-        m_ProcedureExecutor.onUpdate(deltaTime, context);
+        m_ProcedureExecutor.onUpdate(deltaTime, context, m_Window);
     }
 
-    void SandBox::renderImGui(const UP<Core::Context>& context) {
+    void SandBox::renderImGui(const UP<Core::Context>& context) const {
         context->onImGuiBegin();
         m_ProcedureExecutor.onImGui(context, m_Window);
         context->onImGuiEnd();

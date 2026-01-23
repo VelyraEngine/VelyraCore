@@ -2,7 +2,7 @@
 
 namespace Velyra::SandBox {
 
-    void FileDialogProcedure::onImGui(DataContainer &container, const UP<Core::Context> &context, const UP<Core::Window>& window) {
+    void FileDialogProcedure::onImGui(const UP<Core::Context> &context, const UP<Core::Window>& window) {
         ImGui::Begin("Test File Dialogs");
 
         ImGui::InputText("Title", &title);

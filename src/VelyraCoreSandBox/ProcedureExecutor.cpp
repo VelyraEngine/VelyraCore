@@ -46,21 +46,21 @@ namespace Velyra::SandBox {
         }
     }
 
-    void ProcedureExecutor::onUpdate(const Duration deltaTime, const UP<Core::Context>& context) {
+    void ProcedureExecutor::onUpdate(const Duration deltaTime, const UP<Core::Context>& context, const UP<Core::Window>& window) const {
         for (const auto& procedure: m_ProceduresOrder) {
-            procedure->onUpdate(m_DataContainer, deltaTime, context);
+            procedure->onUpdate(deltaTime, context, window);
         }
     }
 
-    void ProcedureExecutor::onEvent(const Core::Event &event) {
+    void ProcedureExecutor::onEvent(const Core::Event &event, const UP<Core::Context>& context, const UP<Core::Window>& window) const {
         for (const auto& procedure: m_ProceduresOrder) {
-            procedure->onEvent(m_DataContainer, event);
+            procedure->onEvent(event, context, window);
         }
     }
 
-    void ProcedureExecutor::onImGui(const UP<Core::Context> &context, const UP<Core::Window>& window) {
+    void ProcedureExecutor::onImGui(const UP<Core::Context> &context, const UP<Core::Window>& window) const {
         for (const auto& procedure: m_ProceduresOrder) {
-            procedure->onImGui(m_DataContainer, context, window);
+            procedure->onImGui(context, window);
         }
     }
 

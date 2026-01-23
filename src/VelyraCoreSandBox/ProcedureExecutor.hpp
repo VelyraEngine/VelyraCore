@@ -1,7 +1,6 @@
 #pragma once
 
 #include "SandBoxInclude.hpp"
-#include "DataContainer.hpp"
 #include "IProcedure.hpp"
 
 #include <unordered_set>
@@ -22,11 +21,11 @@ namespace Velyra::SandBox {
 
         void constructStrategy();
 
-        void onUpdate(Duration deltaTime, const UP<Core::Context>& context);
+        void onUpdate(Duration deltaTime, const UP<Core::Context>& context, const UP<Core::Window>& window) const;
 
-        void onEvent(const Core::Event& event);
+        void onEvent(const Core::Event& event, const UP<Core::Context>& context, const UP<Core::Window>& window) const;
 
-        void onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window);
+        void onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window) const;
 
     private:
 
@@ -54,7 +53,6 @@ namespace Velyra::SandBox {
 
     private:
         Utils::LogPtr m_Logger = Utils::getLogger(VL_SANDBOX_PROCEDURE_EXECUTOR_LOGGER);
-        DataContainer m_DataContainer;
         std::unordered_map<VL_SBX_PROCEDURE_TYPE, SP<IProcedureFactory>> m_ProcedureFactories;
 
         std::unordered_set<VL_SBX_PROCEDURE_TYPE> m_RequiredProcedures;
