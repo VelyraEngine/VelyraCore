@@ -1,6 +1,6 @@
 #include "../../Pch.hpp"
 
-#include "WindowWin32.hpp"
+#include "Win32Window.hpp"
 #include "Win32Utils.hpp"
 
 #include "../../Context/OpenGL/Internal/WglPlatformContext.hpp"
@@ -10,9 +10,9 @@ namespace Velyra::Core {
 
     constexpr auto VL_CORE_WIN32_CLASS_NAME = L"VelyraWindowClass";
 
-    Size WindowWin32::m_WindowCount = 0;
+    Size Win32Window::m_WindowCount = 0;
 
-    WindowWin32::WindowWin32(const WindowDesc &desc):
+    Win32Window::Win32Window(const WindowDesc &desc):
     Window(),
     m_HInstance(GetModuleHandleW(nullptr)){
         if (m_WindowCount == 0) {
@@ -55,7 +55,7 @@ namespace Velyra::Core {
         VL_POSTCONDITION(m_HWND != nullptr, "WindowWin32", "Window handle is null after creation");
     }
 
-    WindowWin32::~WindowWin32() {
+    Win32Window::~Win32Window() {
         if (m_HWND) {
             DestroyWindow(m_HWND);
         }
@@ -65,31 +65,31 @@ namespace Velyra::Core {
         }
     }
 
-    I32 WindowWin32::getPositionX() const {
+    I32 Win32Window::getPositionX() const {
         RECT windowRect;
         GetWindowRect(m_HWND, &windowRect);
         return windowRect.left;
     }
 
-    I32 WindowWin32::getPositionY() const {
+    I32 Win32Window::getPositionY() const {
         RECT windowRect;
         GetWindowRect(m_HWND, &windowRect);
         return windowRect.top;
     }
 
-    U32 WindowWin32::getWidth() const {
+    U32 Win32Window::getWidth() const {
         RECT windowRect;
         GetWindowRect(m_HWND, &windowRect);
         return static_cast<U32>(windowRect.right - windowRect.left);
     }
 
-    U32 WindowWin32::getHeight() const {
+    U32 Win32Window::getHeight() const {
         RECT windowRect;
         GetWindowRect(m_HWND, &windowRect);
         return static_cast<U32>(windowRect.bottom - windowRect.top);
     }
 
-    std::string WindowWin32::getTitle() const {
+    std::string Win32Window::getTitle() const {
         const int length = GetWindowTextLengthW(m_HWND);
 
         std::wstring wideTitle(length, L'\0');
@@ -100,23 +100,23 @@ namespace Velyra::Core {
         return fromWideString(wideTitle);
     }
 
-    bool WindowWin32::isOpen() const {
+    bool Win32Window::isOpen() const {
         return m_Open;
     }
 
-    bool WindowWin32::isFullscreen() const {
+    bool Win32Window::isFullscreen() const {
         return m_Fullscreen;
     }
 
-    bool WindowWin32::isFocused() const {
+    bool Win32Window::isFocused() const {
         return m_Focused;
     }
 
-    bool WindowWin32::hasEvent() const {
+    bool Win32Window::hasEvent() const {
         return !m_EventQueue.empty();
     }
 
-    void WindowWin32::pollEvents() {
+    void Win32Window::pollEvents() {
         MSG msg;
         while (PeekMessageW(&msg, m_HWND, 0, 0, PM_REMOVE)){
             TranslateMessage(&msg);
@@ -124,49 +124,49 @@ namespace Velyra::Core {
         }
     }
 
-    Event WindowWin32::getNextEvent() {
+    Event Win32Window::getNextEvent() {
         const Event event = m_EventQueue.front();
         m_EventQueue.pop_front();
         return event;
     }
 
-    void WindowWin32::close() {
+    void Win32Window::close() {
         m_Open = false;
         ShowWindow(m_HWND, SW_HIDE);
     }
 
-    void WindowWin32::setPosition(const I32 xPosition, const I32 yPosition) {
+    void Win32Window::setPosition(const I32 xPosition, const I32 yPosition) {
         if (m_Fullscreen) {
             return;
         }
         SetWindowPos(m_HWND, nullptr, xPosition, yPosition, 0, 0, SWP_NOSIZE | SWP_NOZORDER);
     }
 
-    void WindowWin32::setSize(const U32 width, const U32 height) {
+    void Win32Window::setSize(const U32 width, const U32 height) {
         if (m_Fullscreen) {
             return;
         }
         SetWindowPos(m_HWND, nullptr, 0, 0, static_cast<I32>(width), static_cast<I32>(height), SWP_NOMOVE | SWP_NOZORDER);
     }
 
-    void WindowWin32::setTitle(const std::string &title) {
+    void Win32Window::setTitle(const std::string &title) {
         const std::wstring wideTitle = toWideString(title);
         SetWindowTextW(m_HWND, wideTitle.c_str());
     }
 
-    void WindowWin32::show() {
+    void Win32Window::show() {
         if (!ShowWindow(m_HWND, SW_SHOW)) {
             SPDLOG_LOGGER_WARN(m_Logger, "Failed to show Win32 window");
         }
     }
 
-    void WindowWin32::hide() {
+    void Win32Window::hide() {
         if (!ShowWindow(m_HWND, SW_HIDE)) {
             SPDLOG_LOGGER_WARN(m_Logger, "Failed to hide Win32 window");
         }
     }
 
-    void WindowWin32::enableFullscreen() {
+    void Win32Window::enableFullscreen() {
         if (m_Fullscreen) {
             return;
         }
@@ -195,7 +195,7 @@ namespace Velyra::Core {
         m_Fullscreen = true;
     }
 
-    void WindowWin32::disableFullscreen() {
+    void Win32Window::disableFullscreen() {
         if (!m_Fullscreen) {
             return;
         }
@@ -213,15 +213,15 @@ namespace Velyra::Core {
         m_Fullscreen = false;
     }
 
-    void WindowWin32::showMouse() {
+    void Win32Window::showMouse() {
         while (ShowCursor(TRUE) < 0);
     }
 
-    void WindowWin32::hideMouse() {
+    void Win32Window::hideMouse() {
         while (ShowCursor(FALSE) >= 0);
     }
 
-    void WindowWin32::grabMouse() {
+    void Win32Window::grabMouse() {
         if (!m_MouseGrabbed){
             RECT windowDimmensions;
             GetClientRect(m_HWND, &windowDimmensions);
@@ -230,49 +230,49 @@ namespace Velyra::Core {
         }
     }
 
-    void WindowWin32::releaseMouse() {
+    void Win32Window::releaseMouse() {
         if (m_MouseGrabbed){
             ClipCursor(nullptr);
             m_MouseGrabbed = false;
         }
     }
 
-    void WindowWin32::setMousePosition(const I32 mousePosX, const I32 mousePosY) {
+    void Win32Window::setMousePosition(const I32 mousePosX, const I32 mousePosY) {
         RECT windowRect;
         GetWindowRect(m_HWND, &windowRect);
         const POINT newPos = {mousePosX + windowRect.left, mousePosY + windowRect.top};
         SetCursorPos(newPos.x, newPos.y);
     }
 
-    I32 WindowWin32::getMousePositionX() const {
+    I32 Win32Window::getMousePositionX() const {
         POINT mousePos;
         GetCursorPos(&mousePos);
         return mousePos.x;
     }
 
-    I32 WindowWin32::getMousePositionY() const {
+    I32 Win32Window::getMousePositionY() const {
         POINT mousePos;
         GetCursorPos(&mousePos);
         return mousePos.y;
     }
 
-    float WindowWin32::getDpiScale() const {
+    float Win32Window::getDpiScale() const {
         return 1.0f;
     }
 
-    std::optional<fs::path> WindowWin32::saveFileDialog(const SaveFileDesc &/*desc*/) {
+    std::optional<fs::path> Win32Window::saveFileDialog(const SaveFileDesc &/*desc*/) {
         return {};
     }
 
-    std::optional<fs::path> WindowWin32::openFileDialog(const OpenFileDesc &/*desc*/) {
+    std::optional<fs::path> Win32Window::openFileDialog(const OpenFileDesc &/*desc*/) {
         return {};
     }
 
-    std::optional<fs::path> WindowWin32::openFolderDialog(const OpenFolderDesc &/*desc*/) {
+    std::optional<fs::path> Win32Window::openFolderDialog(const OpenFolderDesc &/*desc*/) {
         return {};
     }
 
-    const UP<Context> &WindowWin32::createContext(const ContextDesc &desc) {
+    const UP<Context> &Win32Window::createContext(const ContextDesc &desc) {
         const VL_GRAPHICS_API api = desc.api;
         switch (api) {
             case VL_API_OPENGL: {
@@ -287,7 +287,7 @@ namespace Velyra::Core {
         return m_Context;
     }
 
-    void WindowWin32::registerWindowClass() const {
+    void Win32Window::registerWindowClass() const {
         WNDCLASSEXW wc{};
         wc.cbSize = sizeof(WNDCLASSEXW);
         wc.style = CS_OWNDC;
@@ -306,11 +306,11 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "Registered Win32 window class");
     }
 
-    void WindowWin32::unregisterWindowClass() const {
+    void Win32Window::unregisterWindowClass() const {
         UnregisterClassW(VL_CORE_WIN32_CLASS_NAME, m_HInstance);
     }
 
-    void WindowWin32::registerRawInputDevices() const {
+    void Win32Window::registerRawInputDevices() const {
         RAWINPUTDEVICE mouse;
         mouse.usUsagePage = 0x01; //mouse
         mouse.usUsage = 0x02;     //mouse
@@ -330,14 +330,14 @@ namespace Velyra::Core {
         }
     }
 
-    LRESULT CALLBACK WindowWin32::windowEventProc(const HWND hwnd, const UINT msg, const WPARAM wparam, const LPARAM lparam) {
+    LRESULT CALLBACK Win32Window::windowEventProc(const HWND hwnd, const UINT msg, const WPARAM wparam, const LPARAM lparam) {
         if (msg == WM_CREATE){
             const auto window = reinterpret_cast<LONG_PTR>(reinterpret_cast<CREATESTRUCT *>(lparam)->lpCreateParams);
             SetWindowLongPtrW(hwnd, GWLP_USERDATA, window);
         }
         ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
 
-        WindowWin32* window = hwnd ? reinterpret_cast<WindowWin32*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
+        Win32Window* window = hwnd ? reinterpret_cast<Win32Window*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
         if (window != nullptr){
             window->handleEvent(msg, wparam, lparam);
         }
@@ -348,7 +348,7 @@ namespace Velyra::Core {
         return DefWindowProcW(hwnd, msg, wparam, lparam);
     }
 
-    void WindowWin32::handleEvent(const UINT msg, const WPARAM wparam, const LPARAM lparam) {
+    void Win32Window::handleEvent(const UINT msg, const WPARAM wparam, const LPARAM lparam) {
         switch (msg){
             case WM_CREATE: {
                 m_EventQueue.emplace_back(VL_EVENT_CLASS_WINDOW, VL_EVENT_WINDOW_OPENED);
@@ -540,7 +540,7 @@ namespace Velyra::Core {
         }
     }
 
-    void WindowWin32::mouseTracker(const bool enableTracking) const {
+    void Win32Window::mouseTracker(const bool enableTracking) const {
         TRACKMOUSEEVENT mouseEvent;
         mouseEvent.cbSize = sizeof(TRACKMOUSEEVENT);
         if (enableTracking){

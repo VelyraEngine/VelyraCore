@@ -18,5 +18,4 @@ namespace Velyra::Core {
 
     VL_KEYBOARD_KEY convertVirtualKey(WPARAM key, LPARAM flags);
 
-
 }

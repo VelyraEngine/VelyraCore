@@ -21,6 +21,10 @@ namespace Velyra::SandBox {
         SP<Core::VertexBuffer> m_VertexBuffer = nullptr;
         SP<Core::MeshBinding> m_MeshBinding = nullptr;
         ShaderProgram m_ShaderProgram;
+
+        // ImGui Variables
+        bool m_DrawRedTriangle = true;
+        std::string m_BufferData;
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(VertexDrawProcedure, VertexDraw, {ClearDefaultFrameBuffer})

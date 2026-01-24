@@ -4,10 +4,10 @@ namespace Velyra::SandBox {
 
     SP<Core::VertexLayout> Vertex::getVertexLayout(const UP<Core::Context> &context) {
         SP<Core::VertexLayout> layout = context->createVertexLayout();
-        layout->addAttribute("Position", VL_FLOAT32_2);
-        layout->addAttribute("Color", VL_FLOAT32_2);
-        layout->addAttribute("Normal", VL_FLOAT32_2);
-        layout->addAttribute("Tangent", VL_FLOAT32_2);
+        layout->addAttribute("Position", VL_FLOAT32_3);
+        layout->addAttribute("Color", VL_FLOAT32_3);
+        layout->addAttribute("Normal", VL_FLOAT32_3);
+        layout->addAttribute("Tangent", VL_FLOAT32_3);
         layout->addAttribute("TexCoord", VL_FLOAT32_2);
         return layout;
     }

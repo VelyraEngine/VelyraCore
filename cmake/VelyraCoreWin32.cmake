@@ -9,7 +9,7 @@ endif()
 
 set(VELYRA_CORE_PLATFORM_HEADERS
     src/VelyraCore/Window/Win32/Win32ForwardDeclarations.hpp
-    src/VelyraCore/Window/Win32/WindowWin32.hpp
+    src/VelyraCore/Window/Win32/Win32Window.hpp
     src/VelyraCore/Window/Win32/Win32Utils.hpp
 
     src/VelyraCore/Logging/Win32Logging.hpp
@@ -18,7 +18,7 @@ set(VELYRA_CORE_PLATFORM_HEADERS
 )
 
 set(VELYRA_CORE_PLATFORM_SRC
-    src/VelyraCore/Window/Win32/WindowWin32.cpp
+    src/VelyraCore/Window/Win32/Win32Window.cpp
     src/VelyraCore/Window/Win32/Win32Utils.cpp
 
     src/VelyraCore/Logging/Win32Logging.cpp

@@ -2,7 +2,7 @@
 
 #if defined(VL_PLATFORM_WINDOWS)
 
-    #include "Win32/WindowWin32.hpp"
+    #include "Win32/Win32Window.hpp"
 
 #elif defined(VL_PLATFORM_LINUX)
 
@@ -15,7 +15,7 @@ namespace Velyra::Core {
 #if defined(VL_PLATFORM_WINDOWS)
 
     UP<Window> WindowFactory::createWindow(const WindowDesc &desc) {
-        return createUP<WindowWin32>(desc);
+        return createUP<Win32Window>(desc);
     }
 
 #elif defined(VL_PLATFORM_LINUX)

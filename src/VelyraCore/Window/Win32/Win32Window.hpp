@@ -14,11 +14,11 @@ namespace Velyra::Core {
         RECT rect = {0, 0, 0, 0};
     };
 
-    class WindowWin32 : public Window {
+    class Win32Window : public Window {
     public:
-        WindowWin32(const WindowDesc& desc);
+        Win32Window(const WindowDesc& desc);
 
-        ~WindowWin32() override;
+        ~Win32Window() override;
 
         I32 getPositionX() const override;
 
