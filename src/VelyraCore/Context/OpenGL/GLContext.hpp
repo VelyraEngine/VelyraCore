@@ -48,6 +48,8 @@ namespace Velyra::Core {
 
         SP<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) override;
 
+        SP<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc &desc) override;
+
     private:
 
         void initGlad() const;

@@ -8,6 +8,7 @@
 #include <VelyraCore/Context/VertexBuffer.hpp>
 #include <VelyraCore/Context/IndexBuffer.hpp>
 #include <VelyraCore/Context/MeshBinding.hpp>
+#include <VelyraCore/Context/ConstantBuffer.hpp>
 
 #include "Device.hpp"
 
@@ -158,6 +159,13 @@ namespace Velyra::Core {
          */
         virtual SP<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) = 0;
 
+        /**
+         * @brief Creates a constant buffer given a valid description.
+         * @param desc Description of the constant buffer
+         * @return
+         */
+        virtual SP<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -180,6 +188,7 @@ namespace Velyra::Core {
         std::vector<SP<VertexBuffer>> m_VertexBuffers;
         std::vector<SP<IndexBuffer>> m_IndexBuffers;
         std::vector<SP<MeshBinding>> m_MeshBindings;
+        std::vector<SP<ConstantBuffer>> m_ConstantBuffers;
     };
 
 

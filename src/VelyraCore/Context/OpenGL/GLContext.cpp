@@ -1,14 +1,16 @@
 #include "../../Pch.hpp"
 
-#include "GLContext.hpp"
 #include "../../../Logging/LoggerNames.hpp"
 #include "../../../Logging/GLLogging.hpp"
+
+#include "GLContext.hpp"
 #include "GLDevice.hpp"
 #include "GLShaderModule.hpp"
 #include "GLShader.hpp"
 #include "GLVertexBuffer.hpp"
 #include "GLIndexBuffer.hpp"
 #include "GLMeshBinding.hpp"
+#include "GLConstantBuffer.hpp"
 
 namespace Velyra::Core {
 
@@ -154,6 +156,15 @@ namespace Velyra::Core {
         return m_VertexBuffers.back();
     }
 
+    SP<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {
+        if (desc.count > m_Device->getMaxIndexCount()) {
+            SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} indices, but {} requested", m_Device->getMaxIndexCount(), desc.count);
+            return nullptr;
+        }
+        m_IndexBuffers.emplace_back(createSP<GLIndexBuffer>(desc));
+        return m_IndexBuffers.back();
+    }
+
     SP<MeshBinding> GLContext::createMeshBinding(const MeshBindingDesc &desc) {
         if (desc.vertexBuffer == nullptr) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Cannot create MeshBinding: VertexBuffer is nullptr");
@@ -169,13 +180,14 @@ namespace Velyra::Core {
         return m_MeshBindings.back();
     }
 
-    SP<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {
-        if (desc.count > m_Device->getMaxIndexCount()) {
-            SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} indices, but {} requested", m_Device->getMaxIndexCount(), desc.count);
+    SP<ConstantBuffer> GLContext::createConstantBuffer(const ConstantBufferDesc &desc) {
+        if (desc.size > m_Device->getMaxConstantBufferSize()) {
+            SPDLOG_LOGGER_ERROR(m_Logger, "ConstantBuffer {}: supplied size {} exceeds the maximum constant buffer size {}",
+                desc.name, desc.size, m_Device->getMaxConstantBufferSize());
             return nullptr;
         }
-        m_IndexBuffers.emplace_back(createSP<GLIndexBuffer>(desc));
-        return m_IndexBuffers.back();
+        m_ConstantBuffers.emplace_back(createSP<GLConstantBuffer>(desc, *m_Device));
+        return m_ConstantBuffers.back();
     }
 
     void GLContext::initGlad() const {
