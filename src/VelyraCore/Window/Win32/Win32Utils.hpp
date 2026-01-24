@@ -6,7 +6,34 @@ extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg
 
 namespace Velyra::Core {
 
-    void setProcessDPIAware();
+    constexpr auto VL_CORE_WIN32_CLASS_NAME = L"VelyraWindowClass";
+
+    class Win32Instance {
+    public:
+        static void createInstance();
+
+        static void destroyInstance();
+
+        static Size getInstanceCount();
+
+    private:
+
+        static void initializeCOM();
+
+        static void initializeHInstance();
+
+        static void registerWindowClass();
+
+        static void setProcessDPIAware();
+
+        static void terminateCOM();
+
+        static void unregisterWindowClass();
+
+    private:
+        static Size m_InstanceCount;
+        static HINSTANCE m_HInstance;
+    };
 
     DWORD decodeWindowStyle(int windowStyle);
 

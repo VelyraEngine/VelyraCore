@@ -4,6 +4,7 @@ namespace Velyra::Core {
 
     // Window
     constexpr auto VL_LOGGER_WINDOW = "VL-COR-WND";
+    constexpr auto VL_LOGGER_WIN32 = "VL-COR-W32";
 
     // Contxt
     constexpr auto VL_LOGGER_WGL = "VL-COR-WGL";

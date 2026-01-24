@@ -3,17 +3,100 @@
 #include <VelyraCore/Window/Window.hpp>
 #include "Win32Utils.hpp"
 #include "../../Logging/LoggerNames.hpp"
+#include "../../Logging/Win32Logging.hpp"
+
+#include "Win32Window.hpp" // For Win32Window::windowEventProc
 
 namespace Velyra::Core {
 
-    enum ProcessDpiAwareness {
-        ProcessDpiUnaware         = 0,
-        ProcessSystemDpiAware     = 1,
-        ProcessPerMonitorDpiAware = 2
-    };
+    Size Win32Instance::m_InstanceCount = 0;
+    HINSTANCE Win32Instance::m_HInstance = nullptr;
 
-    void setProcessDPIAware() {
-        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WINDOW);
+    void Win32Instance::createInstance() {
+        if (m_InstanceCount == 0) {
+            initializeCOM();
+            initializeHInstance();
+            registerWindowClass();
+            setProcessDPIAware();
+        }
+        m_InstanceCount++;
+    }
+
+    void Win32Instance::destroyInstance() {
+        m_InstanceCount--;
+        if (m_InstanceCount == 0) {
+            unregisterWindowClass();
+        }
+    }
+
+    Size Win32Instance::getInstanceCount() {
+        return m_InstanceCount;
+    }
+
+    void Win32Instance::initializeCOM() {
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WIN32);
+
+        HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+        if (FAILED(hr)) {
+            const _com_error err(hr);
+            const std::string comErrorMsg(err.ErrorMessage());
+            const std::string win32ErrorMsg = formatWin32ExceptionMessage(HRESULT_CODE(hr));
+            SPDLOG_LOGGER_ERROR(logger,
+                "Failed to initialize COM library for Win32 windowing. "
+                "HRESULT=0x{:08X}, COM Message: {}, Win32(decoded): {}",
+                static_cast<uint32_t>(hr),
+                comErrorMsg,
+                win32ErrorMsg
+            );
+            return;
+        }
+        SPDLOG_LOGGER_INFO(logger, "Initialized COM library");
+    }
+
+    void Win32Instance::initializeHInstance() {
+        m_HInstance = GetModuleHandleW(nullptr);
+    }
+
+    void Win32Instance::registerWindowClass() {
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WIN32);
+
+        WNDCLASSEXW wc{};
+        wc.cbSize = sizeof(WNDCLASSEXW);
+        wc.style = CS_OWNDC;
+        wc.lpfnWndProc = Win32Window::windowEventProc;
+        wc.hInstance = m_HInstance;
+        wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
+        if (!wc.hCursor) {
+            const DWORD err = GetLastError();
+            SPDLOG_LOGGER_ERROR(logger, "Failed to load default cursor for Win32 window class. Error code: {}", formatWin32ExceptionMessage(err));
+            return;
+        }
+        wc.lpszClassName = VL_CORE_WIN32_CLASS_NAME;
+        wc.hbrBackground = nullptr;
+        wc.cbClsExtra = 0;
+        wc.cbWndExtra = 0;
+        wc.hIcon = nullptr;
+        wc.hIconSm = nullptr;
+        wc.lpszMenuName = nullptr;
+
+        const ATOM atom = RegisterClassExW(&wc);
+        if (atom == 0) {
+            const DWORD err = GetLastError();
+            SPDLOG_LOGGER_ERROR(logger, "Failed to register Win32 window class. Error code: {}", formatWin32ExceptionMessage(err));
+            return;
+        }
+        SPDLOG_LOGGER_INFO(logger, "Registered Win32 window class");
+    }
+
+    void Win32Instance::setProcessDPIAware() {
+        enum ProcessDpiAwareness {
+            ProcessDpiUnaware         = 0,
+            ProcessSystemDpiAware     = 1,
+            ProcessPerMonitorDpiAware = 2
+        };
+
+
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WIN32);
 
         // Windows 10 Anniversary Update+
         if (auto setContext = reinterpret_cast<decltype(&SetProcessDpiAwarenessContext)>(GetProcAddress(GetModuleHandleW(L"user32.dll"), "SetProcessDpiAwarenessContext"))) {
@@ -54,6 +137,25 @@ namespace Velyra::Core {
             }
             FreeLibrary(user32Dll);
         }
+    }
+
+    void terminateCOM() {
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WIN32);
+
+        CoUninitialize();
+        SPDLOG_LOGGER_INFO(logger, "Uninitialized COM library");
+    }
+
+    void Win32Instance::unregisterWindowClass() {
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WIN32);
+
+        if (!UnregisterClassW(VL_CORE_WIN32_CLASS_NAME, m_HInstance)){
+
+            const DWORD err = GetLastError();
+            SPDLOG_LOGGER_ERROR(logger, "Failed to unregister Win32 window class. Error code: {}", formatWin32ExceptionMessage(err));
+            return;
+        }
+        SPDLOG_LOGGER_INFO(logger, "Unregistered Win32 window class");
     }
 
     DWORD decodeWindowStyle(const int windowStyle){
@@ -256,7 +358,11 @@ namespace Velyra::Core {
             case '7':           return VL_KEY_7;
             case '8':           return VL_KEY_8;
             case '9':           return VL_KEY_9;
-            default:            return VL_KEY_NONE;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WINDOW);
+                SPDLOG_LOGGER_WARN(logger, "Unmapped virtual key: {}", key);
+                return VL_KEY_NONE;
+            }
         }
     }
 }

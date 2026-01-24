@@ -11,5 +11,7 @@ VL_ENUM(VL_SBX_PROCEDURE_TYPE, int,
     ClearDefaultFrameBuffer,
     FileDialog,
     VertexDraw,
-    IndexDraw
+    IndexDraw,
+    Camera,
+    Projection
 );

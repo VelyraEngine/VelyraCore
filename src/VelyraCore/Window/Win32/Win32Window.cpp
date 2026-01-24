@@ -8,18 +8,12 @@
 
 namespace Velyra::Core {
 
-    constexpr auto VL_CORE_WIN32_CLASS_NAME = L"VelyraWindowClass";
-
     Size Win32Window::m_WindowCount = 0;
 
     Win32Window::Win32Window(const WindowDesc &desc):
     Window(),
     m_HInstance(GetModuleHandleW(nullptr)){
-        if (m_WindowCount == 0) {
-            registerWindowClass();
-            setProcessDPIAware();
-        }
-        m_WindowCount++;
+        Win32Instance::createInstance();
 
         m_FullScreenInfo.maximized = false;
         m_FullScreenInfo.style = decodeWindowStyle(desc.style);
@@ -59,10 +53,7 @@ namespace Velyra::Core {
         if (m_HWND) {
             DestroyWindow(m_HWND);
         }
-        m_WindowCount--;
-        if (m_WindowCount == 0) {
-            unregisterWindowClass();
-        }
+        Win32Instance::destroyInstance();
     }
 
     I32 Win32Window::getPositionX() const {
@@ -287,27 +278,22 @@ namespace Velyra::Core {
         return m_Context;
     }
 
-    void Win32Window::registerWindowClass() const {
-        WNDCLASSEXW wc{};
-        wc.cbSize = sizeof(WNDCLASSEXW);
-        wc.style = CS_OWNDC;
-        wc.lpfnWndProc = windowEventProc;
-        wc.hInstance = m_HInstance;
-        wc.hCursor = LoadCursor(nullptr, IDC_ARROW);
-        wc.lpszClassName = VL_CORE_WIN32_CLASS_NAME;
-        wc.hbrBackground = nullptr;
-        wc.cbClsExtra = 0;
-        wc.cbWndExtra = 0;
-        wc.hIcon = nullptr;
-        wc.hIconSm = nullptr;
-        wc.lpszMenuName = nullptr;
+    LRESULT CALLBACK Win32Window::windowEventProc(const HWND hwnd, const UINT msg, const WPARAM wparam, const LPARAM lparam) {
+        if (msg == WM_CREATE){
+            const auto window = reinterpret_cast<LONG_PTR>(reinterpret_cast<CREATESTRUCT *>(lparam)->lpCreateParams);
+            SetWindowLongPtrW(hwnd, GWLP_USERDATA, window);
+        }
+        ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
 
-        RegisterClassExW(&wc);
-        SPDLOG_LOGGER_TRACE(m_Logger, "Registered Win32 window class");
-    }
-
-    void Win32Window::unregisterWindowClass() const {
-        UnregisterClassW(VL_CORE_WIN32_CLASS_NAME, m_HInstance);
+        Win32Window* window = hwnd ? reinterpret_cast<Win32Window*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
+        if (window != nullptr){
+            window->handleEvent(msg, wparam, lparam);
+        }
+        // Prevents win32 from closing the window manually.
+        if (msg == WM_CLOSE){
+            return 0;
+        }
+        return DefWindowProcW(hwnd, msg, wparam, lparam);
     }
 
     void Win32Window::registerRawInputDevices() const {
@@ -328,24 +314,6 @@ namespace Velyra::Core {
         if (!RegisterRawInputDevices(&keyboard, 1, sizeof(keyboard))) {
             SPDLOG_LOGGER_WARN(m_Logger, "Failed to register raw input keyboard");
         }
-    }
-
-    LRESULT CALLBACK Win32Window::windowEventProc(const HWND hwnd, const UINT msg, const WPARAM wparam, const LPARAM lparam) {
-        if (msg == WM_CREATE){
-            const auto window = reinterpret_cast<LONG_PTR>(reinterpret_cast<CREATESTRUCT *>(lparam)->lpCreateParams);
-            SetWindowLongPtrW(hwnd, GWLP_USERDATA, window);
-        }
-        ImGui_ImplWin32_WndProcHandler(hwnd, msg, wparam, lparam);
-
-        Win32Window* window = hwnd ? reinterpret_cast<Win32Window*>(GetWindowLongPtrW(hwnd, GWLP_USERDATA)) : nullptr;
-        if (window != nullptr){
-            window->handleEvent(msg, wparam, lparam);
-        }
-        // Prevents win32 from closing the window manually.
-        if (msg == WM_CLOSE){
-            return 0;
-        }
-        return DefWindowProcW(hwnd, msg, wparam, lparam);
     }
 
     void Win32Window::handleEvent(const UINT msg, const WPARAM wparam, const LPARAM lparam) {

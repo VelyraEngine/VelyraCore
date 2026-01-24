@@ -151,6 +151,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/VertexDrawProcedure.cpp
     src/VelyraCoreSandBox/Procedures/IndexDrawProcedure.cpp
     src/VelyraCoreSandBox/Procedures/IndexDrawProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/CameraProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/CameraProcedure.hpp
 )
 
 if (BUILD_SANDBOX)

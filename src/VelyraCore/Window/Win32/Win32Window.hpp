@@ -82,15 +82,11 @@ namespace Velyra::Core {
 
         const UP<Context>& createContext(const ContextDesc &desc) override;
 
+        static LRESULT CALLBACK windowEventProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
+
     private:
 
-        void registerWindowClass() const;
-
-        void unregisterWindowClass() const;
-
         void registerRawInputDevices() const;
-
-        static LRESULT CALLBACK windowEventProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
 
         void handleEvent(UINT msg, WPARAM wparam, LPARAM lparam);
 
