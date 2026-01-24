@@ -68,7 +68,7 @@ namespace Velyra::SandBox {
 
     void IndexDrawProcedure::onImGui(const UP<Core::Context> &context, const UP<Core::Window> &window) {
         ImGui::Begin("Index Draw");
-        ImGui::Text("This procedure draws a triangle using a Vertex Buffer and an Index Buffer).");
+        ImGui::TextWrapped("This procedure draws a triangle using a Vertex Buffer and an Index Buffer).");
         if (ImGui::Button("Next Mesh")) {
             m_MeshIndex++;
             switch (m_MeshIndex % 5) {
@@ -80,6 +80,8 @@ namespace Velyra::SandBox {
                 default: break;
             }
         }
+
+        drawMeshBindingWidget(m_MeshBinding);
 
         ImGui::End();
     }

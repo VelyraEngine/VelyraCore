@@ -1,7 +1,8 @@
 #pragma once
 
-#include "SandBoxInclude.hpp"
 #include "DataTypes.hpp"
+#include "Utils.hpp"
+#include "ImGuiWidgets.hpp"
 
 namespace Velyra::SandBox {
 
