@@ -36,21 +36,10 @@ namespace Velyra::Core {
     void Win32Instance::initializeCOM() {
         const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WIN32);
 
-        HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
-        if (FAILED(hr)) {
-            const _com_error err(hr);
-            const std::string comErrorMsg(err.ErrorMessage());
-            const std::string win32ErrorMsg = formatWin32ExceptionMessage(HRESULT_CODE(hr));
-            SPDLOG_LOGGER_ERROR(logger,
-                "Failed to initialize COM library for Win32 windowing. "
-                "HRESULT=0x{:08X}, COM Message: {}, Win32(decoded): {}",
-                static_cast<uint32_t>(hr),
-                comErrorMsg,
-                win32ErrorMsg
-            );
-            return;
+        const HRESULT hr = CoInitializeEx(nullptr, COINIT_APARTMENTTHREADED);
+        if (decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_INFO(logger, "Initialized COM library");
         }
-        SPDLOG_LOGGER_INFO(logger, "Initialized COM library");
     }
 
     void Win32Instance::initializeHInstance() {

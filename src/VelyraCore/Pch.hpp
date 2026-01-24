@@ -25,6 +25,7 @@
     #include <dshow.h>
     #include <commdlg.h>
     #include <comdef.h>
+    #include <shobjidl.h>      // IFileSaveDialog
 
     #include <glad/glad_wgl.h>
 

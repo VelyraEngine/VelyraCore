@@ -65,8 +65,8 @@ namespace Velyra::SandBox {
             desc.filterDescription = filter_description;
             desc.allowMultipleSelects = allow_multiple_selects;
             const auto result = window->openFileDialog(desc);
-            if (result.has_value()) {
-                m_open_file_result = result.value();
+            for (const auto& path : result) {
+                m_open_file_result += path;
             }
         }
         if (m_open_file_result.empty()) {

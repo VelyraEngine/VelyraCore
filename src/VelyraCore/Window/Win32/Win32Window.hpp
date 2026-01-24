@@ -2,6 +2,7 @@
 
 #include <VelyraCore/Window/Window.hpp>
 #include "../../Logging/LoggerNames.hpp"
+#include "../../Logging/Win32Logging.hpp"
 
 #include <deque>
 
@@ -76,7 +77,7 @@ namespace Velyra::Core {
 
         std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) override;
 
-        std::optional<fs::path> openFileDialog(const OpenFileDesc& desc) override;
+        std::vector<fs::path> openFileDialog(const OpenFileDesc& desc) override;
 
         std::optional<fs::path> openFolderDialog(const OpenFolderDesc& desc) override;
 
@@ -91,6 +92,46 @@ namespace Velyra::Core {
         void handleEvent(UINT msg, WPARAM wparam, LPARAM lparam);
 
         void mouseTracker(bool enableTracking) const;
+
+        /**
+         * @brief Creates a file dialog of the specified type.
+         * @tparam DIALOG_TYPE The type of dialog to create (IFileOpenDialog, IFileSaveDialog, etc).
+         * @return Pointer to the created dialog, or nullptr if creation failed.
+         */
+        template<typename DIALOG_TYPE>
+        DIALOG_TYPE* createFileDialog() const {
+            CLSID clsid;
+
+            if constexpr(std::is_same_v<DIALOG_TYPE, IFileOpenDialog>) {
+                clsid = CLSID_FileOpenDialog;
+            }
+            else if constexpr(std::is_same_v<DIALOG_TYPE, IFileSaveDialog>) {
+                clsid = CLSID_FileSaveDialog;
+            }
+            else {
+                SPDLOG_LOGGER_ERROR(m_Logger, "Unsupported dialog type for Win32Window");
+                return nullptr;
+            }
+
+            DIALOG_TYPE* pDialog = nullptr;
+            HRESULT hr = CoCreateInstance(clsid, nullptr, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pDialog));
+            if (!decodeHRESULT(hr)) {
+                return nullptr;
+            }
+            return pDialog;
+        }
+
+        void setDialogTitle(IFileDialog* pDialog, const std::string& title) const;
+
+        void setDialogDefaultPath(IFileDialog* pDialog, const fs::path& defaultPath) const;
+
+        void setDialogFilters(IFileDialog* pDialog, const std::vector<std::string>& filterPatterns, const std::string& filterDescription) const;
+
+        std::wstring buildPatternList(const std::vector<std::string>& filterPatterns) const;
+
+        void setDialogOptions(IFileDialog* pDialog, DWORD options) const;
+
+        std::vector<fs::path> getDialogResults(IFileDialog* pDialog) const;
 
     private:
         static Size m_WindowCount;

@@ -251,16 +251,140 @@ namespace Velyra::Core {
         return 1.0f;
     }
 
-    std::optional<fs::path> Win32Window::saveFileDialog(const SaveFileDesc &/*desc*/) {
-        return {};
+    std::optional<fs::path> Win32Window::saveFileDialog(const SaveFileDesc &desc) {
+        HRESULT hr;
+
+        IFileSaveDialog* pDialog = createFileDialog<IFileSaveDialog>();
+        if (pDialog == nullptr) {
+            return std::nullopt;
+        }
+
+        setDialogTitle(pDialog, desc.title);
+        setDialogDefaultPath(pDialog, desc.defaultPath);
+        setDialogFilters(pDialog, desc.filterPatterns, desc.filterDescription);
+        setDialogOptions(pDialog, FOS_OVERWRITEPROMPT);
+
+        // Show dialog
+        hr = pDialog->Show(m_HWND);
+        if (!decodeHRESULT(hr)) {
+            pDialog->Release();
+            return std::nullopt;
+        }
+
+        // Get result
+        IShellItem* pResult = nullptr;
+        hr = pDialog->GetResult(&pResult);
+        if (!decodeHRESULT(hr)) {
+            pDialog->Release();
+            return std::nullopt;
+        }
+        PWSTR pszFilePath = nullptr;
+        hr = pResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+        if (!decodeHRESULT(hr)) {
+            pResult->Release();
+            pDialog->Release();
+            return std::nullopt;
+        }
+
+        fs::path filePath = fromWideString(std::wstring(pszFilePath));
+        CoTaskMemFree(pszFilePath);
+        pResult->Release();
+        pDialog->Release();
+        return filePath;
     }
 
-    std::optional<fs::path> Win32Window::openFileDialog(const OpenFileDesc &/*desc*/) {
-        return {};
+    std::vector<fs::path> Win32Window::openFileDialog(const OpenFileDesc &desc) {
+        HRESULT hr;
+        std::vector<fs::path> filePaths;
+
+        IFileOpenDialog* pDialog = createFileDialog<IFileOpenDialog>();
+        if (pDialog == nullptr) {
+            return filePaths;
+        }
+
+        setDialogTitle(pDialog, desc.title);
+        setDialogDefaultPath(pDialog, desc.defaultPath);
+        setDialogFilters(pDialog, desc.filterPatterns, desc.filterDescription);
+
+        DWORD options = FOS_FILEMUSTEXIST | FOS_PATHMUSTEXIST;
+        if (desc.allowMultipleSelects) {
+            options |= FOS_ALLOWMULTISELECT;
+        }
+        setDialogOptions(pDialog, options);
+
+        // Show dialog
+        hr = pDialog->Show(m_HWND);
+        if (!decodeHRESULT(hr)) {
+            pDialog->Release();
+            return filePaths;
+        }
+
+        // Get results
+        IShellItemArray* pResults = nullptr;
+        hr = pDialog->GetResults(&pResults);
+        if (!decodeHRESULT(hr)) {
+            pDialog->Release();
+            return filePaths;
+        }
+        DWORD itemCount = 0;
+        hr = pResults->GetCount(&itemCount);
+        decodeHRESULT(hr);
+        for (DWORD i = 0; i < itemCount; ++i) {
+            IShellItem* pItem = nullptr;
+            hr = pResults->GetItemAt(i, &pItem);
+            if (!decodeHRESULT(hr)) {
+                continue;
+            }
+            PWSTR pszFilePath = nullptr;
+            hr = pItem->GetDisplayName(SIGDN_FILESYSPATH, &pszFilePath);
+            if (decodeHRESULT(hr)) {
+                fs::path filePath = fromWideString(std::wstring(pszFilePath));
+                filePaths.push_back(filePath);
+                CoTaskMemFree(pszFilePath);
+            }
+            pItem->Release();
+        }
+        pResults->Release();
+        pDialog->Release();
+        return filePaths;
     }
 
-    std::optional<fs::path> Win32Window::openFolderDialog(const OpenFolderDesc &/*desc*/) {
-        return {};
+    std::optional<fs::path> Win32Window::openFolderDialog(const OpenFolderDesc& desc) {
+        HRESULT hr;
+        IFileDialog* pDialog = createFileDialog<IFileOpenDialog>();
+        if (pDialog == nullptr) {
+            return std::nullopt;
+        }
+        setDialogTitle(pDialog, desc.title);
+        setDialogDefaultPath(pDialog, desc.defaultPath);
+        setDialogOptions(pDialog, FOS_PICKFOLDERS | FOS_PATHMUSTEXIST);
+
+        // Show dialog
+        hr = pDialog->Show(m_HWND);
+        if (!decodeHRESULT(hr)) {
+            pDialog->Release();
+            return std::nullopt;
+        }
+
+        // Get result
+        IShellItem* pResult = nullptr;
+        hr = pDialog->GetResult(&pResult);
+        if (!decodeHRESULT(hr)) {
+            pDialog->Release();
+            return std::nullopt;
+        }
+        PWSTR pszFolderPath = nullptr;
+        hr = pResult->GetDisplayName(SIGDN_FILESYSPATH, &pszFolderPath);
+        if (!decodeHRESULT(hr)) {
+            pResult->Release();
+            pDialog->Release();
+            return std::nullopt;
+        }
+        fs::path folderPath = fromWideString(std::wstring(pszFolderPath));
+        CoTaskMemFree(pszFolderPath);
+        pResult->Release();
+        pDialog->Release();
+        return folderPath;
     }
 
     const UP<Context> &Win32Window::createContext(const ContextDesc &desc) {
@@ -522,6 +646,100 @@ namespace Velyra::Core {
         TrackMouseEvent(&mouseEvent);
     }
 
+    void Win32Window::setDialogTitle(IFileDialog *pDialog, const std::string &title) const {
+        if (title.empty()) {
+            return;
+        }
+        const std::wstring wideTitle = toWideString(title);
+        const HRESULT hr = pDialog->SetTitle(wideTitle.c_str());
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to set title {} for file dialog", title);
+        }
+    }
 
+    void Win32Window::setDialogDefaultPath(IFileDialog *pDialog, const fs::path &defaultPath) const {
+        if (defaultPath.empty()) {
+            return;
+        }
+        const std::wstring widePath = toWideString(defaultPath.string());
+        IShellItem* pDefaultPath = nullptr;
+        HRESULT hr = SHCreateItemFromParsingName(widePath.c_str(), nullptr, IID_PPV_ARGS(&pDefaultPath));
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to create shell item for default path {}", defaultPath.string());
+            return;
+        }
+        hr = pDialog->SetDefaultFolder(pDefaultPath);
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to set default path {} for file dialog", defaultPath.string());
+        }
+    }
+
+    void Win32Window::setDialogFilters(IFileDialog *pDialog, const std::vector<std::string> &filterPatterns, const std::string &filterDescription) const {
+        // 1. join all patterns into a single string separated by semicolons (The Win32 parser expects this format)
+        const std::wstring patternList = buildPatternList(filterPatterns);
+        if (patternList.empty()) {
+            return;
+        }
+
+        // 2. create filter spec
+        std::wstring displayName = toWideString(filterDescription);
+        if (!displayName.empty()) {
+            displayName += L" (";
+            displayName += patternList;
+            displayName += L")";
+        }
+        else {
+            displayName = patternList; // fallback
+        }
+
+        COMDLG_FILTERSPEC filter{};
+        filter.pszName = displayName.c_str();   // what user sees
+        filter.pszSpec = patternList.c_str();   // what Windows matches
+
+        // 3. set filter on dialog
+        HRESULT hr;
+        hr = pDialog->SetFileTypes(1, &filter);
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to set filters for file dialog");
+            return;
+        }
+        hr = pDialog->SetFileTypeIndex(1);
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to set filter index for file dialog");
+        }
+    }
+
+    std::wstring Win32Window::buildPatternList(const std::vector<std::string> &filterPatterns) const {
+        std::wstring patternList;
+        for (Size i = 0; i < filterPatterns.size(); ++i) {
+            if (i > 0) {
+                patternList += L";";
+            }
+            std::wstring pattern = toWideString(filterPatterns[i]);
+            // Also required by the Win32 parser, if no wildcard is present, add *.
+            if (pattern[0] == L'.'){
+                pattern = L"*" + pattern;
+            }
+            else if (pattern.find(L'*') == std::wstring::npos){
+                pattern = L"*." + pattern;
+            }
+            patternList += pattern;
+        }
+        return patternList;
+    }
+
+    void Win32Window::setDialogOptions(IFileDialog *pDialog, const DWORD options) const {
+        DWORD currentOptions;
+        HRESULT hr = pDialog->GetOptions(&currentOptions);
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to get current options for file dialog");
+            return;
+        }
+        currentOptions |= options;
+        hr = pDialog->SetOptions(currentOptions);
+        if (!decodeHRESULT(hr)) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to set options for file dialog");
+        }
+    }
 
 }

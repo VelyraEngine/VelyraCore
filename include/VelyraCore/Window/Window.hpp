@@ -117,7 +117,7 @@ namespace Velyra::Core {
 
         virtual std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) = 0;
 
-        virtual std::optional<fs::path> openFileDialog(const OpenFileDesc& desc) = 0;
+        virtual std::vector<fs::path> openFileDialog(const OpenFileDesc& desc) = 0;
 
         virtual std::optional<fs::path> openFolderDialog(const OpenFolderDesc& desc) = 0;
 
