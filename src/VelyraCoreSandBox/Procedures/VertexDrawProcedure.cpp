@@ -47,7 +47,7 @@ namespace Velyra::SandBox {
 
     void VertexDrawProcedure::onImGui(const UP<Core::Context> &context, const UP<Core::Window> &window) {
         ImGui::Begin("Vertex Draw");
-        ImGui::Text("This procedure draws a triangle using a vertex buffer (no Index Buffer).");
+        ImGui::Text("This procedure draws a triangle using a Vertex Buffer (no Index Buffer).");
         if (ImGui::Checkbox("Draw Red Triangle", &m_DrawRedTriangle)){
             if (m_DrawRedTriangle){
                 m_VertexBuffer->setData(0, s_VertexDrawRedTriangle, 3);

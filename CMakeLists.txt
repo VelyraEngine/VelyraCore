@@ -144,6 +144,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/FileDialogProcedure.cpp
     src/VelyraCoreSandBox/Procedures/VertexDrawProcedure.hpp
     src/VelyraCoreSandBox/Procedures/VertexDrawProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/IndexDrawProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/IndexDrawProcedure.hpp
 )
 
 if (BUILD_SANDBOX)

@@ -6,6 +6,7 @@
 #include "Procedures/ClearDefaultFrameBufferProcedure.hpp"
 #include "Procedures/FileDialogProcedure.hpp"
 #include "Procedures/VertexDrawProcedure.hpp"
+#include "Procedures/IndexDrawProcedure.hpp"
 
 #include <queue>
 
@@ -18,6 +19,7 @@ namespace Velyra::SandBox {
         registerProcedureFactory<ClearDefaultFrameBufferProcedureFactory>();
         registerProcedureFactory<FileDialogProcedureFactory>();
         registerProcedureFactory<VertexDrawProcedureFactory>();
+        registerProcedureFactory<IndexDrawProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {

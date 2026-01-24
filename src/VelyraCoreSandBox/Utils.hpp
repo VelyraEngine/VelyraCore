@@ -28,5 +28,4 @@ namespace Velyra::SandBox {
     };
 
     ShaderProgram loadShader(const UP<Core::Context> &context, const std::string &vertexShaderName, const std::string &fragmentShaderName);
-
 }
