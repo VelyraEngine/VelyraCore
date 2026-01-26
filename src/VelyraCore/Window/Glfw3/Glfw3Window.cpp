@@ -191,7 +191,7 @@ namespace Velyra::Core {
         return std::nullopt;
     }
 
-    std::optional<fs::path> Glfw3Window::openFileDialog(const OpenFileDesc &desc) {
+    std::vector<fs::path> Glfw3Window::openFileDialog(const OpenFileDesc &desc) {
         // Convert filter patterns to the format expected by tinyfiledialogs
         std::vector<const char*> raw_filter_patterns;
         raw_filter_patterns.reserve(desc.filterPatterns.size());
@@ -206,6 +206,7 @@ namespace Velyra::Core {
         char const* aSingleFilterDescription = desc.filterDescription.empty() ? nullptr : desc.filterDescription.c_str();
         const int aAllowMultipleSelects = desc.allowMultipleSelects;
 
+        std::vector<fs::path> paths;
         char const* result = tinyfd_openFileDialog(
             aTitle,
             aDefaultPathAndFile,
@@ -214,10 +215,14 @@ namespace Velyra::Core {
             aSingleFilterDescription,
             aAllowMultipleSelects
         );
-        if (result) {
-            return fs::path(result);
+        std::stringstream ss(result);
+        std::string item;
+        while (std::getline(ss, item, '|')) {
+            if (!item.empty()) {
+                paths.emplace_back(item);
+            }
         }
-        return std::nullopt;
+        return paths;
     }
 
     std::optional<fs::path> Glfw3Window::openFolderDialog(const OpenFolderDesc &desc) {

@@ -71,7 +71,7 @@ namespace Velyra::Core {
 
         std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) override;
 
-        std::optional<fs::path> openFileDialog(const OpenFileDesc& desc) override;
+        std::vector<fs::path> openFileDialog(const OpenFileDesc& desc) override;
 
         std::optional<fs::path> openFolderDialog(const OpenFolderDesc& desc) override;
 
