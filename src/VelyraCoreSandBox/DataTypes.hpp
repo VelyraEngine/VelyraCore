@@ -13,5 +13,6 @@ VL_ENUM(VL_SBX_PROCEDURE_TYPE, int,
     VertexDraw,
     IndexDraw,
     Camera,
-    Projection
+    Projection,
+    ModelViewProjection
 );

@@ -49,4 +49,6 @@ namespace Velyra::SandBox {
         float m_LastY = 0.0f;
     };
 
+    VL_DECLARE_PROCEDURE_FACTORY(CameraProcedure, Camera, {})
+
 }

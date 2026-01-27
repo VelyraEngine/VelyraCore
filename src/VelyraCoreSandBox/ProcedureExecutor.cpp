@@ -7,6 +7,9 @@
 #include "Procedures/FileDialogProcedure.hpp"
 #include "Procedures/VertexDrawProcedure.hpp"
 #include "Procedures/IndexDrawProcedure.hpp"
+#include "Procedures/CameraProcedure.hpp"
+#include "Procedures/ProjectionProcedure.hpp"
+#include "Procedures/ModelViewProjectionProcedure.hpp"
 
 #include <queue>
 
@@ -20,6 +23,9 @@ namespace Velyra::SandBox {
         registerProcedureFactory<FileDialogProcedureFactory>();
         registerProcedureFactory<VertexDrawProcedureFactory>();
         registerProcedureFactory<IndexDrawProcedureFactory>();
+        registerProcedureFactory<CameraProcedureFactory>();
+        registerProcedureFactory<ProjectionProcedureFactory>();
+        registerProcedureFactory<ModelViewProjectionProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {

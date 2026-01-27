@@ -153,6 +153,10 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/IndexDrawProcedure.hpp
     src/VelyraCoreSandBox/Procedures/CameraProcedure.cpp
     src/VelyraCoreSandBox/Procedures/CameraProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/ProjectionProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/ProjectionProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/ModelViewProjectionProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/ModelViewProjectionProcedure.hpp
 )
 
 if (BUILD_SANDBOX)
