@@ -120,6 +120,10 @@ target_include_directories(VelyraCore PUBLIC include)
 target_include_directories(VelyraCore PRIVATE include/VelyraCore/ImGui)
 target_link_libraries(VelyraCore PUBLIC VelyraUtils ImLib)
 target_link_libraries(VelyraCore PRIVATE ${VELYRA_CORE_LIBS})
+target_compile_definitions(VelyraCore PRIVATE
+        $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE>
+        $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>
+)
 
 ################# Sandbox #################
 
@@ -164,6 +168,10 @@ if (BUILD_SANDBOX)
 
     add_executable(VelyraCoreSandBox main.cpp ${VELYRA_CORE_SANDBOX_SRC})
     target_link_libraries(VelyraCoreSandBox PRIVATE VelyraCore glm::glm)
+    target_compile_definitions(VelyraCoreSandBox PRIVATE
+            $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE>
+            $<$<NOT:$<CONFIG:Debug>>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_INFO>
+    )
 
 endif ()
 

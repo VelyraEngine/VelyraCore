@@ -6,8 +6,24 @@
 
 namespace Velyra::Core {
 
+    std::string glEnumToStr(const GLenum glEnum) {
+        switch (glEnum) {
+            case GL_VERTEX_ARRAY: return "GL_VERTEX_ARRAY";
+            case GL_ARRAY_BUFFER: return "GL_ARRAY_BUFFER";
+            case GL_ELEMENT_ARRAY_BUFFER: return "GL_ELEMENT_ARRAY_BUFFER";
+            case GL_PIXEL_PACK_BUFFER: return "GL_PIXEL_PACK_BUFFER";
+            case GL_PIXEL_UNPACK_BUFFER: return "GL_PIXEL_UNPACK_BUFFER";
+            case GL_UNIFORM_BUFFER: return "GL_UNIFORM_BUFFER";
+            case GL_TRANSFORM_FEEDBACK_BUFFER: return "GL_TRANSFORM_FEEDBACK_BUFFER";
+            case GL_COPY_READ_BUFFER: return "GL_COPY_READ_BUFFER";
+            case GL_COPY_WRITE_BUFFER: return "GL_COPY_WRITE_BUFFER";
+            default: return "";
+        }
+    }
+
     GLBuffer::GLBuffer(const GLenum target, const Size size, const void *data, const VL_BUFFER_USAGE usage):
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)),
+    m_Name(glEnumToStr(target)),
     m_Size(size),
     m_Usage(usage),
     m_Target(target) {
@@ -39,23 +55,25 @@ namespace Velyra::Core {
 
     void GLBuffer::bind() const {
         if (m_BufferID == 0) {
-            SPDLOG_LOGGER_ERROR(m_Logger, "Buffer {} not created!", m_BufferID);
+            SPDLOG_LOGGER_ERROR(m_Logger, "Buffer {} not created! (name: {})", m_BufferID, m_Name);
             return;
         }
+        SPDLOG_LOGGER_TRACE(m_Logger, "Binding buffer {} (name: {})", m_BufferID, m_Name);
         glBindBuffer(m_Target, m_BufferID);
     }
 
     void GLBuffer::bindShaderResource(const U32 slot) const {
         if (m_BufferID == 0) {
-            SPDLOG_LOGGER_ERROR(m_Logger, "Buffer {} not created!", m_BufferID);
+            SPDLOG_LOGGER_ERROR(m_Logger, "Buffer {} not created! (name: {})", m_BufferID, m_Name);
             return;
         }
+        SPDLOG_LOGGER_TRACE(m_Logger, "Binding buffer {} (name: {}) to slot: {}", m_BufferID, m_Name, slot);
         glBindBufferBase(m_Target, slot, m_BufferID);
     }
 
     void GLBuffer::setData(U64 offset, const void *data, U64 size) {
         if (m_BufferID == 0) {
-            SPDLOG_LOGGER_ERROR(m_Logger, "Buffer {} not created!", m_BufferID);
+            SPDLOG_LOGGER_ERROR(m_Logger, "Buffer {} not created! (name: {})", m_BufferID, m_Name);
             return;
         }
         if (m_Usage == VL_BUFFER_USAGE_STATIC) {

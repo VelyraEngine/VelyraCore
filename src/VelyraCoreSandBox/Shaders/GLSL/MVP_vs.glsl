@@ -1,6 +1,6 @@
 #version 460
 
-layout (location = 0) in vec3 position;
+layout (location = 0) in vec3 lPosition;
 layout (location = 1) in vec3 lColor;
 layout (location = 2) in vec3 lNormal;
 layout (location = 3) in vec3 lTangent;
@@ -25,5 +25,5 @@ layout(std140, binding = 2) uniform ProjectionData {
 void main(){
     fColor = vec4(lColor, 1.0);
     fTexCoord = lTexCoord;
-    gl_Position = perspective * view * transform * vec4(position, 1.0);
+    gl_Position = perspective * view * transform * vec4(lPosition, 1.0);
 }

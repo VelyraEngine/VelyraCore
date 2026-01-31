@@ -24,7 +24,7 @@ namespace Velyra::SandBox {
 
     void ModelViewProjectionProcedure::onUpdate(Duration deltaTime, const UP<Core::Context> &context, const UP<Core::Window> &window) {
         m_ShaderProgram.shaderProgram->bind();
-        m_TransformBuffer->bind();
+        m_TransformBuffer->bindShaderResource(0);
         m_MeshBinding->draw();
     }
 

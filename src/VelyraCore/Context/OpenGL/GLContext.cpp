@@ -117,6 +117,7 @@ namespace Velyra::Core {
         if (m_ContextCount > 1) {
             makeCurrent();
         }
+        SPDLOG_LOGGER_TRACE(m_Logger, "===============Begin Frame===============");
 
         // TODO: Temporary clear, configure this with framebuffers later
         glClearColor(0.6f, 0.8f, 0.3f, 1.0f);
@@ -124,7 +125,7 @@ namespace Velyra::Core {
     }
 
     void GLContext::endFrame() {
-
+        SPDLOG_LOGGER_TRACE(m_Logger, "================End Frame================");
     }
 
     SP<ShaderModule> GLContext::createShaderModule(const ShaderModuleDesc &desc) {

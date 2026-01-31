@@ -15,6 +15,7 @@ namespace Velyra::Core {
     }
 
     void GLShader::bind() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Binding shader: {}", m_ShaderID);
         glUseProgram(m_ShaderID);
     }
 

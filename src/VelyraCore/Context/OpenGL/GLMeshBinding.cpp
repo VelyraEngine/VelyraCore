@@ -54,6 +54,7 @@ namespace Velyra::Core {
         glBindVertexArray(m_ArrayID);
 
         // Then draw call
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {}", m_ArrayID);
         const GLsizei vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
         glDrawArrays(m_GlDrawMode, 0, vertexCount);
 
