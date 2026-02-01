@@ -35,13 +35,13 @@ namespace Velyra::Core {
     U32 GLDevice::getMaxViewportWidth() const {
         I32 retVal[2];
         glGetIntegerv(GL_MAX_VIEWPORT_DIMS, retVal);
-        return retVal[0];
+        return static_cast<U32>(retVal[0]);
     }
 
     U32 GLDevice::getMaxViewportHeight() const {
         I32 retVal[2];
         glGetIntegerv(GL_MAX_VIEWPORT_DIMS, retVal);
-        return retVal[1];
+        return static_cast<U32>(retVal[1]);
     }
 
     U32 GLDevice::getMaxTextureSlots() const {
@@ -97,7 +97,7 @@ namespace Velyra::Core {
     U32 GLDevice::getGlConstantInt(const GLenum constant) {
         I32 retVal = 0;
         glGetIntegerv(constant, &retVal);
-        return retVal;
+        return static_cast<U32>(retVal);
     }
 
 }

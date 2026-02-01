@@ -26,7 +26,6 @@ namespace Velyra::Core {
             case VL_BUFFER_USAGE_DEFAULT: return GL_DYNAMIC_DRAW;
             case VL_BUFFER_USAGE_DYNAMIC: return GL_DYNAMIC_DRAW;
             case VL_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
-            case VL_BUFFER_USAGE_COPY:    return GL_STREAM_COPY;
             default: {
                 const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
                 SPDLOG_LOGGER_WARN(logger, "Invalid usage {} given to converter, return default: GL_DYNAMIC_DRAW", usage);

@@ -34,8 +34,7 @@ VL_ENUM(VL_SHADER_TYPE, int,
 VL_ENUM(VL_BUFFER_USAGE, int,
     VL_BUFFER_USAGE_DEFAULT       = 0x00,   // GPU read/write
     VL_BUFFER_USAGE_DYNAMIC       = 0x01,   // CPU write, GPU read
-    VL_BUFFER_USAGE_STATIC        = 0x02,   // GPU read, CPU write only when initializing
-    VL_BUFFER_USAGE_COPY          = 0x03    // GPU read/write, CPU read/write
+    VL_BUFFER_USAGE_STATIC        = 0x02   // GPU read, CPU write only when initializing
 );
 
 VL_ENUM(VL_DRAW_MODE, int,

@@ -22,7 +22,6 @@ TEST_F(TestGLTranslations, TranslateBufferUsage) {
     EXPECT_EQ(GL_DYNAMIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_DEFAULT));
     EXPECT_EQ(GL_DYNAMIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_DYNAMIC));
     EXPECT_EQ(GL_STATIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_STATIC));
-    EXPECT_EQ(GL_STREAM_COPY, getGLBufferUsage(VL_BUFFER_USAGE_COPY));
 }
 
 TEST_F(TestGLTranslations, TranslateDrawMode) {

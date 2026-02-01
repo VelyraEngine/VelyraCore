@@ -28,7 +28,7 @@ namespace Velyra::Core {
     m_Usage(usage),
     m_Target(target) {
         glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, size, data, getGLBufferUsage(usage));
+        glNamedBufferData(m_BufferID, static_cast<GLsizeiptr>(size), data, getGLBufferUsage(usage));
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Buffer object {} created! (size: {}, usage: {})",
             m_BufferID, size, usage);
@@ -41,7 +41,7 @@ namespace Velyra::Core {
     m_Usage(usage),
     m_Target(target){
         glCreateBuffers(1, &m_BufferID);
-        glNamedBufferData(m_BufferID, size, data, getGLBufferUsage(usage));
+        glNamedBufferData(m_BufferID, static_cast<GLsizeiptr>(size), data, getGLBufferUsage(usage));
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Buffer object {} created! (size: {}, usage: {}, name: {})",
             m_BufferID, size, usage, m_Name);
@@ -92,7 +92,7 @@ namespace Velyra::Core {
         }
 
         // 2. Map the buffer
-        void* pBuffer = glMapNamedBufferRange(m_BufferID, offset, size, GL_MAP_WRITE_BIT);
+        void* pBuffer = glMapNamedBufferRange(m_BufferID, static_cast<GLsizeiptr>(offset), static_cast<GLsizeiptr>(size), GL_MAP_WRITE_BIT);
         if (!pBuffer) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to map buffer object {}", m_BufferID);
             return;
@@ -117,7 +117,7 @@ namespace Velyra::Core {
             SPDLOG_LOGGER_WARN(m_Logger, "Source buffer size {} exceeds destination buffer size {}. Data will be partially copied!", other.m_Size, m_Size);
         }
         const Size copySize = std::min(m_Size, other.m_Size);
-        glCopyNamedBufferSubData(other.m_BufferID, m_BufferID, 0, 0, copySize);
+        glCopyNamedBufferSubData(other.m_BufferID, m_BufferID, 0, 0, static_cast<GLsizeiptr>(copySize));
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Copied {} bytes from buffer object {} to buffer object {}",
             copySize, other.m_BufferID, m_BufferID);
@@ -128,12 +128,12 @@ namespace Velyra::Core {
         const void* pBuffer = glMapNamedBuffer(m_BufferID, GL_READ_ONLY);
         if (!pBuffer) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to map buffer object {}", m_BufferID);
-            return std::move(buffer);
+            return buffer;
         }
         memcpy(buffer.data(), pBuffer, m_Size);
         if (glUnmapNamedBuffer(m_BufferID) == GL_FALSE) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to unmap buffer object {}", m_BufferID);
         }
-        return std::move(buffer);
+        return buffer;
     }
 }
