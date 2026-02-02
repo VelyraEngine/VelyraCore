@@ -21,7 +21,7 @@ namespace Velyra::Core {
         m_Buffer.setData(byteOffset, data, copySize);
     }
 
-    void GLIndexBuffer::copyFrom(const SP<IndexBuffer> &other) {
+    void GLIndexBuffer::copyFrom(const View<IndexBuffer> &other) {
         const auto glBuffer = dynamic_cast<GLIndexBuffer*>(other.get());
         if (!glBuffer) {
             const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);

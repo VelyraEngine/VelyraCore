@@ -27,7 +27,7 @@ namespace Velyra::Core {
         m_Buffer.setData(offset, data, count);
     }
 
-    void GLConstantBuffer::copyFrom(const SP<ConstantBuffer> &other) {
+    void GLConstantBuffer::copyFrom(const View<ConstantBuffer> &other) {
         const auto glBuffer = dynamic_cast<GLConstantBuffer*>(other.get());
         if (!glBuffer) {
             const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);

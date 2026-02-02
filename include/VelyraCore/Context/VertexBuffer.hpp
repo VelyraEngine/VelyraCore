@@ -1,5 +1,6 @@
 #pragma once
 
+#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/VertexLayout.hpp>
 
 namespace Velyra::Core {
@@ -8,7 +9,7 @@ namespace Velyra::Core {
         const void* data        = nullptr;
         Size count              = 0;        // Amount of vertices, so the size inf bytes is count * layout->getStride()
         VL_BUFFER_USAGE usage   = VL_BUFFER_USAGE_DEFAULT;
-        SP<VertexLayout> layout = nullptr;
+        View<VertexLayout> layout = nullptr;
     };
 
     class VL_API VertexBuffer {
@@ -37,7 +38,7 @@ namespace Velyra::Core {
          * @brief Copies the contents from another vertex buffer into this one.
          * @param other The source vertex buffer to copy from.
          */
-        virtual void copyFrom(const SP<VertexBuffer>& other) = 0;
+        virtual void copyFrom(const View<VertexBuffer>& other) = 0;
 
         /**
          * @brief Retrieves the vertex buffer data by reading the data from the GPU.
@@ -71,7 +72,7 @@ namespace Velyra::Core {
          * @brief Returns the layout of the vertex data.
          * @return
          */
-        [[nodiscard]] SP<VertexLayout> getLayout() const {
+        [[nodiscard]] View<VertexLayout> getLayout() const {
             return m_Layout;
         }
 
@@ -86,6 +87,6 @@ namespace Velyra::Core {
     protected:
         const Size m_Count = 0;
         const VL_BUFFER_USAGE m_Usage = VL_BUFFER_USAGE_DEFAULT;
-        const SP<VertexLayout> m_Layout;
+        const View<VertexLayout> m_Layout;
     };
 }

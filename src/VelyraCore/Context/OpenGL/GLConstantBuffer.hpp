@@ -18,7 +18,7 @@ namespace Velyra::Core {
 
         void setData(U64 offset, const void *data, U64 count) override;
 
-        void copyFrom(const SP<ConstantBuffer> &other) override;
+        void copyFrom(const View<ConstantBuffer> &other) override;
 
         [[nodiscard]] std::vector<std::byte> getData() const override;
 

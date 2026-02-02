@@ -4,8 +4,8 @@
 
 namespace Velyra::SandBox {
 
-    SP<Core::VertexLayout> Vertex::getVertexLayout(const UP<Core::Context> &context) {
-        SP<Core::VertexLayout> layout = context->createVertexLayout();
+    View<Core::VertexLayout> Vertex::getVertexLayout(const UP<Core::Context> &context) {
+        View<Core::VertexLayout> layout = context->createVertexLayout();
         layout->addAttribute("Position", VL_FLOAT32_3);
         layout->addAttribute("Color", VL_FLOAT32_3);
         layout->addAttribute("Normal", VL_FLOAT32_3);
@@ -13,6 +13,7 @@ namespace Velyra::SandBox {
         layout->addAttribute("TexCoord", VL_FLOAT32_2);
         return layout;
     }
+
 
     ShaderProgram loadShader(const UP<Core::Context> &context, const std::string &vertexShaderName,
         const std::string &fragmentShaderName) {
@@ -51,7 +52,7 @@ namespace Velyra::SandBox {
         return program;
     }
 
-    SP<Core::MeshBinding> loadMesh(const Mesh &mesh, const UP<Core::Context> &context) {
+    View<Core::MeshBinding> loadMesh(const Mesh &mesh, const UP<Core::Context> &context) {
         const auto vertexLayout = Vertex::getVertexLayout(context);
 
         Core::VertexBufferDesc vboDesc;

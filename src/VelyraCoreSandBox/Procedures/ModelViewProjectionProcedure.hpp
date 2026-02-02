@@ -18,8 +18,8 @@ namespace Velyra::SandBox {
         void onImGui(const UP<Core::Context> &context, const UP<Core::Window> &window) override;
 
     private:
-        SP<Core::ConstantBuffer> m_TransformBuffer = nullptr;
-        SP<Core::MeshBinding> m_MeshBinding = nullptr;
+        View<Core::ConstantBuffer> m_TransformBuffer = nullptr;
+        View<Core::MeshBinding> m_MeshBinding = nullptr;
         ShaderProgram m_ShaderProgram;
     };
 

@@ -2,7 +2,7 @@
 
 namespace Velyra::SandBox {
 
-    void drawMeshBindingWidget(const SP<Core::MeshBinding> &meshBinding) {
+    void drawMeshBindingWidget(const View<Core::MeshBinding> &meshBinding) {
         if (!VL_DRAW_MODE_detail::VL_DRAW_MODE_StructuresGenerated) {
             VL_DRAW_MODE_detail::generateStructures();
         }

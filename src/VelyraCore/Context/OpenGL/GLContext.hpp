@@ -34,21 +34,21 @@ namespace Velyra::Core {
 
         void endFrame() override;
 
-        SP<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
+        View<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 
-        SP<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
+        View<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
 
-        SP<Shader> createShader(const ShaderDesc& desc) override;
+        View<Shader> createShader(const ShaderDesc& desc) override;
 
-        SP<VertexLayout> createVertexLayout() override;
+        View<VertexLayout> createVertexLayout() override;
 
-        SP<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
+        View<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
 
-        SP<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;
+        View<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;
 
-        SP<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) override;
+        View<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) override;
 
-        SP<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc &desc) override;
+        View<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc &desc) override;
 
     private:
 

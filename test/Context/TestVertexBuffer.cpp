@@ -20,7 +20,7 @@ protected:
 
 protected:
     static constexpr VL_GRAPHICS_API m_API = WRAPPER::value;
-    SP<VertexLayout> m_Layout;
+    View<VertexLayout> m_Layout;
 };
 
 TYPED_TEST_SUITE(TestVertexBuffer, VelyraAPIS);

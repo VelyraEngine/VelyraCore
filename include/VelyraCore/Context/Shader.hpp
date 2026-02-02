@@ -1,12 +1,13 @@
 #pragma once
 
+#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/ShaderModule.hpp>
 
 namespace Velyra::Core {
 
     struct VL_API ShaderDesc {
-        SP<ShaderModule> vertexShader;
-        SP<ShaderModule> fragmentShader;
+        View<ShaderModule> vertexShader;
+        View<ShaderModule> fragmentShader;
     };
 
     class VL_API Shader {

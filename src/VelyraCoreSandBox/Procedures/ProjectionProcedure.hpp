@@ -28,7 +28,7 @@ namespace Velyra::SandBox {
         float m_Near = 0.1f;
         float m_Far = 100.0f;
 
-        SP<Core::ConstantBuffer> m_ProjectionBuffer = nullptr;
+        View<Core::ConstantBuffer> m_ProjectionBuffer = nullptr;
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(ProjectionProcedure, Projection, {})

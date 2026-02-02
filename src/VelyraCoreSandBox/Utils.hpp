@@ -13,7 +13,7 @@ namespace Velyra::SandBox {
         glm::vec3 tangent;
         glm::vec2 texCoord;
 
-        static SP<Core::VertexLayout> getVertexLayout(const UP<Core::Context> &context);
+        static View<Core::VertexLayout> getVertexLayout(const UP<Core::Context> &context);
     };
 
     struct Mesh {
@@ -22,14 +22,14 @@ namespace Velyra::SandBox {
     };
 
     struct ShaderProgram {
-        SP<Core::ShaderModule> vertexShader;
-        SP<Core::ShaderModule> fragmentShader;
-        SP<Core::Shader> shaderProgram;
+        View<Core::ShaderModule> vertexShader;
+        View<Core::ShaderModule> fragmentShader;
+        View<Core::Shader> shaderProgram;
     };
 
     ShaderProgram loadShader(const UP<Core::Context> &context, const std::string &vertexShaderName, const std::string &fragmentShaderName);
 
-    SP<Core::MeshBinding> loadMesh(const Mesh& mesh, const UP<Core::Context> &context);
+    View<Core::MeshBinding> loadMesh(const Mesh& mesh, const UP<Core::Context> &context);
 
     Mesh createSphere(U32 rings, U32 sectors);
 

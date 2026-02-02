@@ -18,9 +18,9 @@ namespace Velyra::SandBox {
         void onImGui(const UP<Core::Context> &context, const UP<Core::Window> &window) override;
 
     private:
-        SP<Core::VertexBuffer> m_VertexBuffer = nullptr;
-        SP<Core::IndexBuffer> m_IndexBuffer = nullptr;
-        SP<Core::MeshBinding> m_MeshBinding = nullptr;
+        View<Core::VertexBuffer> m_VertexBuffer = nullptr;
+        View<Core::IndexBuffer> m_IndexBuffer = nullptr;
+        View<Core::MeshBinding> m_MeshBinding = nullptr;
         ShaderProgram m_ShaderProgram;
 
         // ImGui Variables

@@ -4,5 +4,5 @@
 
 namespace Velyra::SandBox {
 
-    void drawMeshBindingWidget(const SP<Core::MeshBinding>& meshBinding);
+    void drawMeshBindingWidget(const View<Core::MeshBinding>& meshBinding);
 }

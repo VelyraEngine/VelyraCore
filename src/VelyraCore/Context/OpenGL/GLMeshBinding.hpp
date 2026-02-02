@@ -21,7 +21,7 @@ namespace Velyra::Core {
         GLuint m_ArrayID;
         GLenum m_GlDrawMode;
 
-        SP<VertexBuffer> m_VertexBuffer;
+        View<VertexBuffer> m_VertexBuffer;
     };
 
     class GLIndexedMeshBinding: public GLArrayMeshBinding {
@@ -35,7 +35,7 @@ namespace Velyra::Core {
         void drawInstanced(U64 instanceCount) const override;
 
     protected:
-        SP<IndexBuffer> m_IndexBuffer;
+        View<IndexBuffer> m_IndexBuffer;
         GLenum m_IndexType;
     };
 

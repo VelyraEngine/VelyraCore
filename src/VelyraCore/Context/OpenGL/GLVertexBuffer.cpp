@@ -21,7 +21,7 @@ namespace Velyra::Core {
         m_Buffer.setData(byteOffset, data, copySize);
     }
 
-    void GLVertexBuffer::copyFrom(const SP<VertexBuffer> &other) {
+    void GLVertexBuffer::copyFrom(const View<VertexBuffer> &other) {
         const auto glBuffer = dynamic_cast<GLVertexBuffer*>(other.get());
         if (!glBuffer) {
             const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);

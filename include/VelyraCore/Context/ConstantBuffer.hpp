@@ -1,5 +1,6 @@
 #pragma once
 
+#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/Device.hpp>
 
 namespace Velyra::Core {
@@ -45,7 +46,7 @@ namespace Velyra::Core {
          * @brief Copies the contents from another Constant Buffer into this one.
          * @param other The source buffer to copy from.
          */
-        virtual void copyFrom(const SP<ConstantBuffer>& other) = 0;
+        virtual void copyFrom(const View<ConstantBuffer>& other) = 0;
 
         /**
          * @brief Retrieves the Constant Buffer data by reading the data from the GPU.

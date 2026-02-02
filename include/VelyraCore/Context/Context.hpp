@@ -2,6 +2,7 @@
 
 #include <VelyraCore/Context/Definitions.hpp>
 #include <VelyraCore/Context/Viewport.hpp>
+#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/ShaderModule.hpp>
 #include <VelyraCore/Context/Shader.hpp>
 #include <VelyraCore/Context/VertexLayout.hpp>
@@ -115,14 +116,14 @@ namespace Velyra::Core {
          * @param desc
          * @return
          */
-        virtual SP<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) = 0;
+        virtual View<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) = 0;
 
         /**
          * @brief Creates a shader module and compiles the code from a file.
          * @param desc
          * @return
          */
-        virtual SP<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) = 0;
+        virtual View<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) = 0;
 
         /**
          * @brief Creates a shader given a valid vertex and fragment shader module.
@@ -130,41 +131,41 @@ namespace Velyra::Core {
          * @param desc
          * @return
          */
-        virtual SP<Shader> createShader(const ShaderDesc& desc) = 0;
+        virtual View<Shader> createShader(const ShaderDesc& desc) = 0;
 
         /**
          * @brief Creates a vertex layout object, used to configure vertex buffers.
          * @return
          */
-        virtual SP<VertexLayout> createVertexLayout() = 0;
+        virtual View<VertexLayout> createVertexLayout() = 0;
 
         /**
          * @brief Creates a vertex buffer given a valid description.
          * @param desc Description of the vertex buffer
          * @return
          */
-        virtual SP<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) = 0;
+        virtual View<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) = 0;
 
         /**
          * @brief Creates an index buffer given a valid description.
          * @param desc Description of the index buffer
          * @return
          */
-        virtual SP<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) = 0;
+        virtual View<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) = 0;
 
         /**
          * @brief Creates a mesh binding given a valid description.
          * @param desc
          * @return
          */
-        virtual SP<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) = 0;
+        virtual View<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) = 0;
 
         /**
          * @brief Creates a constant buffer given a valid description.
          * @param desc Description of the constant buffer
          * @return
          */
-        virtual SP<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) = 0;
+        virtual View<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
@@ -182,13 +183,13 @@ namespace Velyra::Core {
 
         UP<Device> m_Device = nullptr;
 
-        std::vector<SP<ShaderModule>> m_ShaderModules;
-        std::vector<SP<Shader>> m_Shaders;
-        std::vector<SP<VertexLayout>> m_VertexLayouts;
-        std::vector<SP<VertexBuffer>> m_VertexBuffers;
-        std::vector<SP<IndexBuffer>> m_IndexBuffers;
-        std::vector<SP<MeshBinding>> m_MeshBindings;
-        std::vector<SP<ConstantBuffer>> m_ConstantBuffers;
+        std::vector<UP<ShaderModule>> m_ShaderModules;
+        std::vector<UP<Shader>> m_Shaders;
+        std::vector<UP<VertexLayout>> m_VertexLayouts;
+        std::vector<UP<VertexBuffer>> m_VertexBuffers;
+        std::vector<UP<IndexBuffer>> m_IndexBuffers;
+        std::vector<UP<MeshBinding>> m_MeshBindings;
+        std::vector<UP<ConstantBuffer>> m_ConstantBuffers;
     };
 
 

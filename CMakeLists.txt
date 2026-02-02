@@ -59,6 +59,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/IndexBuffer.hpp
     include/VelyraCore/Context/MeshBinding.hpp
     include/VelyraCore/Context/ConstantBuffer.hpp
+    include/VelyraCore/Context/Texture2D.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -118,7 +119,7 @@ velyra_target_set_compile_flags(VelyraCore)
 target_precompile_headers(VelyraCore PRIVATE src/VelyraCore/Pch.hpp)
 target_include_directories(VelyraCore PUBLIC include)
 target_include_directories(VelyraCore PRIVATE include/VelyraCore/ImGui)
-target_link_libraries(VelyraCore PUBLIC VelyraUtils ImLib)
+target_link_libraries(VelyraCore PUBLIC VelyraUtils VelyraImage ImLib)
 target_link_libraries(VelyraCore PRIVATE ${VELYRA_CORE_LIBS})
 target_compile_definitions(VelyraCore PRIVATE
         $<$<CONFIG:Debug>:SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_TRACE>

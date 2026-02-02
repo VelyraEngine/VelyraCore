@@ -1,5 +1,6 @@
 #pragma once
 
+#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
@@ -37,7 +38,7 @@ namespace Velyra::Core {
          * @brief Copies the contents from another index buffer into this one.
          * @param other The source index buffer to copy from.
          */
-        virtual void copyFrom(const SP<IndexBuffer>& other) = 0;
+        virtual void copyFrom(const View<IndexBuffer>& other) = 0;
 
         /**
          * @brief Retrieves the index buffer data by reading the data from the GPU.

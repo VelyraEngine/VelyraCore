@@ -1,5 +1,6 @@
 #pragma once
 
+#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/VertexBuffer.hpp>
 #include <VelyraCore/Context/IndexBuffer.hpp>
 
@@ -7,8 +8,8 @@ namespace Velyra::Core {
 
     struct VL_API MeshBindingDesc {
         VL_DRAW_MODE drawMode   = VL_DRAW_TRIANGLES;
-        SP<VertexBuffer> vertexBuffer;
-        SP<IndexBuffer> indexBuffer;
+        View<VertexBuffer> vertexBuffer;
+        View<IndexBuffer> indexBuffer;
     };
 
     class VL_API MeshBinding {

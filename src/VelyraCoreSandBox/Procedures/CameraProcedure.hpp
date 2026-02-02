@@ -28,7 +28,7 @@ namespace Velyra::SandBox {
         void move(VL_KEYBOARD_KEY keyPressed);
 
     private:
-        SP<Core::ConstantBuffer> m_CameraBuffer = nullptr;
+        View<Core::ConstantBuffer> m_CameraBuffer = nullptr;
 
         bool m_Enable = false;
 

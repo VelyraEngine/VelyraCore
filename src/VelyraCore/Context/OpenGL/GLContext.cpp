@@ -15,10 +15,7 @@
 namespace Velyra::Core {
 
     template<typename T>
-    void clearResources(std::vector<SP<T>>& resources) {
-        for (auto& resource : resources) {
-            resource.reset();
-        }
+    void clearResources(std::vector<UP<T>>& resources) {
         resources.clear();
     }
 
@@ -128,66 +125,66 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "================End Frame================");
     }
 
-    SP<ShaderModule> GLContext::createShaderModule(const ShaderModuleDesc &desc) {
-        m_ShaderModules.emplace_back(createSP<GLShaderModule>(desc));
+    View<ShaderModule> GLContext::createShaderModule(const ShaderModuleDesc &desc) {
+        m_ShaderModules.emplace_back(createUP<GLShaderModule>(desc));
         return m_ShaderModules.back();
     }
 
-    SP<ShaderModule> GLContext::createShaderModule(const ShaderModuleFileDesc &desc) {
-        m_ShaderModules.emplace_back(createSP<GLShaderModule>(desc));
+    View<ShaderModule> GLContext::createShaderModule(const ShaderModuleFileDesc &desc) {
+        m_ShaderModules.emplace_back(createUP<GLShaderModule>(desc));
         return m_ShaderModules.back();
     }
 
-    SP<Shader> GLContext::createShader(const ShaderDesc &desc) {
-        m_Shaders.emplace_back(createSP<GLShader>(desc));
+    View<Shader> GLContext::createShader(const ShaderDesc &desc) {
+        m_Shaders.emplace_back(createUP<GLShader>(desc));
         return m_Shaders.back();
     }
 
-    SP<VertexLayout> GLContext::createVertexLayout() {
-        m_VertexLayouts.emplace_back(createSP<VertexLayout>(*m_Device));
+    View<VertexLayout> GLContext::createVertexLayout() {
+        m_VertexLayouts.emplace_back(createUP<VertexLayout>(*m_Device));
         return m_VertexLayouts.back();
     }
 
-    SP<VertexBuffer> GLContext::createVertexBuffer(const VertexBufferDesc &desc) {
+    View<VertexBuffer> GLContext::createVertexBuffer(const VertexBufferDesc &desc) {
         if (desc.count > m_Device->getMaxVertexCount()) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} vertices, but {} requested", m_Device->getMaxVertexCount(), desc.count);
             return nullptr;
         }
-        m_VertexBuffers.emplace_back(createSP<GLVertexBuffer>(desc));
+        m_VertexBuffers.emplace_back(createUP<GLVertexBuffer>(desc));
         return m_VertexBuffers.back();
     }
 
-    SP<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {
+    View<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {
         if (desc.count > m_Device->getMaxIndexCount()) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} indices, but {} requested", m_Device->getMaxIndexCount(), desc.count);
             return nullptr;
         }
-        m_IndexBuffers.emplace_back(createSP<GLIndexBuffer>(desc));
+        m_IndexBuffers.emplace_back(createUP<GLIndexBuffer>(desc));
         return m_IndexBuffers.back();
     }
 
-    SP<MeshBinding> GLContext::createMeshBinding(const MeshBindingDesc &desc) {
+    View<MeshBinding> GLContext::createMeshBinding(const MeshBindingDesc &desc) {
         if (desc.vertexBuffer == nullptr) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Cannot create MeshBinding: VertexBuffer is nullptr");
             return nullptr;
         }
 
         if (desc.indexBuffer != nullptr) {
-            m_MeshBindings.emplace_back(createSP<GLIndexedMeshBinding>(desc));
+            m_MeshBindings.emplace_back(createUP<GLIndexedMeshBinding>(desc));
         }
         else {
-            m_MeshBindings.emplace_back(createSP<GLArrayMeshBinding>(desc));
+            m_MeshBindings.emplace_back(createUP<GLArrayMeshBinding>(desc));
         }
         return m_MeshBindings.back();
     }
 
-    SP<ConstantBuffer> GLContext::createConstantBuffer(const ConstantBufferDesc &desc) {
+    View<ConstantBuffer> GLContext::createConstantBuffer(const ConstantBufferDesc &desc) {
         if (desc.size > m_Device->getMaxConstantBufferSize()) {
             SPDLOG_LOGGER_ERROR(m_Logger, "ConstantBuffer {}: supplied size {} exceeds the maximum constant buffer size {}",
                 desc.name, desc.size, m_Device->getMaxConstantBufferSize());
             return nullptr;
         }
-        m_ConstantBuffers.emplace_back(createSP<GLConstantBuffer>(desc, *m_Device));
+        m_ConstantBuffers.emplace_back(createUP<GLConstantBuffer>(desc, *m_Device));
         return m_ConstantBuffers.back();
     }
 
