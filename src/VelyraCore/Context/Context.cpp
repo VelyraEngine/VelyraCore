@@ -8,7 +8,7 @@ namespace Velyra::Core {
     void Context::createImGuiContext(const ImGuiContextDesc &desc) {
         VL_PRECONDITION(!m_ImGuiEnabled, "ImGui context already initialized!");
 
-        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_CONTEXT);
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_CTX);
 
         m_ImGuiDesc = desc;
 
@@ -41,7 +41,7 @@ namespace Velyra::Core {
 
     void Context::checkImGuiFlags() const {
         const ImGuiIO& io = ImGui::GetIO();
-        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_CONTEXT);
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_CTX);
 
         if (m_ImGuiDesc.useViewports) {
             if (io.BackendFlags & ImGuiBackendFlags_PlatformHasViewports) {
