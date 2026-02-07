@@ -1,5 +1,5 @@
-include(${CMAKE_SOURCE_DIR}/VelyraBuildUtils/FetchLibs.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/TinyFileDialogs.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/VelyraBuildUtils/FetchLibs.cmake)
+include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/TinyFileDialogs.cmake)
 
 fetch_glfw()
 
