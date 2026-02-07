@@ -1,11 +1,14 @@
 #include "../Pch.hpp"
 
 #include <VelyraCore/Context/Context.hpp>
+#include "../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {
 
     void Context::createImGuiContext(const ImGuiContextDesc &desc) {
         VL_PRECONDITION(!m_ImGuiEnabled, "ImGui context already initialized!");
+
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_CONTEXT);
 
         m_ImGuiDesc = desc;
 
@@ -25,13 +28,36 @@ namespace Velyra::Core {
 
         if (desc.useDocking) {
             io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;       // Enable docking
+            SPDLOG_LOGGER_INFO(logger, "Enabling ImGui docking.");
         }
         if (desc.useViewports) {
             io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;     // Enable Multi-Viewport / Platform Windows
+            SPDLOG_LOGGER_INFO(logger, "Enabling ImGui viewports.");
         }
 
         imGuiSetStyle(desc.style);
         m_ImGuiEnabled = true;
+    }
+
+    void Context::checkImGuiFlags() const {
+        const ImGuiIO& io = ImGui::GetIO();
+        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_CONTEXT);
+
+        if (m_ImGuiDesc.useViewports) {
+            if (io.BackendFlags & ImGuiBackendFlags_PlatformHasViewports) {
+                SPDLOG_LOGGER_INFO(logger, "ImGui platform viewports enabled.");
+            }
+            else {
+                SPDLOG_LOGGER_WARN(logger, "ImGui platform viewports could not be enabled!");
+            }
+
+            if (io.BackendFlags & ImGuiBackendFlags_RendererHasViewports) {
+                SPDLOG_LOGGER_INFO(logger, "ImGui renderer viewports enabled.");
+            }
+            else {
+                SPDLOG_LOGGER_WARN(logger, "ImGui renderer viewports could not be enabled!");
+            }
+        }
     }
 
     void Context::DestroyImGuiContext() {

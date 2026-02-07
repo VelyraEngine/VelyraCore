@@ -87,6 +87,8 @@ namespace Velyra::Core {
          */
         virtual void createImGuiContext(const ImGuiContextDesc& desc);
 
+        void checkImGuiFlags() const;
+
         virtual void DestroyImGuiContext();
 
         virtual void onImGuiBegin() = 0;

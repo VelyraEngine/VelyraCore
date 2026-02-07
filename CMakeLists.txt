@@ -59,7 +59,6 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/IndexBuffer.hpp
     include/VelyraCore/Context/MeshBinding.hpp
     include/VelyraCore/Context/ConstantBuffer.hpp
-    include/VelyraCore/Context/Texture2D.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp

@@ -67,6 +67,7 @@ namespace Velyra::Core {
         Context::createImGuiContext(desc);
         m_PlatformContext->initPlatformImGui(desc);
         ImGui_ImplOpenGL3_Init("#version 150");
+        Context::checkImGuiFlags();
     }
 
     void GLContext::DestroyImGuiContext() {
