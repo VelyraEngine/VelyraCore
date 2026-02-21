@@ -46,7 +46,7 @@ namespace Velyra::Core {
         if (!success) {
             GLint logLength = 0;
             glGetProgramiv(m_ShaderID, GL_INFO_LOG_LENGTH, &logLength);
-            std::string log(logLength, '\0');
+            std::string log(static_cast<std::size_t>(logLength), '\0');
             // Safe to pass nullptr for length as std::string is null-terminated
             glGetProgramInfoLog(m_ShaderID, logLength, nullptr, log.data());
 

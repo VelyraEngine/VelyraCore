@@ -13,7 +13,10 @@ namespace Velyra::Core {
     }
 
     void GLViewport::bind() {
-        glViewport(m_XPos, m_YPos, m_Width, m_Height);
+        glViewport(
+            static_cast<GLsizei>(m_XPos), static_cast<GLsizei>(m_YPos),
+            static_cast<GLsizei>(m_Width), static_cast<GLsizei>(m_Height)
+        );
         glDepthRange(m_MinDepth, m_MaxDepth);
     }
 

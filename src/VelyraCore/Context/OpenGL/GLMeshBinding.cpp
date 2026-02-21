@@ -22,7 +22,7 @@ namespace Velyra::Core {
         for (const auto& attribute: attributes) {
             const VL_TYPE baseType = Utils::getBaseType(attribute.type);
             const GLenum glDataType = getGLDataType(baseType);
-            const U32 elementCount = Utils::getComponentCount(attribute.type);
+            const GLint elementCount = static_cast<GLint>(Utils::getComponentCount(attribute.type));
 
             glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
             glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
@@ -34,7 +34,7 @@ namespace Velyra::Core {
 
         // For OpenGL vertex buffers, the identifier is guaranteed to be GLuint, so we can static cast here.
         const auto vertexBufferID = static_cast<GLuint>(desc.vertexBuffer->getIdentifier());
-        glVertexArrayVertexBuffer(m_ArrayID, 0, vertexBufferID, 0, offset);
+        glVertexArrayVertexBuffer(m_ArrayID, 0, vertexBufferID, 0, static_cast<GLsizei>(offset));
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Created GLMeshBinding with ID {} (Attributes: {}, Offset: {})", m_ArrayID, attribPtr, offset);
     }
