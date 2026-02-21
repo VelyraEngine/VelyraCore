@@ -6,11 +6,11 @@ include(cmake/Glad.cmake)
 include(cmake/ImLib.cmake)
 
 set(VELYRA_UTILS_PATH)
-include_or_fetch(VelyraUtils VELYRA_UTILS_PATH)
+vl_include_or_fetch(VelyraUtils VELYRA_UTILS_PATH)
 message(STATUS "VelyraUtils found at ${VELYRA_UTILS_PATH}")
 
 set(VELYRA_IMAGE_PATH)
-include_or_fetch(VelyraImage VELYRA_IMAGE_PATH)
+vl_include_or_fetch(VelyraImage VELYRA_IMAGE_PATH)
 message(STATUS "VelyraImage found at ${VELYRA_IMAGE_PATH}")
 
 set(VELYRA_CORE_LIBS)
@@ -114,7 +114,7 @@ set(VELYRA_CORE_SRC
 )
 
 add_library(VelyraCore STATIC ${VELYRA_CORE_HEADERS} ${VELYRA_CORE_SRC})
-velyra_target_set_compile_flags(VelyraCore)
+vl_target_set_compile_flags(VelyraCore)
 target_precompile_headers(VelyraCore PRIVATE src/VelyraCore/Pch.hpp)
 target_include_directories(VelyraCore PUBLIC include)
 target_include_directories(VelyraCore PRIVATE include/VelyraCore/ImGui)
@@ -160,7 +160,7 @@ set(VELYRA_CORE_SANDBOX_SRC
 )
 
 if (BUILD_SANDBOX)
-    fetch_glm()
+    vl_fetch_glm()
 
     add_executable(VelyraCoreSandBox main.cpp ${VELYRA_CORE_SANDBOX_SRC})
     target_link_libraries(VelyraCoreSandBox PRIVATE VelyraCore glm::glm)
@@ -186,7 +186,7 @@ set(VELYRA_CORE_TEST_SRC
 )
 
 if (BUILD_TESTING)
-    fetch_gtest()
+    vl_fetch_gtest()
 
     add_executable(TestVelyraCore ${VELYRA_CORE_TEST_SRC})
     target_include_directories(TestVelyraCore PUBLIC include)

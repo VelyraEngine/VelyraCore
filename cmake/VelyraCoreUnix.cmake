@@ -1,7 +1,6 @@
-include(${CMAKE_CURRENT_SOURCE_DIR}/VelyraBuildUtils/FetchLibs.cmake)
-include(${CMAKE_CURRENT_SOURCE_DIR}/cmake/TinyFileDialogs.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/TinyFileDialogs.cmake)
 
-fetch_glfw()
+vl_fetch_glfw()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     set(VELYRA_CORE_LIBS glad glfw tinyfiledialogs)
