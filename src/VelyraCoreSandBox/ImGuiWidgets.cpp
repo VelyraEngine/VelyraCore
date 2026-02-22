@@ -1,3 +1,5 @@
+#include "Pch.hpp"
+
 #include "ImGuiWidgets.hpp"
 
 namespace Velyra::SandBox {
@@ -8,8 +10,8 @@ namespace Velyra::SandBox {
         }
 
         auto drawMode = meshBinding->getDrawMode();
-        ImGui::Text("%s", toString(drawMode).c_str());
-        if (ImGui::BeginCombo("Draw Mode", toString(drawMode).c_str())) {
+        ImGui::Text("%s", Utils::toString(drawMode).c_str());
+        if (ImGui::BeginCombo("Draw Mode", Utils::toString(drawMode).c_str())) {
             for (const auto& [mode, str]: VL_DRAW_MODE_detail::_ValueToStr) {
                 if (mode == VL_DRAW_NONE || mode == VL_DRAW_MODE_MAX_VALUE) {
                     continue;

@@ -1,3 +1,5 @@
+#include "../Pch.hpp"
+
 #include "ContextInfoProcedure.hpp"
 
 namespace Velyra::SandBox {
@@ -5,7 +7,7 @@ namespace Velyra::SandBox {
     void ContextInfoProcedure::onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window) {
         ImGui::Begin("Context Information");
 
-        ImGui::Text("Graphics API: %s", toString(context->getType()).c_str());
+        ImGui::Text("Graphics API: %s", Utils::toString(context->getType()).c_str());
 
         const Core::Device& device = context->getDevice();
         ImGui::Text("Device Name: %s", device.getDeviceName().c_str());

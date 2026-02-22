@@ -1,6 +1,6 @@
-#include "Utils.hpp"
+#include "Pch.hpp"
 
-#include "VelyraUtils/Math.hpp"
+#include "Utils.hpp"
 
 namespace Velyra::SandBox {
 
@@ -26,7 +26,7 @@ namespace Velyra::SandBox {
                 break;
             }
             default: {
-                VL_THROW("Unsupported API {}", toString(context->getType()));
+                VL_THROW("Unsupported API {}", Utils::toString(context->getType()));
             }
         }
 

@@ -164,6 +164,7 @@ if (BUILD_SANDBOX)
 
     add_executable(VelyraCoreSandBox main.cpp ${VELYRA_CORE_SANDBOX_SRC})
     target_link_libraries(VelyraCoreSandBox PRIVATE VelyraCore glm::glm)
+    target_precompile_headers(VelyraCoreSandBox PRIVATE src/VelyraCoreSandBox/Pch.hpp)
 
 endif ()
 

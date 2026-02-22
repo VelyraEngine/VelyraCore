@@ -1,3 +1,5 @@
+#include "Pch.hpp"
+
 #include "SandBox.hpp"
 
 namespace Velyra::SandBox {
@@ -34,7 +36,7 @@ namespace Velyra::SandBox {
             }
             else if (arg == "-api") {
                 if (i + 1 < args.size()) {
-                    m_ContextDesc.api = fromString<VL_GRAPHICS_API>(std::string(args[i + 1]));
+                    m_ContextDesc.api = Utils::fromString<VL_GRAPHICS_API>(std::string(args[i + 1]));
                     i++;
                 }
             }
@@ -43,7 +45,7 @@ namespace Velyra::SandBox {
             }
             else {
                 const auto argStr = std::string(arg);
-                const VL_SBX_PROCEDURE_TYPE procedureType = fromString<VL_SBX_PROCEDURE_TYPE>(argStr);
+                const VL_SBX_PROCEDURE_TYPE procedureType = Utils::fromString<VL_SBX_PROCEDURE_TYPE>(argStr);
                 if (procedureType == VL_SBX_PROCEDURE_TYPE_MAX_VALUE) {
                     SPDLOG_LOGGER_ERROR(m_Logger, "Unknown procedure type argument: {}", argStr);
                 }
