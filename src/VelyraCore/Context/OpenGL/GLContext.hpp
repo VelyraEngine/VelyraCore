@@ -50,6 +50,8 @@ namespace Velyra::Core {
 
         View<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc &desc) override;
 
+        View<Sampler> createSampler(const SamplerDesc &desc) override;
+
     private:
 
         void initGlad() const;

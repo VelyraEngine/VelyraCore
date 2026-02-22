@@ -12,10 +12,12 @@ namespace Velyra::Core {
 
     GLShader::~GLShader() {
         glDeleteProgram(m_ShaderID);
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Shader Program: {} destroyed", m_ShaderID);
     }
 
     void GLShader::bind() {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Binding shader: {}", m_ShaderID);
+        SPDLOG_LOGGER_TRACE(m_Logger, "Binding Shader Program: {}", m_ShaderID);
         glUseProgram(m_ShaderID);
     }
 
@@ -53,7 +55,7 @@ namespace Velyra::Core {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to link shader program ({}), error: {}", m_ShaderID, log);
         }
         else {
-            SPDLOG_LOGGER_TRACE(m_Logger, "Shader program {} created!", m_ShaderID);
+            SPDLOG_LOGGER_TRACE(m_Logger, "Shader Program: {} created!", m_ShaderID);
         }
     }
 }

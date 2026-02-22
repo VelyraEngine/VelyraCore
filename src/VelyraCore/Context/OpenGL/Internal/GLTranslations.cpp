@@ -70,5 +70,51 @@ namespace Velyra::Core {
         }
     }
 
+    GLint getGLComparisonFunc(const VL_COMPARISON_FUNC func) {
+        switch (func) {
+            case VL_COMPARISON_FUNC_NEVER:       return GL_NEVER;
+            case VL_COMPARISON_FUNC_LESS:        return GL_LESS;
+            case VL_COMPARISON_FUNC_EQUAL:       return GL_EQUAL;
+            case VL_COMPARISON_FUNC_LESS_EQUAL:      return GL_LEQUAL;
+            case VL_COMPARISON_FUNC_GREATER:     return GL_GREATER;
+            case VL_COMPARISON_FUNC_NOT_EQUAL:   return GL_NOTEQUAL;
+            case VL_COMPARISON_FUNC_GREATER_EQUAL:      return GL_GEQUAL;
+            case VL_COMPARISON_FUNC_ALWAYS:      return GL_ALWAYS;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid comparison function {} given to converter, return default: GL_ALWAYS", func);
+                return GL_ALWAYS;
+            }
+        }
+    }
+
+    GLint getGLTextureFilter(const VL_TEXTURE_FILTER filter) {
+        switch (filter) {
+            case VL_TEXTURE_FILTER_NONE:     return GL_NONE;
+            case VL_TEXTURE_FILTER_LINEAR:   return GL_LINEAR;
+            case VL_TEXTURE_FILTER_POINT:    return GL_NEAREST;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid texture filter {} given to converter, return default: GL_LINEAR", filter);
+                return GL_LINEAR;
+            }
+        }
+    }
+
+    GLint getGLTextureWrap(const VL_TEXTURE_WRAP wrap) {
+        switch (wrap) {
+            case VL_TEXTURE_WRAP_NONE:           return GL_NONE;
+            case VL_TEXTURE_WRAP_REPEAT:         return GL_REPEAT;
+            case VL_TEXTURE_WRAP_MIRROR_REPEAT:  return GL_MIRRORED_REPEAT;
+            case VL_TEXTURE_WRAP_CLAMP_EDGE:     return GL_CLAMP_TO_EDGE;
+            case VL_TEXTURE_WRAP_CLAMP_BORDER:   return GL_CLAMP_TO_BORDER;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid texture wrap {} given to converter, return default: GL_REPEAT", wrap);
+                return GL_REPEAT;
+            }
+        }
+    }
+
 }
 

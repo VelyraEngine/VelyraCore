@@ -59,6 +59,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/IndexBuffer.hpp
     include/VelyraCore/Context/MeshBinding.hpp
     include/VelyraCore/Context/ConstantBuffer.hpp
+    include/VelyraCore/Context/Sampler.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -69,6 +70,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/GLIndexBuffer.hpp
     src/VelyraCore/Context/OpenGL/GLMeshBinding.hpp
     src/VelyraCore/Context/OpenGL/GLConstantBuffer.hpp
+    src/VelyraCore/Context/OpenGL/GLSampler.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
@@ -88,6 +90,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLIndexBuffer.cpp
     src/VelyraCore/Context/OpenGL/GLMeshBinding.cpp
     src/VelyraCore/Context/OpenGL/GLConstantBuffer.cpp
+    src/VelyraCore/Context/OpenGL/GLSampler.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp
@@ -182,6 +185,7 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestVertexBuffer.cpp
     test/Context/TestIndexBuffer.cpp
     test/Context/TestConstantBuffer.cpp
+    test/Context/TestSampler.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
 )

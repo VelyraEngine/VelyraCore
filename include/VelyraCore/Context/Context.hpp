@@ -10,8 +10,7 @@
 #include <VelyraCore/Context/IndexBuffer.hpp>
 #include <VelyraCore/Context/MeshBinding.hpp>
 #include <VelyraCore/Context/ConstantBuffer.hpp>
-
-#include "Device.hpp"
+#include <VelyraCore/Context/Sampler.hpp>
 
 namespace Velyra::Core {
 
@@ -169,6 +168,13 @@ namespace Velyra::Core {
          */
         virtual View<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc& desc) = 0;
 
+        /**
+         * @brief Creates a sampler given a valid description.
+         * @param desc Description of the sampler
+         * @return
+         */
+        virtual View<Sampler> createSampler(const SamplerDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -192,6 +198,7 @@ namespace Velyra::Core {
         std::vector<UP<IndexBuffer>> m_IndexBuffers;
         std::vector<UP<MeshBinding>> m_MeshBindings;
         std::vector<UP<ConstantBuffer>> m_ConstantBuffers;
+        std::vector<UP<Sampler>> m_Samplers;
     };
 
 

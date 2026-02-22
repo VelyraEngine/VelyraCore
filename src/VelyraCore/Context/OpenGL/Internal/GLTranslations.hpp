@@ -12,4 +12,10 @@ namespace Velyra::Core {
 
     GLenum getGLDataType(VL_TYPE type);
 
+    GLint getGLComparisonFunc(VL_COMPARISON_FUNC func);
+
+    GLint getGLTextureFilter(VL_TEXTURE_FILTER filter);
+
+    GLint getGLTextureWrap(VL_TEXTURE_WRAP wrap);
+
 }

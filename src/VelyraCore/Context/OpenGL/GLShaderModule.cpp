@@ -26,6 +26,8 @@ namespace Velyra::Core {
 
     GLShaderModule::~GLShaderModule() {
         glDeleteShader(m_ShaderModuleID);
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Shader Module: {} destroyed", m_ShaderModuleID);
     }
 
     U64 GLShaderModule::getIdentifier() const {

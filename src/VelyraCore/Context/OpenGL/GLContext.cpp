@@ -11,6 +11,7 @@
 #include "GLIndexBuffer.hpp"
 #include "GLMeshBinding.hpp"
 #include "GLConstantBuffer.hpp"
+#include "GLSampler.hpp"
 
 namespace Velyra::Core {
 
@@ -32,9 +33,15 @@ namespace Velyra::Core {
     }
 
     GLContext::~GLContext() {
+        // Clear all resources before terminating glad to ensure that all OpenGL resources are properly released
         clearResources(m_ShaderModules);
         clearResources(m_Shaders);
         clearResources(m_VertexLayouts);
+        clearResources(m_VertexBuffers);
+        clearResources(m_IndexBuffers);
+        clearResources(m_MeshBindings);
+        clearResources(m_ConstantBuffers);
+        clearResources(m_Samplers);
 
         terminateGlad();
     }
@@ -187,6 +194,11 @@ namespace Velyra::Core {
         }
         m_ConstantBuffers.emplace_back(createUP<GLConstantBuffer>(desc, *m_Device));
         return m_ConstantBuffers.back();
+    }
+
+    View<Sampler> GLContext::createSampler(const SamplerDesc &desc) {
+        m_Samplers.emplace_back(createUP<GLSampler>(*m_Device, desc));
+        return m_Samplers.back();
     }
 
     void GLContext::initGlad() const {
