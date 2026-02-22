@@ -1,6 +1,9 @@
 cmake_minimum_required(VERSION 3.22)
 project(VelyraCore DESCRIPTION "Velyra Core components (like window manager and context manager)")
 
+set(VL_CORE_LOG_LEVEL "INFO" CACHE STRING "")
+string(TOUPPER ${VL_CORE_LOG_LEVEL} VL_CORE_LOG_LEVEL_UPPER)
+
 include(VelyraBuildUtils/VelyraBuildUtils.cmake)
 include(cmake/Glad.cmake)
 include(cmake/ImLib.cmake)
@@ -123,6 +126,7 @@ target_include_directories(VelyraCore PUBLIC include)
 target_include_directories(VelyraCore PRIVATE include/VelyraCore/ImGui)
 target_link_libraries(VelyraCore PUBLIC VelyraUtils VelyraImage ImLib)
 target_link_libraries(VelyraCore PRIVATE ${VELYRA_CORE_LIBS})
+target_compile_definitions(VelyraCore PRIVATE SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_${VL_CORE_LOG_LEVEL})
 
 ################# Sandbox #################
 
