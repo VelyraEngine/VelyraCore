@@ -1,4 +1,6 @@
-include(${CMAKE_CURRENT_LIST_DIR}/TinyFileDialogs.cmake)
+# Add tinyfiledialogs library from local Dependencies folder
+get_filename_component(VELYRA_CORE_DIR "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
+add_subdirectory(${VELYRA_CORE_DIR}/Dependencies/Unix/tinyfiledialogs)
 
 vl_fetch_glfw()
 
