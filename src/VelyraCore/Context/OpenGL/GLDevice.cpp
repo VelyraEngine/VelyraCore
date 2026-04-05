@@ -1,6 +1,7 @@
 #include "../../Pch.hpp"
 
 #include "GLDevice.hpp"
+#include "Internal/GLTranslations.hpp"
 
 namespace Velyra::Core {
 
@@ -86,6 +87,13 @@ namespace Velyra::Core {
 
     bool GLDevice::isDoubleBuffered() const {
         return getGlConstantInt(GL_DOUBLEBUFFER) == 1;
+    }
+
+    bool GLDevice::isTextureFormatSupported(const VL_TEXTURE_FORMAT format) const {
+        GLint supported = GL_FALSE;
+        const GLint glFormat = getGLTextureFormat(format);
+        glGetInternalformativ(GL_TEXTURE_2D, glFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supported);
+        return supported == GL_TRUE;
     }
 
     std::string GLDevice::getGlConstantStr(const GLenum constant) {

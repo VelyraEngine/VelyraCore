@@ -52,6 +52,10 @@ namespace Velyra::Core {
 
         View<Sampler> createSampler(const SamplerDesc &desc) override;
 
+        View<Texture2D> createTexture2D(const Texture2DDesc &desc) override;
+
+        View<Texture2D> createTexture2D(const Texture2DImageDesc &desc) override;
+
     private:
 
         void initGlad() const;

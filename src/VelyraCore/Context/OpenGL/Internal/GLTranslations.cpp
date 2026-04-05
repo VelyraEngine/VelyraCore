@@ -116,5 +116,70 @@ namespace Velyra::Core {
         }
     }
 
+    GLint getGLTextureFormat(const VL_TEXTURE_FORMAT format) {
+        switch (format) {
+            case VL_TEXTURE_R_U8:      return GL_R8;
+            case VL_TEXTURE_R_I8:      return GL_R8I;
+            case VL_TEXTURE_R_U16:     return GL_R16;
+            case VL_TEXTURE_R_I16:     return GL_R16I;
+            case VL_TEXTURE_R_U32:     return GL_R32UI;
+            case VL_TEXTURE_R_I32:     return GL_R32I;
+            case VL_TEXTURE_R_F16:     return GL_R16F;
+            case VL_TEXTURE_R_F32:     return GL_R32F;
+
+            case VL_TEXTURE_RG_U8:     return GL_RG8;
+            case VL_TEXTURE_RG_I8:     return GL_RG8I;
+            case VL_TEXTURE_RG_U16:    return GL_RG16;
+            case VL_TEXTURE_RG_I16:    return GL_RG16I;
+            case VL_TEXTURE_RG_U32:    return GL_RG32UI;
+            case VL_TEXTURE_RG_I32:    return GL_RG32I;
+            case VL_TEXTURE_RG_F16:    return GL_RG16F;
+            case VL_TEXTURE_RG_F32:    return GL_RG32F;
+
+            case VL_TEXTURE_RGB_U8:    return GL_RGB8;
+            case VL_TEXTURE_RGB_I8:    return GL_RGB8I;
+            case VL_TEXTURE_RGB_U16:   return GL_RGB16;
+            case VL_TEXTURE_RGB_I16:   return GL_RGB16I;
+            case VL_TEXTURE_RGB_U32:   return GL_RGB32UI;
+            case VL_TEXTURE_RGB_I32:   return GL_RGB32I;
+            case VL_TEXTURE_RGB_F16:   return GL_RGB16F;
+            case VL_TEXTURE_RGB_F32:   return GL_RGB32F;
+
+            case VL_TEXTURE_RGBA_U8:   return GL_RGBA8;
+            case VL_TEXTURE_RGBA_I8:   return GL_RGBA8I;
+            case VL_TEXTURE_RGBA_U16:  return GL_RGBA16;
+            case VL_TEXTURE_RGBA_I16:  return GL_RGBA16I;
+            case VL_TEXTURE_RGBA_U32:  return GL_RGBA32UI;
+            case VL_TEXTURE_RGBA_I32:  return GL_RGBA32I;
+            case VL_TEXTURE_RGBA_F16:  return GL_RGBA16F;
+            case VL_TEXTURE_RGBA_F32:  return GL_RGBA32F;
+
+                // special formats
+            case VL_TEXTURE_DEPTH_16:          return GL_DEPTH_COMPONENT16;
+            case VL_TEXTURE_DEPTH_24:          return GL_DEPTH_COMPONENT24;
+            case VL_TEXTURE_DEPTH_32:          return GL_DEPTH_COMPONENT32;
+            case VL_TEXTURE_DEPTH_24_STENCIL_8:    return GL_DEPTH24_STENCIL8;
+            case VL_TEXTURE_DEPTH_32_STENCIL_8:    return GL_DEPTH32F_STENCIL8;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid texture format {} given to converter, return default: GL_RGBA8", format);
+                return GL_RGBA8;
+            }
+        }
+    }
+
+    GLenum getGLTextureChannelFormat(const VL_CHANNEL_FORMAT channelFormat) {
+        switch (channelFormat) {
+            case VL_CHANNEL_R: return GL_RED;
+            case VL_CHANNEL_RG: return GL_RG;
+            case VL_CHANNEL_RGB: return GL_RGB;
+            case VL_CHANNEL_RGBA: return GL_RGBA;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid texture channel format {} given to converter, return default: GL_RGBA", channelFormat);
+                return GL_RGBA;
+            }
+        }
+    }
 }
 

@@ -12,6 +12,7 @@
 #include "GLMeshBinding.hpp"
 #include "GLConstantBuffer.hpp"
 #include "GLSampler.hpp"
+#include "GLTexture2D.hpp"
 
 namespace Velyra::Core {
 
@@ -42,6 +43,7 @@ namespace Velyra::Core {
         clearResources(m_MeshBindings);
         clearResources(m_ConstantBuffers);
         clearResources(m_Samplers);
+        clearResources(m_Texture2Ds);
 
         terminateGlad();
     }
@@ -199,6 +201,16 @@ namespace Velyra::Core {
     View<Sampler> GLContext::createSampler(const SamplerDesc &desc) {
         m_Samplers.emplace_back(createUP<GLSampler>(*m_Device, desc));
         return m_Samplers.back();
+    }
+
+    View<Texture2D> GLContext::createTexture2D(const Texture2DDesc &desc) {
+        m_Texture2Ds.emplace_back(createUP<GLTexture2D>(desc, *m_Device));
+        return m_Texture2Ds.back();
+    }
+
+    View<Texture2D> GLContext::createTexture2D(const Texture2DImageDesc &desc) {
+        m_Texture2Ds.emplace_back(createUP<GLTexture2D>(desc, *m_Device));
+        return m_Texture2Ds.back();
     }
 
     void GLContext::initGlad() const {

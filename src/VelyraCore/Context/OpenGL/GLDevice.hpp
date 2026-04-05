@@ -50,6 +50,8 @@ namespace Velyra::Core {
 
         [[nodiscard]] bool isDoubleBuffered() const override;
 
+        [[nodiscard]] bool isTextureFormatSupported(VL_TEXTURE_FORMAT format) const override;
+
     private:
 
         static std::string getGlConstantStr(GLenum constant);

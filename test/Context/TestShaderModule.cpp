@@ -2,7 +2,7 @@
 
 #include <VelyraCore/VelyraCore.hpp>
 #include "Environment.hpp"
-#include "TestShaders.hpp"
+#include "Shaders.hpp"
 
 using namespace Velyra;
 using namespace Velyra::Core;

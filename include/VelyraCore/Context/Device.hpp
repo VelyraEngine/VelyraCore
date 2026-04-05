@@ -141,6 +141,8 @@ namespace Velyra::Core {
          * @return true if the graphics device supports double buffering, false otherwise
          */
         [[nodiscard]] virtual bool isDoubleBuffered() const = 0;
+
+        [[nodiscard]] virtual bool isTextureFormatSupported(VL_TEXTURE_FORMAT format) const = 0;
     };
 
 }

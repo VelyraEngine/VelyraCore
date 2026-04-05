@@ -46,7 +46,7 @@ namespace Velyra::Core {
 
         virtual void setComparisonFunc(VL_COMPARISON_FUNC comparisonFunc) = 0;
 
-        virtual void setBorderColor(float r, float g, float b, float a = 1.0f) = 0;
+        virtual void setBorderColor(float r, float g, float b, float a) = 0;
 
         virtual void setLOD(float minLOD, float maxLOD, float LODBias) = 0;
 

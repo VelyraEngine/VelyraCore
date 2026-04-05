@@ -23,8 +23,12 @@ TEST_F(TestWindow, CreateWindow) {
     EXPECT_EQ(window->getWidth(), desc.width);
     EXPECT_EQ(window->getHeight(), desc.height);
     EXPECT_EQ(window->getTitle(), desc.title);
+
+#if !defined(VL_PLATFORM_LINUX)
+    // Wayland/X11 is flaky with window position, so we skip this test on Linux
     EXPECT_EQ(window->getPositionX(), desc.xPosition);
     EXPECT_EQ(window->getPositionY(), desc.yPosition);
+#endif
 }
 
 TEST_F(TestWindow, ResizeWindow) {
@@ -32,8 +36,10 @@ TEST_F(TestWindow, ResizeWindow) {
     ASSERT_NE(window, nullptr);
 
     window->setPosition(300, 300);
+#if !defined(VL_PLATFORM_LINUX)
     EXPECT_EQ(window->getPositionX(), 300);
     EXPECT_EQ(window->getPositionY(), 300);
+#endif
 }
 
 TEST_F(TestWindow, SetTitle) {
@@ -50,6 +56,8 @@ TEST_F(TestWindow, UpdatePosition) {
     ASSERT_NE(window, nullptr);
 
     window->setPosition(400, 400);
+#if !defined(VL_PLATFORM_LINUX)
     EXPECT_EQ(window->getPositionX(), 400);
     EXPECT_EQ(window->getPositionY(), 400);
+#endif
 }

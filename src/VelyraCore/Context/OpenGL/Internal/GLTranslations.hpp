@@ -18,4 +18,8 @@ namespace Velyra::Core {
 
     GLint getGLTextureWrap(VL_TEXTURE_WRAP wrap);
 
+    GLint getGLTextureFormat(VL_TEXTURE_FORMAT format);
+
+    GLenum getGLTextureChannelFormat(VL_CHANNEL_FORMAT channelFormat);
+
 }

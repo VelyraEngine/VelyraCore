@@ -11,6 +11,7 @@
 #include <VelyraCore/Context/MeshBinding.hpp>
 #include <VelyraCore/Context/ConstantBuffer.hpp>
 #include <VelyraCore/Context/Sampler.hpp>
+#include <VelyraCore/Context/Texture2D.hpp>
 
 namespace Velyra::Core {
 
@@ -175,6 +176,10 @@ namespace Velyra::Core {
          */
         virtual View<Sampler> createSampler(const SamplerDesc& desc) = 0;
 
+        virtual View<Texture2D> createTexture2D(const Texture2DDesc& desc) = 0;
+
+        virtual View<Texture2D> createTexture2D(const Texture2DImageDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -199,6 +204,7 @@ namespace Velyra::Core {
         std::vector<UP<MeshBinding>> m_MeshBindings;
         std::vector<UP<ConstantBuffer>> m_ConstantBuffers;
         std::vector<UP<Sampler>> m_Samplers;
+        std::vector<UP<Texture2D>> m_Texture2Ds;
     };
 
 
