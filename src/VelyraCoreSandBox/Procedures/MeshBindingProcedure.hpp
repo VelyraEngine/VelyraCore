@@ -6,8 +6,10 @@
 VL_ENUM(MeshType, int,
     Cube = 0,
     Sphere = 1,
-    Rectangle = 2,
-    Triangle = 3
+    Cone = 2,
+    Cylinder = 3,
+    Torus = 4,
+    Plane = 5
 );
 
 namespace Velyra::SandBox {

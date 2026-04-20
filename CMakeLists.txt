@@ -148,6 +148,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/ProcedureExecutor.hpp
     src/VelyraCoreSandBox/Utils.cpp
     src/VelyraCoreSandBox/Utils.hpp
+    src/VelyraCoreSandBox/Meshes.cpp
+    src/VelyraCoreSandBox/Meshes.hpp
     src/VelyraCoreSandBox/ImGuiWidgets.cpp
     src/VelyraCoreSandBox/ImGuiWidgets.hpp
 

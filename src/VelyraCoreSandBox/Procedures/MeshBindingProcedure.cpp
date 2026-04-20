@@ -1,5 +1,7 @@
 #include "MeshBindingProcedure.hpp"
 
+#include "../Meshes.hpp"
+
 #include <ranges>
 
 namespace Velyra::SandBox {
@@ -43,7 +45,11 @@ namespace Velyra::SandBox {
 
     void MeshBindingProcedure::createMeshBindings(const UP<Core::Context> &context) {
         m_MeshBindings[Cube] = loadMesh(createCube(), context);
-        m_MeshBindings[Sphere] = loadMesh(createSphere(32, 32), context);
+        m_MeshBindings[Sphere] = loadMesh(createSphere(16, 16), context);
+        m_MeshBindings[Cone] = loadMesh(createCone(16, 1.0f, 1.0f), context);
+        m_MeshBindings[Cylinder] = loadMesh(createCylinder(16, 1.0f, 1.0f), context);
+        m_MeshBindings[Torus] = loadMesh(createTorus(16, 16, 1.0f, 0.5f), context);
+        m_MeshBindings[Plane] = loadMesh(createPlane(1.0f), context);
     }
 
     void MeshBindingProcedure::imGuiDrawModeSelector() {

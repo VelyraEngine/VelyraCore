@@ -30,8 +30,4 @@ namespace Velyra::SandBox {
     ShaderProgram loadShader(const UP<Core::Context> &context, const std::string &vertexShaderName, const std::string &fragmentShaderName);
 
     View<Core::MeshBinding> loadMesh(const Mesh& mesh, const UP<Core::Context> &context);
-
-    Mesh createSphere(U32 rings, U32 sectors);
-
-    Mesh createCube();
 }
