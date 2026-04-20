@@ -19,6 +19,7 @@ namespace Velyra::Core {
 
     private:
         static Size m_InstanceCount;
+        static Utils::LogPtr m_Logger;
     };
 
     VL_KEYBOARD_KEY translateGlfwKey(int key);

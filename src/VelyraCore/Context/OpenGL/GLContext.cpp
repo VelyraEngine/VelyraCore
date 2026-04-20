@@ -127,6 +127,7 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "===============Begin Frame===============");
 
         // TODO: Temporary clear, configure this with framebuffers later
+        glEnable(GL_DEPTH_TEST);
         glClearColor(0.6f, 0.8f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
     }

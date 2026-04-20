@@ -14,5 +14,9 @@ VL_ENUM(VL_SBX_PROCEDURE_TYPE, int,
     IndexDraw,
     Camera,
     Projection,
-    ModelViewProjection
+    MVP,
+    MeshBinding,
+    Sampler,
+    Texture2D,
+    TexturedMVP
 );

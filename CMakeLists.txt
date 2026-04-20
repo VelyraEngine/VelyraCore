@@ -169,8 +169,16 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/CameraProcedure.hpp
     src/VelyraCoreSandBox/Procedures/ProjectionProcedure.cpp
     src/VelyraCoreSandBox/Procedures/ProjectionProcedure.hpp
-    src/VelyraCoreSandBox/Procedures/ModelViewProjectionProcedure.cpp
-    src/VelyraCoreSandBox/Procedures/ModelViewProjectionProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/MVPProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/MVPProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/SamplerProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/SamplerProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/TextureProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/TextureProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/MeshBindingProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/MeshBindingProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/TexturedMVPProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/TexturedMVPProcedure.hpp
 )
 
 if (BUILD_SANDBOX)

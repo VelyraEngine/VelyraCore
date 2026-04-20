@@ -6,31 +6,28 @@
 namespace Velyra::Core {
 
     Size Glfw3Instance::m_InstanceCount = 0;
+    Utils::LogPtr Glfw3Instance::m_Logger = Utils::getLogger(VL_LOGGER_WINDOW);
 
     void Glfw3Instance::createInstance() {
-        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WINDOW);
-
         if (m_InstanceCount == 0) {
             setFlags();
             if (glfwInit() == GLFW_FALSE) {
-                SPDLOG_LOGGER_CRITICAL(logger, "Failed to initialize GLFW");
+                SPDLOG_LOGGER_CRITICAL(m_Logger, "Failed to initialize GLFW");
                 throw std::runtime_error("Failed to initialize GLFW");
             }
             int major;
             int minor;
             int revision;
             glfwGetVersion(&major, &minor, &revision);
-            SPDLOG_LOGGER_INFO(logger, "GLFW3 initialised with version: {}.{}.{}", major, minor, revision);
+            SPDLOG_LOGGER_INFO(m_Logger, "GLFW3 initialised with version: {}.{}.{}", major, minor, revision);
         }
         m_InstanceCount++;
-        SPDLOG_LOGGER_INFO(logger, "GLFW current instance count {}", m_InstanceCount);
+        SPDLOG_LOGGER_INFO(m_Logger, "GLFW current instance count {}", m_InstanceCount);
     }
 
     void Glfw3Instance::destroyInstance() {
-        const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_WINDOW);
-
         m_InstanceCount--;
-        SPDLOG_LOGGER_INFO(logger, "GLFW current instance count {}", m_InstanceCount);
+        SPDLOG_LOGGER_INFO(m_Logger, "GLFW current instance count {}", m_InstanceCount);
         if (m_InstanceCount == 0) {
             glfwTerminate();
         }

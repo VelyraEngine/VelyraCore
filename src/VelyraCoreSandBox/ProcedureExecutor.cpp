@@ -9,7 +9,11 @@
 #include "Procedures/IndexDrawProcedure.hpp"
 #include "Procedures/CameraProcedure.hpp"
 #include "Procedures/ProjectionProcedure.hpp"
-#include "Procedures/ModelViewProjectionProcedure.hpp"
+#include "Procedures/MVPProcedure.hpp"
+#include "Procedures/SamplerProcedure.hpp"
+#include "Procedures/TextureProcedure.hpp"
+#include "Procedures/MeshBindingProcedure.hpp"
+#include "Procedures/TexturedMVPProcedure.hpp"
 
 #include <queue>
 
@@ -25,7 +29,11 @@ namespace Velyra::SandBox {
         registerProcedureFactory<IndexDrawProcedureFactory>();
         registerProcedureFactory<CameraProcedureFactory>();
         registerProcedureFactory<ProjectionProcedureFactory>();
-        registerProcedureFactory<ModelViewProjectionProcedureFactory>();
+        registerProcedureFactory<MVPProcedureFactory>();
+        registerProcedureFactory<MeshBindingProcedureFactory>();
+        registerProcedureFactory<SamplerProcedureFactory>();
+        registerProcedureFactory<TextureProcedureFactory>();
+        registerProcedureFactory<TexturedMVPProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {
