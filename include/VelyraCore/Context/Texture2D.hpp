@@ -8,8 +8,8 @@
 namespace Velyra::Core {
 
     struct VL_API Texture2DDesc {
-        U32 width = 0;
-        U32 height = 0;
+        Size width = 0;
+        Size height = 0;
         const void* data = nullptr;
         VL_TEXTURE_FORMAT format = VL_TEXTURE_FORMAT_MAX_VALUE;
         VL_BUFFER_USAGE usage = VL_BUFFER_USAGE_DEFAULT;
@@ -52,9 +52,9 @@ namespace Velyra::Core {
 
         [[nodiscard]] virtual U64 getIdentifier() const = 0;
 
-        [[nodiscard]] U32 getWidth() const { return m_Width; }
+        [[nodiscard]] Size getWidth() const { return m_Width; }
 
-        [[nodiscard]] U32 getHeight() const { return m_Height; }
+        [[nodiscard]] Size getHeight() const { return m_Height; }
 
         [[nodiscard]] VL_TEXTURE_FORMAT getFormat() const { return m_Format; }
 
@@ -63,8 +63,8 @@ namespace Velyra::Core {
     private:
         const Device& m_Device;
 
-        const U32 m_Width;
-        const U32 m_Height;
+        const Size m_Width;
+        const Size m_Height;
         const VL_TEXTURE_FORMAT m_Format;
         const VL_BUFFER_USAGE m_Usage;
     };

@@ -24,13 +24,13 @@ namespace Velyra::Core {
 
         // Create the actual texture object and potentially fill it
         glCreateTextures(desc.target, 1, &m_TextureID);
-        glTextureStorage2D(m_TextureID, 1, getGLTextureFormat(desc.format), m_Width, m_Height);
+        glTextureStorage2D(m_TextureID, 1, getGLTextureFormat(desc.format), static_cast<GLint>(m_Width), static_cast<GLint>(m_Height));
         if (desc.data != nullptr) {
             const VL_TYPE vlType = getTextureDataType(desc.format);
             const VL_CHANNEL_FORMAT vlChannelFormat = getTextureChannelFormat(desc.format);
             const GLenum glDataType = getGLDataType(vlType);
             const GLenum glChannelFormat = getGLTextureChannelFormat(vlChannelFormat);
-            glTextureSubImage2D(m_TextureID, 0, 0, 0, m_Width, m_Height, glChannelFormat, glDataType, desc.data);
+            glTextureSubImage2D(m_TextureID, 0, 0, 0, static_cast<GLint>(m_Width), static_cast<GLint>(m_Height), glChannelFormat, glDataType, desc.data);
         }
         // Only generate mipmaps if requested
         if (desc.generateMipmap) {
@@ -107,7 +107,11 @@ namespace Velyra::Core {
          * DSA does currently not provide a function like glNamedReadPixelsToBuffer. so we have to bind the texture to the context
          */
         glBindTexture(m_GLTarget, m_TextureID);
-        glTexSubImage2D(m_GLTarget, 0, x, y, width, height, glChannelFormat, glDataType, nullptr); // nullptr is used to indicate that the data is stored in the buffer bound to GL_PIXEL_UNPACK_BUFFER
+        glTexSubImage2D(m_GLTarget, 0,
+            static_cast<GLint>(x), static_cast<GLint>(y),
+            static_cast<GLint>(width), static_cast<GLint>(height),
+            glChannelFormat, glDataType, nullptr // nullptr is used to indicate that the data is stored in the buffer bound to GL_PIXEL_UNPACK_BUFFER
+        );
 
         // Cleanup bindings
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
@@ -128,9 +132,11 @@ namespace Velyra::Core {
                                          other.m_Width, other.m_Height, m_Width, m_Height);
         }
 
+        const auto width = static_cast<GLint>(std::min(m_Width, other.m_Width));
+        const auto height = static_cast<GLint>(std::min(m_Height, other.m_Height));
         glCopyImageSubData(other.m_TextureID, other.m_GLTarget, 0, 0, 0, 0,
                            m_TextureID, m_GLTarget, 0, 0, 0, 0,
-                           std::min(m_Width, other.m_Width), std::min(m_Height, other.m_Height), 1);
+                           width, height, 1);
 
     }
 
@@ -155,14 +161,14 @@ namespace Velyra::Core {
 
         // Bind the pixel pack buffer and allocate storage
         glBindBuffer(GL_PIXEL_PACK_BUFFER, m_PixelPackBufferID);
-        glBufferData(GL_PIXEL_PACK_BUFFER, dataSize, nullptr, GL_STREAM_READ);
+        glBufferData(GL_PIXEL_PACK_BUFFER, static_cast<GLsizeiptr>(dataSize), nullptr, GL_STREAM_READ);
 
         // Read texture data into the pixel pack buffer
         // Using DSA function glGetTextureImage which reads into the currently bound GL_PIXEL_PACK_BUFFER
-        glGetTextureImage(m_TextureID, 0, glChannelFormat, glDataType, dataSize, nullptr);
+        glGetTextureImage(m_TextureID, 0, glChannelFormat, glDataType, static_cast<GLsizei>(dataSize), nullptr);
 
         // Map the buffer to CPU memory for reading
-        void* mappedData = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
+        const void* mappedData = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);
         if (!mappedData) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to map pixel pack buffer for texture {}", m_TextureID);
             glBindBuffer(GL_PIXEL_PACK_BUFFER, 0);

@@ -64,6 +64,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/ConstantBuffer.hpp
     include/VelyraCore/Context/Sampler.hpp
     include/VelyraCore/Context/Texture2D.hpp
+    include/VelyraCore/Context/RenderPassLayout.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -88,6 +89,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/Context.cpp
     src/VelyraCore/Context/VertexLayout.cpp
     src/VelyraCore/Context/Definitions.cpp
+    src/VelyraCore/Context/RenderPassLayout.cpp
 
     src/VelyraCore/Context/OpenGL/GLContext.cpp
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
