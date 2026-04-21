@@ -10,7 +10,7 @@ namespace Velyra::Core {
         Size size                     = 0;
         const void* data              = nullptr;
         VL_BUFFER_USAGE usage         = VL_BUFFER_USAGE_DEFAULT;
-        VL_SHADER_TYPE shaderStage    = VL_SHADER_VERTEX;
+        VL_SHADER_TYPE shaderStage    = VL_SHADER_TYPE_MAX_VALUE;
     };
 
     class VL_API ConstantBuffer{
@@ -89,6 +89,6 @@ namespace Velyra::Core {
         const Size m_Size = 0;
         const VL_BUFFER_USAGE m_Usage = VL_BUFFER_USAGE_DEFAULT;
         const std::string m_Name;
-        const VL_SHADER_TYPE m_ShaderStage = VL_SHADER_NONE;
+        const VL_SHADER_TYPE m_ShaderStage = VL_SHADER_TYPE_MAX_VALUE;
     };
 }

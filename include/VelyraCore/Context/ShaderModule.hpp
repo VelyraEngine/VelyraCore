@@ -9,13 +9,13 @@ namespace Velyra::Core {
 
     struct VL_API ShaderModuleDesc {
         std::string code;   // shader code
-        VL_SHADER_TYPE shaderType   = VL_SHADER_NONE;
+        VL_SHADER_TYPE shaderType   = VL_SHADER_TYPE_MAX_VALUE;
         std::string entryPoint      = "main";
     };
 
     struct VL_API ShaderModuleFileDesc {
         fs::path filePath;
-        VL_SHADER_TYPE shaderType   = VL_SHADER_NONE;
+        VL_SHADER_TYPE shaderType   = VL_SHADER_TYPE_MAX_VALUE;
         std::string entryPoint      = "main";
     };
 

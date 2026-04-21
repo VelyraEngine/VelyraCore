@@ -8,7 +8,6 @@
 #define VL_GL_MINOR_VERSION 6
 
 VL_ENUM(VL_GRAPHICS_API, int,
-    VL_API_NONE,
     VL_API_BEST,
     VL_API_OPENGL,
     VL_API_DIRECT3D11
@@ -22,7 +21,6 @@ VL_ENUM(VL_IMGUI_STYLE, int,
 );
 
 VL_ENUM(VL_SHADER_TYPE, int,
-    VL_SHADER_NONE                   = 0x00,
     VL_SHADER_VERTEX                 = 0x01,
     VL_SHADER_FRAGMENT               = 0x02,
     VL_SHADER_PIXEL                  = 0x02,
@@ -39,7 +37,6 @@ VL_ENUM(VL_BUFFER_USAGE, int,
 );
 
 VL_ENUM(VL_DRAW_MODE, int,
-    VL_DRAW_NONE            = 0x00,
     VL_DRAW_POINTS          = 0x01,
     VL_DRAW_LINES           = 0x02,
     VL_DRAW_LINES_STRIP     = 0x03,
@@ -120,6 +117,22 @@ VL_ENUM(VL_COMPARISON_FUNC, int,
     VL_COMPARISON_FUNC_NOT_EQUAL    = 0x05,
     VL_COMPARISON_FUNC_GREATER_EQUAL= 0x06,
     VL_COMPARISON_FUNC_ALWAYS       = 0x07
+);
+
+VL_ENUM(VL_DEPTH_MASK, int,
+    VL_DEPTH_MASK_DISABLED  = 0x00,
+    VL_DEPTH_MASK_ENABLED   = 0x01
+);
+
+VL_ENUM(VL_STENCIL_FUNC, int,
+    VL_STENCIL_FUNC_KEEP             = 0x00,
+    VL_STENCIL_FUNC_ZERO             = 0x01,
+    VL_STENCIL_FUNC_REPLACE          = 0x02,
+    VL_STENCIL_FUNC_INCR             = 0x03,
+    VL_STENCIL_FUNC_INCR_WRAP        = 0x04,
+    VL_STENCIL_FUNC_DECR             = 0x05,
+    VL_STENCIL_FUNC_DECR_WRAP        = 0x06,
+    VL_STENCIL_FUNC_INVERT           = 0x07
 );
 
 namespace Velyra::Core {
