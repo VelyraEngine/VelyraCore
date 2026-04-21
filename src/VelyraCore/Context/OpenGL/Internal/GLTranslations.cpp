@@ -116,7 +116,7 @@ namespace Velyra::Core {
         }
     }
 
-    GLint getGLTextureFormat(const VL_TEXTURE_FORMAT format) {
+    GLenum getGLTextureFormat(const VL_TEXTURE_FORMAT format) {
         switch (format) {
             case VL_TEXTURE_R_U8:      return GL_R8;
             case VL_TEXTURE_R_I8:      return GL_R8I;

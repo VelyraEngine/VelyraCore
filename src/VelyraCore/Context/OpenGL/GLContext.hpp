@@ -34,6 +34,8 @@ namespace Velyra::Core {
 
         void endFrame() override;
 
+        View<Viewport> createViewport(const ViewportDesc& desc) override;
+
         View<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 
         View<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
@@ -55,6 +57,8 @@ namespace Velyra::Core {
         View<Texture2D> createTexture2D(const Texture2DDesc &desc) override;
 
         View<Texture2D> createTexture2D(const Texture2DImageDesc &desc) override;
+
+        View<RenderPassLayout> createRenderPassLayout() override;
 
     private:
 

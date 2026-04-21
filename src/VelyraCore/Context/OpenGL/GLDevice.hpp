@@ -52,6 +52,10 @@ namespace Velyra::Core {
 
         [[nodiscard]] bool isTextureFormatSupported(VL_TEXTURE_FORMAT format) const override;
 
+        [[nodiscard]] bool isColorAttachmentFormatSupported(VL_TEXTURE_FORMAT format) const override;
+
+        [[nodiscard]] bool isDepthStencilAttachmentFormatSupported(VL_TEXTURE_FORMAT format) const override;
+
     private:
 
         static std::string getGlConstantStr(GLenum constant);

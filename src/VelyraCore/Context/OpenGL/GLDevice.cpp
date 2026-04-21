@@ -91,8 +91,22 @@ namespace Velyra::Core {
 
     bool GLDevice::isTextureFormatSupported(const VL_TEXTURE_FORMAT format) const {
         GLint supported = GL_FALSE;
-        const GLint glFormat = getGLTextureFormat(format);
+        const GLenum glFormat = getGLTextureFormat(format);
         glGetInternalformativ(GL_TEXTURE_2D, glFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supported);
+        return supported == GL_TRUE;
+    }
+
+    bool GLDevice::isColorAttachmentFormatSupported(const VL_TEXTURE_FORMAT format) const {
+        GLint supported = GL_FALSE;
+        const GLenum glFormat = getGLTextureFormat(format);
+        glGetInternalformativ(GL_RENDERBUFFER, glFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supported);
+        return supported == GL_TRUE;
+    }
+
+    bool GLDevice::isDepthStencilAttachmentFormatSupported(const VL_TEXTURE_FORMAT format) const {
+        GLint supported = GL_FALSE;
+        const GLenum glFormat = getGLTextureFormat(format);
+        glGetInternalformativ(GL_RENDERBUFFER, glFormat, GL_INTERNALFORMAT_SUPPORTED, 1, &supported);
         return supported == GL_TRUE;
     }
 

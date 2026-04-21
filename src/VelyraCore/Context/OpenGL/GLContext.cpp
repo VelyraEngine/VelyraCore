@@ -5,6 +5,7 @@
 
 #include "GLContext.hpp"
 #include "GLDevice.hpp"
+#include "GLViewport.hpp"
 #include "GLShaderModule.hpp"
 #include "GLShader.hpp"
 #include "GLVertexBuffer.hpp"
@@ -35,6 +36,7 @@ namespace Velyra::Core {
 
     GLContext::~GLContext() {
         // Clear all resources before terminating glad to ensure that all OpenGL resources are properly released
+        clearResources(m_Viewports);
         clearResources(m_ShaderModules);
         clearResources(m_Shaders);
         clearResources(m_VertexLayouts);
@@ -44,6 +46,7 @@ namespace Velyra::Core {
         clearResources(m_ConstantBuffers);
         clearResources(m_Samplers);
         clearResources(m_Texture2Ds);
+        clearResources(m_RenderPassLayouts);
 
         terminateGlad();
     }
@@ -136,6 +139,11 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "================End Frame================");
     }
 
+    View<Viewport> GLContext::createViewport(const ViewportDesc &desc) {
+        m_Viewports.emplace_back(createUP<GLViewport>(desc));
+        return m_Viewports.back();
+    }
+
     View<ShaderModule> GLContext::createShaderModule(const ShaderModuleDesc &desc) {
         m_ShaderModules.emplace_back(createUP<GLShaderModule>(desc));
         return m_ShaderModules.back();
@@ -212,6 +220,11 @@ namespace Velyra::Core {
     View<Texture2D> GLContext::createTexture2D(const Texture2DImageDesc &desc) {
         m_Texture2Ds.emplace_back(createUP<GLTexture2D>(desc, *m_Device));
         return m_Texture2Ds.back();
+    }
+
+    View<RenderPassLayout> GLContext::createRenderPassLayout() {
+        m_RenderPassLayouts.emplace_back(createUP<RenderPassLayout>(*m_Device));
+        return m_RenderPassLayouts.back();
     }
 
     void GLContext::initGlad() const {

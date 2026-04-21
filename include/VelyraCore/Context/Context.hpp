@@ -12,6 +12,7 @@
 #include <VelyraCore/Context/ConstantBuffer.hpp>
 #include <VelyraCore/Context/Sampler.hpp>
 #include <VelyraCore/Context/Texture2D.hpp>
+#include <VelyraCore/Context/RenderPassLayout.hpp>
 
 namespace Velyra::Core {
 
@@ -114,6 +115,13 @@ namespace Velyra::Core {
         virtual void endFrame() = 0;
 
         /**
+         * @brief Creates a viewport
+         * @param desc
+         * @return
+         */
+        virtual View<Viewport> createViewport(const ViewportDesc& desc) = 0;
+
+        /**
          * @brief Creates a shader module and compiles the code from a std::string.
          * @param desc
          * @return
@@ -176,9 +184,21 @@ namespace Velyra::Core {
          */
         virtual View<Sampler> createSampler(const SamplerDesc& desc) = 0;
 
+        /**
+         * @brief Creates a 2D texture from raw data
+         * @param desc
+         * @return
+         */
         virtual View<Texture2D> createTexture2D(const Texture2DDesc& desc) = 0;
 
+        /**
+         * @brief Creates a 2D texture from an Image::IImage object.
+         * @param desc
+         * @return
+         */
         virtual View<Texture2D> createTexture2D(const Texture2DImageDesc& desc) = 0;
+
+        virtual View<RenderPassLayout> createRenderPassLayout() = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
@@ -196,6 +216,7 @@ namespace Velyra::Core {
 
         UP<Device> m_Device = nullptr;
 
+        std::vector<UP<Viewport>> m_Viewports;
         std::vector<UP<ShaderModule>> m_ShaderModules;
         std::vector<UP<Shader>> m_Shaders;
         std::vector<UP<VertexLayout>> m_VertexLayouts;
@@ -205,6 +226,7 @@ namespace Velyra::Core {
         std::vector<UP<ConstantBuffer>> m_ConstantBuffers;
         std::vector<UP<Sampler>> m_Samplers;
         std::vector<UP<Texture2D>> m_Texture2Ds;
+        std::vector<UP<RenderPassLayout>> m_RenderPassLayouts;
     };
 
 

@@ -142,7 +142,26 @@ namespace Velyra::Core {
          */
         [[nodiscard]] virtual bool isDoubleBuffered() const = 0;
 
+        /**
+         *@brief Returns whether the graphics device supports a given texture format for 2D textures.
+         * @param format The texture format to check for support
+         * @return true if the graphics device supports the given texture format for 2D textures, false otherwise
+         */
         [[nodiscard]] virtual bool isTextureFormatSupported(VL_TEXTURE_FORMAT format) const = 0;
+
+        /**
+         * @brief Returns whether the graphics device supports a given texture format as a color attachment format.
+         * @param format The texture format to check for support as a color attachment format
+         * @return true if the graphics device supports the given texture format as a color attachment format, false otherwise
+         */
+        [[nodiscard]] virtual bool isColorAttachmentFormatSupported(VL_TEXTURE_FORMAT format) const = 0;
+
+        /**
+         * @brief Returns whether the graphics device supports a given texture format as a depth stencil attachment format.
+         * @param format The texture format to check for support as a depth stencil attachment format
+         * @return true if the graphics device supports the given texture format as a depth stencil attachment format, false otherwise
+         */
+        [[nodiscard]] virtual bool isDepthStencilAttachmentFormatSupported(VL_TEXTURE_FORMAT format) const = 0;
     };
 
 }
