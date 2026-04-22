@@ -1,13 +1,15 @@
 #pragma once
 
 #include <VelyraCore/Context/Device.hpp>
+#include <VelyraUtils/Types/Color.hpp>
 
 namespace Velyra::Core {
 
     struct VL_API RenderPassColorAttachmentDesc {
-        float clearColor[4]         = {0.2f, 0.3f, 0.8f, 1.0f}; // default clear color is a nice blue
+        Utils::Color clearColor     = {0.2f, 0.3f, 0.8f, 1.0f}; // default clear color is a nice blue
         VL_TEXTURE_FORMAT format    = VL_TEXTURE_RGBA_F32;
         bool enableShaderAccess     = false; // enables sampling from this attachment in shaders
+        VL_BUFFER_USAGE usage       = VL_BUFFER_USAGE_DEFAULT;
     };
 
     struct VL_API RenderPassDepthStencilAttachmentDesc {
@@ -15,6 +17,7 @@ namespace Velyra::Core {
         U32 clearStencil            = 0;
         VL_TEXTURE_FORMAT format    = VL_TEXTURE_DEPTH_24_STENCIL_8;
         bool enableShaderAccess     = false; // enables sampling from this attachment in shaders
+        VL_BUFFER_USAGE usage       = VL_BUFFER_USAGE_DEFAULT;
     };
 
     struct VL_API RenderPassDepthStencilStateDesc {
@@ -37,7 +40,7 @@ namespace Velyra::Core {
 
     class VL_API RenderPassLayout {
     public:
-        RenderPassLayout(const Device& device);
+        explicit RenderPassLayout(const Device& device);
 
         ~RenderPassLayout();
 
@@ -47,19 +50,23 @@ namespace Velyra::Core {
 
         void setDepthStencilAttachment(const RenderPassDepthStencilDesc& desc);
 
-        bool isValid() const;
+        [[nodiscard]] bool isValid() const;
 
         [[nodiscard]] const std::vector<RenderPassColorAttachmentDesc>& getColorAttachments() const;
 
         [[nodiscard]] const std::optional<RenderPassDepthStencilDesc>& getDepthStencilAttachment() const;
 
+        [[nodiscard]] Size getWidth() const;
+
+        [[nodiscard]] Size getHeight() const;
+
     private:
 
-        bool dimensionsValid() const;
+        [[nodiscard]] bool dimensionsValid() const;
 
-        bool colorAttachmentsValid() const;
+        [[nodiscard]] bool colorAttachmentsValid() const;
 
-        bool depthStencilAttachmentValid() const;
+        [[nodiscard]] bool depthStencilAttachmentValid() const;
 
     private:
         Utils::LogPtr m_Logger = nullptr;

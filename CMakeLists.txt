@@ -65,6 +65,8 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/Sampler.hpp
     include/VelyraCore/Context/Texture2D.hpp
     include/VelyraCore/Context/RenderPassLayout.hpp
+    include/VelyraCore/Context/ColorAttachment.hpp
+    include/VelyraCore/Context/RenderPass.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -77,7 +79,8 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/GLConstantBuffer.hpp
     src/VelyraCore/Context/OpenGL/GLSampler.hpp
     src/VelyraCore/Context/OpenGL/GLTexture2D.hpp
-
+    src/VelyraCore/Context/OpenGL/GLColorAttachment.hpp
+    src/VelyraCore/Context/OpenGL/GLRenderPass.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
@@ -102,6 +105,8 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLConstantBuffer.cpp
     src/VelyraCore/Context/OpenGL/GLSampler.cpp
     src/VelyraCore/Context/OpenGL/GLTexture2D.cpp
+    src/VelyraCore/Context/OpenGL/GLColorAttachment.cpp
+    src/VelyraCore/Context/OpenGL/GLRenderPass.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp

@@ -13,11 +13,13 @@ namespace Velyra::Core {
         const void* data = nullptr;
         VL_TEXTURE_FORMAT format = VL_TEXTURE_FORMAT_MAX_VALUE;
         VL_BUFFER_USAGE usage = VL_BUFFER_USAGE_DEFAULT;
+        bool generateMipmap = true;
     };
 
     struct VL_API Texture2DImageDesc {
         View<Image::IImage> image;
         VL_BUFFER_USAGE usage = VL_BUFFER_USAGE_DEFAULT;
+        bool generateMipmap = true;
     };
 
     class VL_API Texture2D {

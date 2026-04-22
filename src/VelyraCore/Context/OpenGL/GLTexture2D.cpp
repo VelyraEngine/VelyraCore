@@ -14,6 +14,7 @@ namespace Velyra::Core {
         glDesc.format = desc.format;
         glDesc.data = desc.data;
         glDesc.usage = desc.usage;
+        glDesc.generateMipmap = desc.generateMipmap;
         return glDesc;
     }
 
@@ -25,6 +26,7 @@ namespace Velyra::Core {
         glDesc.format = getTextureFormat(desc.image);
         glDesc.data = desc.image->getData();
         glDesc.usage = desc.usage;
+        glDesc.generateMipmap = desc.generateMipmap;
         return glDesc;
     }
 

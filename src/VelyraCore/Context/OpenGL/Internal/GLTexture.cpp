@@ -76,6 +76,16 @@ namespace Velyra::Core {
         glBindTextureUnit(slot, m_TextureID);
     }
 
+    void GLTexture::onResize(const Size width, const Size height) {
+        VL_PRECONDITION(m_TextureID != 0, "GLTexture object not created!");
+
+        m_Width = width;
+        m_Height = height;
+        glTextureStorage2D(m_TextureID, 1, getGLTextureFormat(m_Format), static_cast<GLint>(width), static_cast<GLint>(height));
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Resized texture object {} to new dimensions: {}x{}", m_TextureID, width, height);
+    }
+
     void GLTexture::setData(const void *data, const U32 x, const U32 y, const U32 width, const U32 height) {
         VL_PRECONDITION(m_TextureID != 0, "GLTexture object not created!");
 

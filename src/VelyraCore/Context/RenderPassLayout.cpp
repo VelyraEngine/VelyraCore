@@ -36,6 +36,14 @@ namespace Velyra::Core {
         return m_DepthStencilAttachment;
     }
 
+    Size RenderPassLayout::getWidth() const {
+        return m_Width;
+    }
+
+    Size RenderPassLayout::getHeight() const {
+        return m_Height;
+    }
+
     bool RenderPassLayout::dimensionsValid() const {
         if (m_Width == 0 || m_Height == 0) {
             SPDLOG_LOGGER_WARN(m_Logger, "RenderPassLayout has invalid dimensions: width and height must be greater than 0 (current: {}x{})", m_Width, m_Height);

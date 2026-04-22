@@ -25,6 +25,8 @@ namespace Velyra::Core {
 
         void bindShaderResource(U32 slot) const;
 
+        void onResize(Size width, Size height);
+
         void setData(const void* data, U32 x, U32 y, U32 width, U32 height);
 
         void copyFrom(const GLTexture& other);
