@@ -51,6 +51,6 @@ namespace Velyra::SandBox {
         glm::vec3 m_InputScale = glm::vec3(1.0f);
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(MeshBindingProcedure, MeshBinding, {});
+    VL_DECLARE_PROCEDURE_FACTORY(MeshBindingProcedure, VL_SBX_PROCEDURE_TYPE::MeshBinding, {});
 
 }

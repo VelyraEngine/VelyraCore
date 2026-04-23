@@ -27,5 +27,5 @@ namespace Velyra::SandBox {
         int wrapWModeIndex = 0;
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(SamplerProcedure, Sampler, {})
+    VL_DECLARE_PROCEDURE_FACTORY(SamplerProcedure, VL_SBX_PROCEDURE_TYPE::Sampler, {})
 }

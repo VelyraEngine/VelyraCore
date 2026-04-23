@@ -20,7 +20,7 @@ namespace Velyra::SandBox {
     };
 
     static const std::vector<VL_SBX_PROCEDURE_TYPE> s_ModelViewProjectionProcedures = {
-        ClearDefaultFrameBuffer, Camera, Projection, MeshBinding
+        ClearDefaultFrameBuffer, Camera, Projection, VL_SBX_PROCEDURE_TYPE::MeshBinding
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(MVPProcedure, MVP, s_ModelViewProjectionProcedures);

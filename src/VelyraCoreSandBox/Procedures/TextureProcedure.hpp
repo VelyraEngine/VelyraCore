@@ -44,8 +44,8 @@ namespace Velyra::SandBox {
     };
 
     static const std::vector s_TextureProcedures = {
-        Sampler
+        VL_SBX_PROCEDURE_TYPE::Sampler
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(TextureProcedure, Texture2D, s_TextureProcedures)
+    VL_DECLARE_PROCEDURE_FACTORY(TextureProcedure, VL_SBX_PROCEDURE_TYPE::Texture2D, s_TextureProcedures)
 }
