@@ -134,7 +134,7 @@ set(VELYRA_CORE_SRC
 )
 
 add_library(VelyraCore STATIC ${VELYRA_CORE_HEADERS} ${VELYRA_CORE_SRC})
-vl_target_set_compile_flags(VelyraCore)
+vl_configure_target(VelyraCore)
 target_precompile_headers(VelyraCore PRIVATE src/VelyraCore/Pch.hpp)
 target_include_directories(VelyraCore PUBLIC include)
 target_include_directories(VelyraCore PRIVATE include/VelyraCore/ImGui)
