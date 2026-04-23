@@ -60,6 +60,8 @@ namespace Velyra::Core {
 
         View<RenderPassLayout> createRenderPassLayout() override;
 
+        View<RenderPass> createRenderPass(const View<RenderPassLayout> &renderPassLayout) override;
+
     private:
 
         void initGlad() const;

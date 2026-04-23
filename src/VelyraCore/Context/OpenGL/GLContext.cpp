@@ -14,6 +14,7 @@
 #include "GLConstantBuffer.hpp"
 #include "GLSampler.hpp"
 #include "GLTexture2D.hpp"
+#include "GLRenderPass.hpp"
 
 namespace Velyra::Core {
 
@@ -47,6 +48,7 @@ namespace Velyra::Core {
         clearResources(m_Samplers);
         clearResources(m_Texture2Ds);
         clearResources(m_RenderPassLayouts);
+        clearResources(m_RenderPasses);
 
         terminateGlad();
     }
@@ -225,6 +227,11 @@ namespace Velyra::Core {
     View<RenderPassLayout> GLContext::createRenderPassLayout() {
         m_RenderPassLayouts.emplace_back(createUP<RenderPassLayout>(*m_Device));
         return m_RenderPassLayouts.back();
+    }
+
+    View<RenderPass> GLContext::createRenderPass(const View<RenderPassLayout> &renderPassLayout) {
+        m_RenderPasses.emplace_back(createUP<GLRenderPass>(renderPassLayout, *m_Device));
+        return m_RenderPasses.back();
     }
 
     void GLContext::initGlad() const {

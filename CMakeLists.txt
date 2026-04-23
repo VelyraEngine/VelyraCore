@@ -216,6 +216,7 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestSampler.cpp
     test/Context/TestDefinitions.cpp
     test/Context/TestTexture2D.cpp
+    test/Context/TestRenderPass.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
 )

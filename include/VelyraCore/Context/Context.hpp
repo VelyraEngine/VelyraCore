@@ -13,6 +13,7 @@
 #include <VelyraCore/Context/Sampler.hpp>
 #include <VelyraCore/Context/Texture2D.hpp>
 #include <VelyraCore/Context/RenderPassLayout.hpp>
+#include <VelyraCore/Context/RenderPass.hpp>
 
 namespace Velyra::Core {
 
@@ -198,7 +199,18 @@ namespace Velyra::Core {
          */
         virtual View<Texture2D> createTexture2D(const Texture2DImageDesc& desc) = 0;
 
+        /**
+         * @brief Creates a render pass layout object
+         * @return
+         */
         virtual View<RenderPassLayout> createRenderPassLayout() = 0;
+
+        /**
+         * @brief Creates a render pass object
+         * @param renderPassLayout This layout object describes what attachments to create in the render pass
+         * @return
+         */
+        virtual View<RenderPass> createRenderPass(const View<RenderPassLayout>& renderPassLayout) = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
@@ -227,6 +239,7 @@ namespace Velyra::Core {
         std::vector<UP<Sampler>> m_Samplers;
         std::vector<UP<Texture2D>> m_Texture2Ds;
         std::vector<UP<RenderPassLayout>> m_RenderPassLayouts;
+        std::vector<UP<RenderPass>> m_RenderPasses;
     };
 
 

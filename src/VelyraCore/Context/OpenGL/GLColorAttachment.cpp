@@ -13,6 +13,7 @@ namespace Velyra::Core {
         glDesc.height = desc.height;
         glDesc.format = desc.format;
         glDesc.usage = desc.usage;
+        glDesc.generateMipmap = false; // Mipmaps are not needed for framebuffer attachments
         return glDesc;
     }
 
