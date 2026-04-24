@@ -3,6 +3,9 @@
 #include "GLRenderPass.hpp"
 #include "GLColorAttachment.hpp"
 
+#include "Internal/GLTextureStorage.hpp"
+#include "Internal/GLRenderBufferStorage.hpp"
+
 #include "../../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {
@@ -74,13 +77,32 @@ namespace Velyra::Core {
             desc.height = layout->getHeight();
             desc.clearColor = attachDesc.clearColor;
             desc.format = attachDesc.format;
+            desc.usage = attachDesc.usage;
+
+            UP<IGLFramebufferStorage> storage = nullptr;
+
             if (attachDesc.enableShaderAccess) {
-                auto attachment = createUP<GLColorAttachment>(desc, device, m_FrameBufferID, attachmentIndex);
-                m_ColorAttachments.push_back(std::move(attachment));
+                // Use texture storage for shader-accessible attachments
+                GLTextureDesc texDesc;
+                texDesc.target = GL_TEXTURE_2D;
+                texDesc.width = desc.width;
+                texDesc.height = desc.height;
+                texDesc.format = desc.format;
+                texDesc.usage = desc.usage;
+                texDesc.generateMipmap = false; // Mipmaps are not needed for framebuffer attachments
+                storage = createUP<GLTextureStorage>(texDesc, device);
             }
             else {
-                // TODO: Implement color attachments as render buffers as well!
+                // Use renderbuffer storage for non-shader-accessible attachments (more efficient)
+                GLRenderBufferDesc rbDesc;
+                rbDesc.width = desc.width;
+                rbDesc.height = desc.height;
+                rbDesc.format = desc.format;
+                storage = createUP<GLRenderBufferStorage>(rbDesc, device);
             }
+
+            auto attachment = createUP<GLColorAttachment>(desc, device, m_FrameBufferID, attachmentIndex, std::move(storage));
+            m_ColorAttachments.push_back(std::move(attachment));
 
             drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + attachmentIndex);
             attachmentIndex++;

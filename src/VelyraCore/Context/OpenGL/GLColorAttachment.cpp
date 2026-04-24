@@ -6,38 +6,36 @@
 
 namespace Velyra::Core {
 
-    GLTextureDesc createGLColorAttachmentDesc(const ColorAttachmentDesc& desc) {
-        GLTextureDesc glDesc;
-        glDesc.target = GL_TEXTURE_2D;
-        glDesc.width = desc.width;
-        glDesc.height = desc.height;
-        glDesc.format = desc.format;
-        glDesc.usage = desc.usage;
-        glDesc.generateMipmap = false; // Mipmaps are not needed for framebuffer attachments
-        return glDesc;
-    }
-
-    GLColorAttachment::GLColorAttachment(const ColorAttachmentDesc &desc, const Device &device, const U32 framebufferID, const U32 attachmentID):
+    GLColorAttachment::GLColorAttachment(const ColorAttachmentDesc& desc, const Device& device, const U32 framebufferID, const U32 attachmentID, UP<IGLFramebufferStorage> storage):
     ColorAttachment(desc, device),
-    m_Texture(createGLColorAttachmentDesc(desc), device),
+    m_Storage(std::move(storage)),
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)),
     m_FrameBufferID(framebufferID),
-    m_AttachmentID(attachmentID){
+    m_AttachmentID(attachmentID) {
+        VL_PRECONDITION(m_Storage != nullptr, "[GLColorAttachment]: Storage cannot be null");
 
-        // TODO: Maybe this line can be moved to the framebuffer class?
-        glNamedFramebufferTexture(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_AttachmentID, m_Texture.getTextureID(), 0);
+        m_Storage->attachToFramebuffer(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_AttachmentID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLColorAttachment with ID {} for framebuffer {} at attachment point {}", m_Texture.getTextureID(), m_FrameBufferID, m_AttachmentID);
+        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLColorAttachment with ID {} for framebuffer {} at attachment point {}", m_Storage->getID(), m_FrameBufferID, m_AttachmentID);
     }
 
     GLColorAttachment::~GLColorAttachment() = default;
 
     void GLColorAttachment::bind() const {
-        m_Texture.bind();
+        if (!m_Storage->supportsShaderAccess()) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to bind color attachment {} which does not support binding", m_Storage->getID());
+            return;
+        }
+        // Note: bind() is typically not needed for framebuffer attachments, but kept for API consistency
+        SPDLOG_LOGGER_TRACE(m_Logger, "Binding color attachment {}", m_Storage->getID());
     }
 
     void GLColorAttachment::bindShaderResource(const U32 slot) const {
-        m_Texture.bindShaderResource(slot);
+        if (!m_Storage->supportsShaderAccess()) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to bind color attachment {} as shader resource, but storage does not support shader access", m_Storage->getID());
+            return;
+        }
+        m_Storage->bindShaderResource(slot);
     }
 
     void GLColorAttachment::clear() const {
@@ -45,14 +43,20 @@ namespace Velyra::Core {
     }
 
     void GLColorAttachment::onResize(const Size width, const Size height) {
-        m_Texture.onResize(width, height);
+        m_Width = width;
+        m_Height = height;
+        m_Storage->onResize(width, height);
     }
 
     UP<Image::IImage> GLColorAttachment::getData() const {
-        return m_Texture.getData();
+        if (!m_Storage->supportsReadback()) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to read data from color attachment {}, but storage does not support readback", m_Storage->getID());
+            return nullptr;
+        }
+        return m_Storage->getData();
     }
 
     U64 GLColorAttachment::getIdentifier() const {
-        return m_Texture.getTextureID();
+        return m_Storage->getID();
     }
 }

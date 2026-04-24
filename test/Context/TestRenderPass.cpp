@@ -82,6 +82,37 @@ TYPED_TEST(TestRenderPass, ClearRenderPass1CATexture) {
     this->compareColorAttachmentDataF32(clearColor, ca1);
 }
 
+TYPED_TEST(TestRenderPass, ClearRenderPass1CARenderBuffer) {
+    auto rpLayout = Environment<TypeParam>::m_Window->getContext()->createRenderPassLayout();
+    rpLayout->setDimensions(this->m_Width, this->m_Height);
+    RenderPassColorAttachmentDesc caDesc;
+    const Utils::Color clearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    caDesc.clearColor = clearColor;
+    caDesc.format = VL_TEXTURE_RGBA_F32;
+    caDesc.enableShaderAccess = false;
+    caDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
+    rpLayout->addColorAttachment(caDesc);
+
+    // Create the Render Pass
+    auto rp = Environment<TypeParam>::m_Window->getContext()->createRenderPass(rpLayout);
+    ASSERT_NE(rp, nullptr);
+    const auto& ca1 = rp->getColorAttachment(0);
+    ASSERT_NE(ca1, nullptr);
+    EXPECT_EQ(ca1->getWidth(), this->m_Width);
+    EXPECT_EQ(ca1->getHeight(), this->m_Height);
+    EXPECT_EQ(ca1->getFormat(), VL_TEXTURE_RGBA_F32);
+    EXPECT_EQ(ca1->getClearColor(), clearColor);
+
+    // Now Clear it!
+    rp->clear();
+
+    // Check if the clear color is correct
+    auto img = ca1->getData();
+    EXPECT_EQ(img->getWidth(), this->m_Width);
+    EXPECT_EQ(img->getHeight(), this->m_Height);
+    this->compareColorAttachmentDataF32(clearColor, ca1);
+}
+
 TYPED_TEST(TestRenderPass, ClearRenderPass2CATexture) {
     auto rpLayout = Environment<TypeParam>::m_Window->getContext()->createRenderPassLayout();
     rpLayout->setDimensions(this->m_Width, this->m_Height);
@@ -209,7 +240,12 @@ TYPED_TEST(TestRenderPass, DrawRenderPass2CATexture) {
     caDesc.enableShaderAccess = true;
     caDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
     rpLayout->addColorAttachment(caDesc);
-    rpLayout->addColorAttachment(caDesc); // Add a second attachment with the same properties to test multiple attachments
+    RenderPassColorAttachmentDesc caDescRb;
+    caDescRb.clearColor = clearColor;
+    caDescRb.format = VL_TEXTURE_RGBA_F32;
+    caDescRb.enableShaderAccess = false; // This will force the implementation to use a renderbuffer for this attachment
+    caDescRb.usage = VL_BUFFER_USAGE_DYNAMIC;
+    rpLayout->addColorAttachment(caDescRb); // Add a second attachment with the same properties to test multiple attachments
 
     auto rp = Environment<TypeParam>::m_Window->getContext()->createRenderPass(rpLayout);
     ASSERT_NE(rp, nullptr);

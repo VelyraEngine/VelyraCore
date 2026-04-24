@@ -2,13 +2,13 @@
 
 #include <VelyraCore/Context/ColorAttachment.hpp>
 
-#include "Internal/GLTexture.hpp"
+#include "Internal/IGLFramebufferStorage.hpp"
 
 namespace Velyra::Core {
 
     class GLColorAttachment : public ColorAttachment {
     public:
-        GLColorAttachment(const ColorAttachmentDesc& desc, const Device& device, U32 framebufferID, U32 attachmentID);
+        GLColorAttachment(const ColorAttachmentDesc& desc, const Device& device, U32 framebufferID, U32 attachmentID, UP<IGLFramebufferStorage> storage);
 
         ~GLColorAttachment() override;
 
@@ -25,7 +25,7 @@ namespace Velyra::Core {
         [[nodiscard]] U64 getIdentifier() const override;
 
     private:
-        GLTexture m_Texture;
+        UP<IGLFramebufferStorage> m_Storage;
         const Utils::LogPtr m_Logger;
 
         const U32 m_FrameBufferID;

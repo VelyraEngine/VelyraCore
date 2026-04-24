@@ -86,6 +86,9 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTexture.hpp
+    src/VelyraCore/Context/OpenGL/Internal/GLRenderBuffer.hpp
+    src/VelyraCore/Context/OpenGL/Internal/GLTextureStorage.hpp
+    src/VelyraCore/Context/OpenGL/Internal/GLRenderBufferStorage.hpp
 )
 
 set(VELYRA_CORE_CONTEXT_SRC
@@ -111,6 +114,9 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLTexture.cpp
+    src/VelyraCore/Context/OpenGL/Internal/GLRenderBuffer.cpp
+    src/VelyraCore/Context/OpenGL/Internal/GLTextureStorage.cpp
+    src/VelyraCore/Context/OpenGL/Internal/GLRenderBufferStorage.cpp
 )
 
 set(VELYRA_CORE_HEADERS
