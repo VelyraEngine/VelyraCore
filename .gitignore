@@ -40,5 +40,16 @@
 # debug information files
 *.dwo
 
+# Code coverage files
+*.gcda
+*.gcno
+*.gcov
+coverage.info
+coverage_filtered.info
+coverage_*.xml
+coverage_*.json
+coverage_*/
+coverage_gcovr_*/
+
 ./cmake-build-debug
 ./cmake-build-release

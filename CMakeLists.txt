@@ -239,5 +239,12 @@ if (BUILD_TESTING)
     add_test(NAME CTestVelyraCore COMMAND ${PROOT} $<TARGET_FILE:TestVelyraCore>)
     set_tests_properties(CTestVelyraCore PROPERTIES
         WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+    
+    # Add code coverage targets
+    add_coverage_target(
+        TARGET_NAME TestVelyraCore
+        COVERAGE_NAME coverage
+        EXECUTABLE TestVelyraCore
+    )
 endif ()
 
