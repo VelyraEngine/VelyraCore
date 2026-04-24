@@ -24,6 +24,8 @@ namespace Velyra::Core {
         virtual void onResize(Size width, Size height, Size attachmentIndex) = 0;
 
         [[nodiscard]] const UP<ColorAttachment>& getColorAttachment(const Size index) const {
+            VL_PRECONDITION(index < m_ColorAttachments.size(), "[RenderPass]: Attempted to access color attachment at index {}, but only {} color attachments exist", index, m_ColorAttachments.size());
+
             return m_ColorAttachments.at(index);
         }
 

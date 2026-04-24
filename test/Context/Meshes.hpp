@@ -36,10 +36,18 @@ namespace Velyra::Core::Test {
 
     static std::vector<float> s_ScreenVertices = {
         // X      Y     Z     R     G       B
-        -1.0f,  -1.0f,  0.0f, 1.0f, 0.0f, 0.0f,
-        1.0f,   -1.0f,  0.0f, 0.0f, 1.0f, 0.0f,
-        1.0f,   1.0f,   0.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f,  -1.0f,  0.0f, 1.0f, 1.0f, 0.0f,
+        1.0f,   -1.0f,  0.0f, 1.0f, 1.0f, 0.0f,
+        1.0f,   1.0f,   0.0f, 1.0f, 1.0f, 0.0f,
         -1.0f,  1.0f,   0.0f, 1.0f, 1.0f, 0.0f
+    };
+
+    static std::vector<float> s_ScreenVertices2 = {
+        // X   Y      Z     R     G     B     R     G     B
+        -1.0f, -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        1.0f,  -1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        1.0f,  1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f,
+        -1.0f, 1.0f,  0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f
     };
 
 

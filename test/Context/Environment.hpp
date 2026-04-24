@@ -2,6 +2,12 @@
 
 #include <VelyraCore/VelyraCore.hpp>
 
+struct ShaderPackage {
+    Velyra::View<Velyra::Core::ShaderModule> vertexShader;
+    Velyra::View<Velyra::Core::ShaderModule> fragmentShader;
+    Velyra::View<Velyra::Core::Shader> shader;
+};
+
 template<typename WRAPPER>
 class Environment{
 public:
@@ -39,6 +45,32 @@ public:
         }
 
         return desc;
+    }
+
+    static ShaderPackage createShader(const std::string& vertexShaderCode, const std::string& fragmentShaderCode) {
+        using namespace Velyra;
+        using namespace Velyra::Core;
+
+        ShaderModuleDesc vsDesc;
+        vsDesc.entryPoint = "main";
+        vsDesc.shaderType = VL_SHADER_VERTEX;
+        vsDesc.code = vertexShaderCode;
+
+        ShaderModuleDesc fsDesc;
+        fsDesc.entryPoint = "main";
+        fsDesc.shaderType = VL_SHADER_FRAGMENT;
+        fsDesc.code = fragmentShaderCode;
+
+        ShaderPackage package;
+        package.vertexShader = m_Window->getContext()->createShaderModule(vsDesc);
+        package.fragmentShader = m_Window->getContext()->createShaderModule(fsDesc);
+
+        ShaderDesc shaderDesc;
+        shaderDesc.vertexShader = package.vertexShader;
+        shaderDesc.fragmentShader = package.fragmentShader;
+        package.shader = m_Window->getContext()->createShader(shaderDesc);
+
+        return package;
     }
 
 public:
