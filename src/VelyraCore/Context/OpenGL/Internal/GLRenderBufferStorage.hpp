@@ -15,6 +15,8 @@ namespace Velyra::Core {
 
         void onResize(Size width, Size height) override;
 
+        void bind() const override;
+
         [[nodiscard]] U64 getID() const override;
 
         [[nodiscard]] Size getWidth() const override;

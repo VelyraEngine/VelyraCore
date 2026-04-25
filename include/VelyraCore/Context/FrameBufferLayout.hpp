@@ -20,24 +20,6 @@ namespace Velyra::Core {
         VL_BUFFER_USAGE usage       = VL_BUFFER_USAGE_DEFAULT;
     };
 
-    struct VL_API FrameBufferDepthStencilStateDesc {
-        bool enableDepthTest                    = false;
-        VL_COMPARISON_FUNC depthComparisonFunc  = VL_COMPARISON_FUNC_LESS;
-        VL_DEPTH_MASK depthMask                 = VL_DEPTH_MASK_ENABLED;
-
-        bool enableStencilTest                  = false;
-        VL_COMPARISON_FUNC stencilComparisonFunc= VL_COMPARISON_FUNC_ALWAYS;
-        U32 stencilMask                         = 0xFFFFFFFF;
-        VL_STENCIL_FUNC stencilFail             = VL_STENCIL_FUNC_KEEP;
-        VL_STENCIL_FUNC stencilPass             = VL_STENCIL_FUNC_KEEP;
-        VL_STENCIL_FUNC stencilPassDepthFail    = VL_STENCIL_FUNC_KEEP;
-    };
-
-    struct VL_API FrameBufferDepthStencilDesc {
-        FrameBufferDepthStencilAttachmentDesc resource = {};
-        FrameBufferDepthStencilStateDesc state = {};
-    };
-
     class VL_API FrameBufferLayout {
     public:
         explicit FrameBufferLayout(const Device& device);
@@ -48,13 +30,13 @@ namespace Velyra::Core {
 
         void addColorAttachment(const FrameBufferColorAttachmentDesc& desc);
 
-        void setDepthStencilAttachment(const FrameBufferDepthStencilDesc& desc);
+        void setDepthStencilAttachment(const FrameBufferDepthStencilAttachmentDesc& desc);
 
         [[nodiscard]] bool isValid() const;
 
         [[nodiscard]] const std::vector<FrameBufferColorAttachmentDesc>& getColorAttachments() const;
 
-        [[nodiscard]] const std::optional<FrameBufferDepthStencilDesc>& getDepthStencilAttachment() const;
+        [[nodiscard]] const std::optional<FrameBufferDepthStencilAttachmentDesc>& getDepthStencilAttachment() const;
 
         [[nodiscard]] Size getWidth() const;
 
@@ -75,7 +57,7 @@ namespace Velyra::Core {
         Size m_Width = VL_DEFAULT_WIDTH;
         Size m_Height = VL_DEFAULT_HEIGHT;
 
-        std::optional<FrameBufferDepthStencilDesc> m_DepthStencilAttachment;
+        std::optional<FrameBufferDepthStencilAttachmentDesc> m_DepthStencilAttachment;
         std::vector<FrameBufferColorAttachmentDesc> m_ColorAttachments;
     };
 

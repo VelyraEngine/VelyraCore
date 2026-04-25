@@ -32,6 +32,10 @@ namespace Velyra::Core {
         m_RenderBuffer.onResize(width, height);
     }
 
+    void GLRenderBufferStorage::bind() const {
+        m_RenderBuffer.bind();
+    }
+
     U64 GLRenderBufferStorage::getID() const {
         return m_RenderBuffer.getRenderBufferID();
     }

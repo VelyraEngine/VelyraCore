@@ -18,11 +18,7 @@ namespace Velyra::Core {
 
         virtual void clear() = 0;
 
-        virtual void clear(Size attachmentIndex) = 0;
-
         virtual void onResize(Size width, Size height) = 0;
-
-        virtual void onResize(Size width, Size height, Size attachmentIndex) = 0;
 
         [[nodiscard]] const UP<ColorAttachment>& getColorAttachment(const Size index) const {
             VL_PRECONDITION(index < m_ColorAttachments.size(), "[FrameBuffer]: Attempted to access color attachment at index {}, but only {} color attachments exist", index, m_ColorAttachments.size());

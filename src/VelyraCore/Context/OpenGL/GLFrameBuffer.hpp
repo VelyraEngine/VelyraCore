@@ -16,15 +16,13 @@ namespace Velyra::Core {
 
         void clear() override;
 
-        void clear(Size attachmentIndex) override;
-
         void onResize(Size width, Size height) override;
-
-        void onResize(Size width, Size height, Size attachmentIndex) override;
 
     private:
 
         void createColorAttachments(const View<FrameBufferLayout>& layout, const Device& device);
+
+        void createDepthStencilAttachment(const View<FrameBufferLayout>& layout, const Device& device);
 
         GLenum checkFrameBufferStatus();
 

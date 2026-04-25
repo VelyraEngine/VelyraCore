@@ -84,6 +84,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/GLColorAttachment.hpp
     src/VelyraCore/Context/OpenGL/GLFrameBuffer.hpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilState.hpp
+    src/VelyraCore/Context/OpenGL/GLDepthStencilAttachment.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
@@ -114,6 +115,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLColorAttachment.cpp
     src/VelyraCore/Context/OpenGL/GLFrameBuffer.cpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilState.cpp
+    src/VelyraCore/Context/OpenGL/GLDepthStencilAttachment.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp

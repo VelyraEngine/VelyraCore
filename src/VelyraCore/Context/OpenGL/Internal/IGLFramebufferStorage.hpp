@@ -13,6 +13,8 @@ namespace Velyra::Core {
 
         virtual void onResize(Size width, Size height) = 0;
 
+        virtual void bind() const = 0;
+
         [[nodiscard]] virtual U64 getID() const = 0;
 
         [[nodiscard]] virtual Size getWidth() const = 0;

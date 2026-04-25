@@ -16,6 +16,10 @@ namespace Velyra::Core {
         m_Texture.onResize(width, height);
     }
 
+    void GLTextureStorage::bind() const {
+        m_Texture.bind();
+    }
+
     U64 GLTextureStorage::getID() const {
         return m_Texture.getTextureID();
     }

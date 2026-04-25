@@ -22,12 +22,7 @@ namespace Velyra::Core {
     GLColorAttachment::~GLColorAttachment() = default;
 
     void GLColorAttachment::bind() const {
-        if (!m_Storage->supportsShaderAccess()) {
-            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to bind color attachment {} which does not support binding", m_Storage->getID());
-            return;
-        }
-        // Note: bind() is typically not needed for framebuffer attachments, but kept for API consistency
-        SPDLOG_LOGGER_TRACE(m_Logger, "Binding color attachment {}", m_Storage->getID());
+        m_Storage->bind();
     }
 
     void GLColorAttachment::bindShaderResource(const U32 slot) const {

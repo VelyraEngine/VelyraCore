@@ -41,4 +41,10 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "Resized RenderBuffer object {} to new dimensions: {}x{}", m_RenderBufferID, width, height);
     }
 
+    void GLRenderBuffer::bind() const {
+        VL_PRECONDITION(m_RenderBufferID != 0, "GLRenderBuffer object not created!");
+
+        glBindRenderbuffer(GL_RENDERBUFFER, m_RenderBufferID);
+    }
+
 }

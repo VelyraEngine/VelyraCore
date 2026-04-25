@@ -19,6 +19,8 @@ namespace Velyra::Core {
 
         void onResize(Size width, Size height);
 
+        void bind() const;
+
         [[nodiscard]] GLuint getRenderBufferID() const {
             return m_RenderBufferID;
         }

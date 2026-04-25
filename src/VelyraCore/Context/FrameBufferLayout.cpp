@@ -20,7 +20,7 @@ namespace Velyra::Core {
         m_ColorAttachments.emplace_back(desc);
     }
 
-    void FrameBufferLayout::setDepthStencilAttachment(const FrameBufferDepthStencilDesc &desc) {
+    void FrameBufferLayout::setDepthStencilAttachment(const FrameBufferDepthStencilAttachmentDesc &desc) {
         m_DepthStencilAttachment = desc;
     }
 
@@ -32,7 +32,7 @@ namespace Velyra::Core {
         return m_ColorAttachments;
     }
 
-    const std::optional<FrameBufferDepthStencilDesc> &FrameBufferLayout::getDepthStencilAttachment() const {
+    const std::optional<FrameBufferDepthStencilAttachmentDesc> &FrameBufferLayout::getDepthStencilAttachment() const {
         return m_DepthStencilAttachment;
     }
 
@@ -85,15 +85,15 @@ namespace Velyra::Core {
             return true; // depth stencil attachment is optional
         }
         const auto& desc = m_DepthStencilAttachment.value();
-        if (desc.resource.enableShaderAccess) {
-            if (!m_Device.isTextureFormatSupported(desc.resource.format)) {
-                SPDLOG_LOGGER_WARN(m_Logger, "The device does not support format: {} as a shader resource format for depth stencil attachments", desc.resource.format);
+        if (desc.enableShaderAccess) {
+            if (!m_Device.isTextureFormatSupported(desc.format)) {
+                SPDLOG_LOGGER_WARN(m_Logger, "The device does not support format: {} as a shader resource format for depth stencil attachments", desc.format);
                 return false;
             }
         }
         else {
-            if (!m_Device.isDepthStencilAttachmentFormatSupported(desc.resource.format)) {
-                SPDLOG_LOGGER_WARN(m_Logger, "The device does not support format: {} as a depth stencil attachment format", desc.resource.format);
+            if (!m_Device.isDepthStencilAttachmentFormatSupported(desc.format)) {
+                SPDLOG_LOGGER_WARN(m_Logger, "The device does not support format: {} as a depth stencil attachment format", desc.format);
                 return false;
             }
         }

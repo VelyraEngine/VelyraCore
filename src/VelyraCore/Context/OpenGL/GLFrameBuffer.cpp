@@ -2,6 +2,7 @@
 
 #include "GLFrameBuffer.hpp"
 #include "GLColorAttachment.hpp"
+#include "GLDepthStencilAttachment.hpp"
 
 #include "Internal/GLTextureStorage.hpp"
 #include "Internal/GLRenderBufferStorage.hpp"
@@ -42,30 +43,18 @@ namespace Velyra::Core {
         for (const auto& attachment: m_ColorAttachments) {
             attachment->clear();
         }
-    }
-
-    void GLFrameBuffer::clear(const Size attachmentIndex) {
-        if (attachmentIndex >= m_ColorAttachments.size()) {
-            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to clear color attachment at index {} which is out of bounds for framebuffer {}", attachmentIndex, m_FrameBufferID);
-            return;
+        if (m_DepthStencilAttachment) {
+            m_DepthStencilAttachment->clear();
         }
-        m_ColorAttachments.at(attachmentIndex)->clear();
-
     }
 
     void GLFrameBuffer::onResize(const Size width, const Size height) {
         for (const auto& attachment: m_ColorAttachments) {
             attachment->onResize(width, height);
         }
-    }
-
-    void GLFrameBuffer::onResize(const Size width, const Size height, const Size attachmentIndex) {
-        if (attachmentIndex >= m_ColorAttachments.size()) {
-            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to resize color attachment at index {} which is out of bounds for framebuffer {}", attachmentIndex, m_FrameBufferID);
-            return;
+        if (m_DepthStencilAttachment) {
+            m_DepthStencilAttachment->onResize(width, height);
         }
-        m_ColorAttachments.at(attachmentIndex)->onResize(width, height);
-
     }
 
     void GLFrameBuffer::createColorAttachments(const View<FrameBufferLayout> &layout, const Device& device) {
@@ -108,6 +97,41 @@ namespace Velyra::Core {
             attachmentIndex++;
         }
         glNamedFramebufferDrawBuffers(m_FrameBufferID, static_cast<GLsizei>(drawBuffers.size()), drawBuffers.data());
+    }
+
+    void GLFrameBuffer::createDepthStencilAttachment(const View<FrameBufferLayout> &layout, const Device &device) {
+        const auto& optDesc = layout->getDepthStencilAttachment();
+        if (!optDesc.has_value()) {
+            return;
+        }
+        const FrameBufferDepthStencilAttachmentDesc& desc = optDesc.value();
+        DepthStencilAttachmentDesc dsDesc;
+        dsDesc.width = layout->getWidth();
+        dsDesc.height = layout->getHeight();
+        dsDesc.clearDepth = desc.clearDepth;
+        dsDesc.clearStencil = desc.clearStencil;
+        dsDesc.format = desc.format;
+        UP<IGLFramebufferStorage> storage = nullptr;
+        if (desc.enableShaderAccess) {
+            // Use texture storage for shader-accessible attachments
+            GLTextureDesc texDesc;
+            texDesc.target = GL_TEXTURE_2D;
+            texDesc.width = dsDesc.width;
+            texDesc.height = dsDesc.height;
+            texDesc.format = dsDesc.format;
+            texDesc.usage = desc.usage;
+            texDesc.generateMipmap = false; // Mipmaps are not needed for framebuffer attachments
+            storage = createUP<GLTextureStorage>(texDesc, device);
+        }
+        else {
+            // Use renderbuffer storage for non-shader-accessible attachments (more efficient)
+            GLRenderBufferDesc rbDesc;
+            rbDesc.width = dsDesc.width;
+            rbDesc.height = dsDesc.height;
+            rbDesc.format = dsDesc.format;
+            storage = createUP<GLRenderBufferStorage>(rbDesc, device);
+        }
+        m_DepthStencilAttachment = createUP<GLDepthStencilAttachment>(dsDesc, device, m_FrameBufferID, std::move(storage));
     }
 
     GLenum GLFrameBuffer::checkFrameBufferStatus() {
