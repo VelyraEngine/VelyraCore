@@ -1,6 +1,6 @@
 #include "../../Pch.hpp"
 
-#include "GLRenderPass.hpp"
+#include "GLFrameBuffer.hpp"
 #include "GLColorAttachment.hpp"
 
 #include "Internal/GLTextureStorage.hpp"
@@ -10,65 +10,65 @@
 
 namespace Velyra::Core {
 
-    GLRenderPass::GLRenderPass(const View<RenderPassLayout> &layout, const Device& device):
-    RenderPass(layout),
+    GLFrameBuffer::GLFrameBuffer(const View<FrameBufferLayout> &layout, const Device& device):
+    FrameBuffer(layout),
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)){
         glCreateFramebuffers(1, &m_FrameBufferID);
         createColorAttachments(layout, device);
         checkFrameBufferStatus();
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "RenderPass: {} created", m_FrameBufferID);
+        SPDLOG_LOGGER_TRACE(m_Logger, "FrameBuffer: {} created", m_FrameBufferID);
     }
 
-    GLRenderPass::~GLRenderPass() {
+    GLFrameBuffer::~GLFrameBuffer() {
         glDeleteFramebuffers(1, &m_FrameBufferID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "RenderPass: {} destroyed", m_FrameBufferID);
+        SPDLOG_LOGGER_TRACE(m_Logger, "FrameBuffer: {} destroyed", m_FrameBufferID);
     }
 
-    void GLRenderPass::begin() {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Beginning RenderPass: {}", m_FrameBufferID);
+    void GLFrameBuffer::begin() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Beginning FrameBuffer: {}", m_FrameBufferID);
 
         glBindFramebuffer(GL_FRAMEBUFFER, m_FrameBufferID);
     }
 
-    void GLRenderPass::end() {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Ending RenderPass: {}", m_FrameBufferID);
+    void GLFrameBuffer::end() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Ending FrameBuffer: {}", m_FrameBufferID);
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
-    void GLRenderPass::clear() {
+    void GLFrameBuffer::clear() {
         for (const auto& attachment: m_ColorAttachments) {
             attachment->clear();
         }
     }
 
-    void GLRenderPass::clear(const Size attachmentIndex) {
+    void GLFrameBuffer::clear(const Size attachmentIndex) {
         if (attachmentIndex >= m_ColorAttachments.size()) {
-            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to clear color attachment at index {} which is out of bounds for render pass {}", attachmentIndex, m_FrameBufferID);
+            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to clear color attachment at index {} which is out of bounds for framebuffer {}", attachmentIndex, m_FrameBufferID);
             return;
         }
         m_ColorAttachments.at(attachmentIndex)->clear();
 
     }
 
-    void GLRenderPass::onResize(const Size width, const Size height) {
+    void GLFrameBuffer::onResize(const Size width, const Size height) {
         for (const auto& attachment: m_ColorAttachments) {
             attachment->onResize(width, height);
         }
     }
 
-    void GLRenderPass::onResize(const Size width, const Size height, const Size attachmentIndex) {
+    void GLFrameBuffer::onResize(const Size width, const Size height, const Size attachmentIndex) {
         if (attachmentIndex >= m_ColorAttachments.size()) {
-            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to resize color attachment at index {} which is out of bounds for render pass {}", attachmentIndex, m_FrameBufferID);
+            SPDLOG_LOGGER_WARN(m_Logger, "Attempted to resize color attachment at index {} which is out of bounds for framebuffer {}", attachmentIndex, m_FrameBufferID);
             return;
         }
         m_ColorAttachments.at(attachmentIndex)->onResize(width, height);
 
     }
 
-    void GLRenderPass::createColorAttachments(const View<RenderPassLayout> &layout, const Device& device) {
+    void GLFrameBuffer::createColorAttachments(const View<FrameBufferLayout> &layout, const Device& device) {
         std::vector<GLenum> drawBuffers;
         U32 attachmentIndex = 0;
         for (const auto& attachDesc: layout->getColorAttachments()) {
@@ -110,7 +110,7 @@ namespace Velyra::Core {
         glNamedFramebufferDrawBuffers(m_FrameBufferID, static_cast<GLsizei>(drawBuffers.size()), drawBuffers.data());
     }
 
-    GLenum GLRenderPass::checkFrameBufferStatus() {
+    GLenum GLFrameBuffer::checkFrameBufferStatus() {
         const GLenum status = glCheckNamedFramebufferStatus(m_FrameBufferID, GL_FRAMEBUFFER);
         switch (status) {
             case GL_FRAMEBUFFER_COMPLETE:

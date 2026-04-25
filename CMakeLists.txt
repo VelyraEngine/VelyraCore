@@ -64,9 +64,11 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/ConstantBuffer.hpp
     include/VelyraCore/Context/Sampler.hpp
     include/VelyraCore/Context/Texture2D.hpp
-    include/VelyraCore/Context/RenderPassLayout.hpp
+    include/VelyraCore/Context/FrameBufferLayout.hpp
     include/VelyraCore/Context/ColorAttachment.hpp
-    include/VelyraCore/Context/RenderPass.hpp
+    include/VelyraCore/Context/FrameBuffer.hpp
+    include/VelyraCore/Context/DepthStencilAttachment.hpp
+    include/VelyraCore/Context/DepthStencilState.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -80,7 +82,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/GLSampler.hpp
     src/VelyraCore/Context/OpenGL/GLTexture2D.hpp
     src/VelyraCore/Context/OpenGL/GLColorAttachment.hpp
-    src/VelyraCore/Context/OpenGL/GLRenderPass.hpp
+    src/VelyraCore/Context/OpenGL/GLFrameBuffer.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
@@ -95,7 +97,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/Context.cpp
     src/VelyraCore/Context/VertexLayout.cpp
     src/VelyraCore/Context/Definitions.cpp
-    src/VelyraCore/Context/RenderPassLayout.cpp
+    src/VelyraCore/Context/FrameBufferLayout.cpp
 
     src/VelyraCore/Context/OpenGL/GLContext.cpp
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
@@ -109,7 +111,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLSampler.cpp
     src/VelyraCore/Context/OpenGL/GLTexture2D.cpp
     src/VelyraCore/Context/OpenGL/GLColorAttachment.cpp
-    src/VelyraCore/Context/OpenGL/GLRenderPass.cpp
+    src/VelyraCore/Context/OpenGL/GLFrameBuffer.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp
@@ -223,7 +225,7 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestSampler.cpp
     test/Context/TestDefinitions.cpp
     test/Context/TestTexture2D.cpp
-    test/Context/TestRenderPass.cpp
+    test/Context/TestFrameBuffer.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
 )

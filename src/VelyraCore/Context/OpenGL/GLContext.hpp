@@ -58,9 +58,9 @@ namespace Velyra::Core {
 
         View<Texture2D> createTexture2D(const Texture2DImageDesc &desc) override;
 
-        View<RenderPassLayout> createRenderPassLayout() override;
+        View<FrameBufferLayout> createFrameBufferLayout() override;
 
-        View<RenderPass> createRenderPass(const View<RenderPassLayout> &renderPassLayout) override;
+        View<FrameBuffer> createFrameBuffer(const View<FrameBufferLayout> &frameBufferLayout) override;
 
     private:
 

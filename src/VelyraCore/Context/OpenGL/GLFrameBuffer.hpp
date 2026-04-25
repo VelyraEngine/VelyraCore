@@ -1,14 +1,14 @@
 #pragma once
 
-#include <VelyraCore/Context/RenderPass.hpp>
+#include <VelyraCore/Context/FrameBuffer.hpp>
 
 namespace Velyra::Core {
 
-    class GLRenderPass: public RenderPass {
+    class GLFrameBuffer: public FrameBuffer {
     public:
-        GLRenderPass(const View<RenderPassLayout>& layout, const Device& device);
+        GLFrameBuffer(const View<FrameBufferLayout>& layout, const Device& device);
 
-        ~GLRenderPass() override;
+        ~GLFrameBuffer() override;
 
         void begin() override;
 
@@ -24,7 +24,7 @@ namespace Velyra::Core {
 
     private:
 
-        void createColorAttachments(const View<RenderPassLayout>& layout, const Device& device);
+        void createColorAttachments(const View<FrameBufferLayout>& layout, const Device& device);
 
         GLenum checkFrameBufferStatus();
 

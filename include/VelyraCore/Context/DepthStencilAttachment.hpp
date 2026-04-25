@@ -1,30 +1,30 @@
 #pragma once
 
 #include <VelyraCore/Context/Device.hpp>
-#include <VelyraUtils/Types/Color.hpp>
 
 namespace Velyra::Core {
 
-    struct VL_API ColorAttachmentDesc {
+    struct VL_API DepthStencilAttachmentDesc {
         Size width                  = VL_DEFAULT_WIDTH;
         Size height                 = VL_DEFAULT_HEIGHT;
-        Utils::Color clearColor     = {0.2f, 0.3f, 0.8f, 1.0f};
-        VL_TEXTURE_FORMAT format    = VL_TEXTURE_RGBA_F32;
-        VL_BUFFER_USAGE usage       = VL_BUFFER_USAGE_DEFAULT;
+        VL_TEXTURE_FORMAT format    = VL_TEXTURE_DEPTH_24_STENCIL_8;
+        float clearDepth            = 1.0f;
+        U32 clearStencil            = 0;
         bool enableShaderAccess     = false; // enables sampling from this attachment in shaders
     };
 
-    class VL_API ColorAttachment {
+    class VL_API DepthStencilAttachment {
     public:
-        ColorAttachment(const ColorAttachmentDesc& desc, const Device& device):
-            m_Device(device),
-            m_Width(desc.width),
-            m_Height(desc.height),
-            m_ClearColor(desc.clearColor),
-            m_Format(desc.format) {
+        DepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Device& device):
+        m_Device(device),
+        m_Width(desc.width),
+        m_Height(desc.height),
+        m_Format(desc.format),
+        m_ClearDepth(desc.clearDepth),
+        m_ClearStencil(desc.clearStencil) {
         }
 
-        virtual ~ColorAttachment() = default;
+        virtual ~DepthStencilAttachment() = default;
 
         virtual void bind() const = 0;
 
@@ -44,15 +44,19 @@ namespace Velyra::Core {
 
         [[nodiscard]] VL_TEXTURE_FORMAT getFormat() const { return m_Format; }
 
-        [[nodiscard]] const Utils::Color& getClearColor() const { return m_ClearColor; }
+        [[nodiscard]] float getClearDepth() const { return m_ClearDepth; }
+
+        [[nodiscard]] U32 getClearStencil() const { return m_ClearStencil; }
 
     protected:
         const Device& m_Device;
 
         Size m_Width;
         Size m_Height;
-        Utils::Color m_ClearColor;
         VL_TEXTURE_FORMAT m_Format;
+        float m_ClearDepth;
+        U32 m_ClearStencil;
+
     };
 
 }

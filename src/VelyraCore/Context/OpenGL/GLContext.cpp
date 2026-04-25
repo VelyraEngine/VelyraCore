@@ -14,7 +14,7 @@
 #include "GLConstantBuffer.hpp"
 #include "GLSampler.hpp"
 #include "GLTexture2D.hpp"
-#include "GLRenderPass.hpp"
+#include "GLFrameBuffer.hpp"
 
 namespace Velyra::Core {
 
@@ -47,8 +47,8 @@ namespace Velyra::Core {
         clearResources(m_ConstantBuffers);
         clearResources(m_Samplers);
         clearResources(m_Texture2Ds);
-        clearResources(m_RenderPassLayouts);
-        clearResources(m_RenderPasses);
+        clearResources(m_FrameBufferLayouts);
+        clearResources(m_FrameBuffers);
 
         terminateGlad();
     }
@@ -224,14 +224,14 @@ namespace Velyra::Core {
         return m_Texture2Ds.back();
     }
 
-    View<RenderPassLayout> GLContext::createRenderPassLayout() {
-        m_RenderPassLayouts.emplace_back(createUP<RenderPassLayout>(*m_Device));
-        return m_RenderPassLayouts.back();
+    View<FrameBufferLayout> GLContext::createFrameBufferLayout() {
+        m_FrameBufferLayouts.emplace_back(createUP<FrameBufferLayout>(*m_Device));
+        return m_FrameBufferLayouts.back();
     }
 
-    View<RenderPass> GLContext::createRenderPass(const View<RenderPassLayout> &renderPassLayout) {
-        m_RenderPasses.emplace_back(createUP<GLRenderPass>(renderPassLayout, *m_Device));
-        return m_RenderPasses.back();
+    View<FrameBuffer> GLContext::createFrameBuffer(const View<FrameBufferLayout> &frameBufferLayout) {
+        m_FrameBuffers.emplace_back(createUP<GLFrameBuffer>(frameBufferLayout, *m_Device));
+        return m_FrameBuffers.back();
     }
 
     void GLContext::initGlad() const {

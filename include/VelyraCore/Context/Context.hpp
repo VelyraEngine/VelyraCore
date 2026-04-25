@@ -12,8 +12,8 @@
 #include <VelyraCore/Context/ConstantBuffer.hpp>
 #include <VelyraCore/Context/Sampler.hpp>
 #include <VelyraCore/Context/Texture2D.hpp>
-#include <VelyraCore/Context/RenderPassLayout.hpp>
-#include <VelyraCore/Context/RenderPass.hpp>
+#include <VelyraCore/Context/FrameBufferLayout.hpp>
+#include <VelyraCore/Context/FrameBuffer.hpp>
 
 namespace Velyra::Core {
 
@@ -200,17 +200,17 @@ namespace Velyra::Core {
         virtual View<Texture2D> createTexture2D(const Texture2DImageDesc& desc) = 0;
 
         /**
-         * @brief Creates a render pass layout object
+         * @brief Creates a framebuffer layout object
          * @return
          */
-        virtual View<RenderPassLayout> createRenderPassLayout() = 0;
+        virtual View<FrameBufferLayout> createFrameBufferLayout() = 0;
 
         /**
-         * @brief Creates a render pass object
-         * @param renderPassLayout This layout object describes what attachments to create in the render pass
+         * @brief Creates a framebuffer object
+         * @param frameBufferLayout This layout object describes what attachments to create in the framebuffer
          * @return
          */
-        virtual View<RenderPass> createRenderPass(const View<RenderPassLayout>& renderPassLayout) = 0;
+        virtual View<FrameBuffer> createFrameBuffer(const View<FrameBufferLayout>& frameBufferLayout) = 0;
 
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
@@ -238,8 +238,8 @@ namespace Velyra::Core {
         std::vector<UP<ConstantBuffer>> m_ConstantBuffers;
         std::vector<UP<Sampler>> m_Samplers;
         std::vector<UP<Texture2D>> m_Texture2Ds;
-        std::vector<UP<RenderPassLayout>> m_RenderPassLayouts;
-        std::vector<UP<RenderPass>> m_RenderPasses;
+        std::vector<UP<FrameBufferLayout>> m_FrameBufferLayouts;
+        std::vector<UP<FrameBuffer>> m_FrameBuffers;
     };
 
 
