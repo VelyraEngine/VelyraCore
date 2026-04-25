@@ -56,6 +56,24 @@ namespace Velyra::Core {
 
         virtual void setStencilPassDepthFailOp(VL_STENCIL_FUNC func) = 0;
 
+        [[nodiscard]] bool isDepthTestEnabled() const { return m_DepthTestEnabled; }
+
+        [[nodiscard]] VL_COMPARISON_FUNC getDepthComparisonFunc() const { return m_DepthComparisonFunc; }
+
+        [[nodiscard]] VL_DEPTH_MASK getDepthMask() const { return m_DepthMask; }
+
+        [[nodiscard]] bool isStencilTestEnabled() const { return m_StencilTestEnabled; }
+
+        [[nodiscard]] VL_COMPARISON_FUNC getStencilComparisonFunc() const { return m_StencilComparisonFunc; }
+
+        [[nodiscard]] U32 getStencilMask() const { return m_StencilMask; }
+
+        [[nodiscard]] VL_STENCIL_FUNC getStencilFailOp() const { return m_StencilFailOp; }
+
+        [[nodiscard]] VL_STENCIL_FUNC getStencilPassOp() const { return m_StencilPassOp; }
+
+        [[nodiscard]] VL_STENCIL_FUNC getStencilPassDepthFailOp() const { return m_StencilPassDepthFailOp; }
+
     protected:
         const Device& m_Device;
 

@@ -198,6 +198,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/MeshBindingProcedure.hpp
     src/VelyraCoreSandBox/Procedures/TexturedMVPProcedure.cpp
     src/VelyraCoreSandBox/Procedures/TexturedMVPProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/DepthStencilStateProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/DepthStencilStateProcedure.hpp
 )
 
 if (BUILD_SANDBOX)

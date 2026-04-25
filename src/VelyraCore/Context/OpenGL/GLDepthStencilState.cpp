@@ -32,11 +32,17 @@ namespace Velyra::Core {
             glDepthFunc(m_GLDepthComparisonFunc);
             glDepthMask(m_DepthMask);
         }
+        else {
+            glDisable(GL_DEPTH_TEST);
+        }
         if (m_StencilTestEnabled) {
             glEnable(GL_STENCIL_TEST);
             SPDLOG_LOGGER_CRITICAL(m_Logger, "Stencil Comparison function not set correctly!");
             // glStencilFunc(m_GLStencilComparisonFunc, m_ClearStencil, m_StencilMask);
             glStencilOp(m_GLStencilFail, m_GLStencilPassDepthFail, m_GLStencilPass);
+        }
+        else {
+            glDisable(GL_STENCIL_TEST);
         }
         SPDLOG_LOGGER_TRACE(m_Logger, "Bound GLDepthStencilState with depth test {}, depth func {}, depth mask {}, stencil test {}, stencil func {}, stencil mask {}, stencil fail op {}, stencil pass op {}, stencil pass depth fail op {}",
             m_DepthTestEnabled ? "enabled" : "disabled", m_DepthComparisonFunc, m_DepthMask,

@@ -20,7 +20,12 @@ namespace Velyra::SandBox {
     };
 
     static const std::vector<VL_SBX_PROCEDURE_TYPE> s_TexturedMVPProcedures = {
-        ClearDefaultFrameBuffer, Camera, Projection, VL_SBX_PROCEDURE_TYPE::MeshBinding, VL_SBX_PROCEDURE_TYPE::Texture2D
+        ClearDefaultFrameBuffer,
+        Camera,
+        Projection,
+        VL_SBX_PROCEDURE_TYPE::MeshBinding,
+        VL_SBX_PROCEDURE_TYPE::Texture2D,
+        VL_SBX_PROCEDURE_TYPE::DepthStencilState
     };
 
     VL_DECLARE_PROCEDURE_FACTORY(TexturedMVPProcedure, TexturedMVP, s_TexturedMVPProcedures);
