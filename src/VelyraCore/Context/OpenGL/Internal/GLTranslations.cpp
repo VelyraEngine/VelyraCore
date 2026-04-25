@@ -70,7 +70,7 @@ namespace Velyra::Core {
         }
     }
 
-    GLint getGLComparisonFunc(const VL_COMPARISON_FUNC func) {
+    GLenum getGLComparisonFunc(const VL_COMPARISON_FUNC func) {
         switch (func) {
             case VL_COMPARISON_FUNC_NEVER:       return GL_NEVER;
             case VL_COMPARISON_FUNC_LESS:        return GL_LESS;
@@ -178,6 +178,24 @@ namespace Velyra::Core {
                 const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
                 SPDLOG_LOGGER_WARN(logger, "Invalid texture channel format {} given to converter, return default: GL_RGBA", channelFormat);
                 return GL_RGBA;
+            }
+        }
+    }
+
+    GLenum getGLStencilFunc(const VL_STENCIL_FUNC func) {
+        switch (func) {
+            case VL_STENCIL_FUNC_KEEP:      return GL_KEEP;
+            case VL_STENCIL_FUNC_ZERO:      return GL_ZERO;
+            case VL_STENCIL_FUNC_REPLACE:   return GL_REPLACE;
+            case VL_STENCIL_FUNC_INCR:      return GL_INCR;
+            case VL_STENCIL_FUNC_INCR_WRAP: return GL_INCR_WRAP;
+            case VL_STENCIL_FUNC_DECR:      return GL_DECR;
+            case VL_STENCIL_FUNC_DECR_WRAP: return GL_DECR_WRAP;
+            case VL_STENCIL_FUNC_INVERT:    return GL_INVERT;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid stencil function {} given to converter, return default: GL_KEEP", func);
+                return GL_KEEP;
             }
         }
     }

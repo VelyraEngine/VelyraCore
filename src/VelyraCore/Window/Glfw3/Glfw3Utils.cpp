@@ -19,7 +19,7 @@ namespace Velyra::Core {
             int minor;
             int revision;
             glfwGetVersion(&major, &minor, &revision);
-            SPDLOG_LOGGER_INFO(m_Logger, "GLFW3 initialised with version: {}.{}.{}", major, minor, revision);
+            SPDLOG_LOGGER_INFO(m_Logger, "GLFW initialised with version: {}.{}.{}", major, minor, revision);
         }
         m_InstanceCount++;
         SPDLOG_LOGGER_INFO(m_Logger, "GLFW current instance count {}", m_InstanceCount);

@@ -19,7 +19,7 @@ namespace Velyra::Core {
 
     class VL_API DepthStencilState {
     public:
-        explicit DepthStencilState(const Device& device, const DepthStencilStateDesc& desc):
+        explicit DepthStencilState(const DepthStencilStateDesc& desc, const Device& device):
         m_Device(device),
         m_DepthTestEnabled(desc.enableDepthTest),
         m_DepthComparisonFunc(desc.depthComparisonFunc),
@@ -34,9 +34,9 @@ namespace Velyra::Core {
 
         virtual ~DepthStencilState() = default;
 
-        void bind() const;
+        virtual void bind() const = 0;
 
-        void unbind() const;
+        virtual void unbind() const = 0;
 
         virtual void setDepthTestEnabled(bool enabled) = 0;
 

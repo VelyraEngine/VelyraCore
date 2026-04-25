@@ -14,6 +14,7 @@
 #include <VelyraCore/Context/Texture2D.hpp>
 #include <VelyraCore/Context/FrameBufferLayout.hpp>
 #include <VelyraCore/Context/FrameBuffer.hpp>
+#include <VelyraCore/Context/DepthStencilState.hpp>
 
 namespace Velyra::Core {
 
@@ -212,6 +213,8 @@ namespace Velyra::Core {
          */
         virtual View<FrameBuffer> createFrameBuffer(const View<FrameBufferLayout>& frameBufferLayout) = 0;
 
+        virtual View<DepthStencilState> createDepthStencilState(const DepthStencilStateDesc& desc) = 0;
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -240,6 +243,7 @@ namespace Velyra::Core {
         std::vector<UP<Texture2D>> m_Texture2Ds;
         std::vector<UP<FrameBufferLayout>> m_FrameBufferLayouts;
         std::vector<UP<FrameBuffer>> m_FrameBuffers;
+        std::vector<UP<DepthStencilState>> m_DepthStencilStates;
     };
 
 

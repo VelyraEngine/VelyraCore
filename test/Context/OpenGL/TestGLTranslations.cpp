@@ -16,12 +16,16 @@ TEST_F(TestGLTranslations, TranslateShaderType) {
     EXPECT_EQ(GL_TESS_CONTROL_SHADER, getGLShaderType(VL_SHADER_TESSELATION_CONTROL));
     EXPECT_EQ(GL_TESS_EVALUATION_SHADER, getGLShaderType(VL_SHADER_TESSELATION_EVALUATION));
     EXPECT_EQ(GL_COMPUTE_SHADER, getGLShaderType(VL_SHADER_COMPUTE));
+
+    EXPECT_EQ(GL_VERTEX_SHADER, getGLShaderType(VL_SHADER_TYPE_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateBufferUsage) {
     EXPECT_EQ(GL_DYNAMIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_DEFAULT));
     EXPECT_EQ(GL_DYNAMIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_DYNAMIC));
     EXPECT_EQ(GL_STATIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_STATIC));
+
+    EXPECT_EQ(GL_STATIC_DRAW, getGLBufferUsage(VL_BUFFER_USAGE_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateDrawMode) {
@@ -30,6 +34,8 @@ TEST_F(TestGLTranslations, TranslateDrawMode) {
     EXPECT_EQ(GL_LINE_STRIP, getGLDrawMode(VL_DRAW_LINES_STRIP));
     EXPECT_EQ(GL_TRIANGLES, getGLDrawMode(VL_DRAW_TRIANGLES));
     EXPECT_EQ(GL_TRIANGLE_STRIP, getGLDrawMode(VL_DRAW_TRIANGLE_STRIP));
+
+    EXPECT_EQ(GL_TRIANGLES, getGLDrawMode(VL_DRAW_MODE_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateDataType) {
@@ -44,6 +50,8 @@ TEST_F(TestGLTranslations, TranslateDataType) {
     EXPECT_EQ(GL_HALF_FLOAT, getGLDataType(VL_FLOAT16));
     EXPECT_EQ(GL_FLOAT, getGLDataType(VL_FLOAT32));
     EXPECT_EQ(GL_DOUBLE, getGLDataType(VL_FLOAT64));
+
+    EXPECT_EQ(GL_FLOAT, getGLDataType(VL_TYPE_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateComparisonFunc) {
@@ -55,11 +63,15 @@ TEST_F(TestGLTranslations, TranslateComparisonFunc) {
     EXPECT_EQ(GL_GREATER, getGLComparisonFunc(VL_COMPARISON_FUNC_GREATER));
     EXPECT_EQ(GL_GEQUAL, getGLComparisonFunc(VL_COMPARISON_FUNC_GREATER_EQUAL));
     EXPECT_EQ(GL_NOTEQUAL, getGLComparisonFunc(VL_COMPARISON_FUNC_NOT_EQUAL));
+
+    EXPECT_EQ(GL_ALWAYS, getGLComparisonFunc(VL_COMPARISON_FUNC_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateTextureFilter) {
     EXPECT_EQ(GL_LINEAR, getGLTextureFilter(VL_TEXTURE_FILTER_LINEAR));
     EXPECT_EQ(GL_NEAREST, getGLTextureFilter(VL_TEXTURE_FILTER_POINT));
+
+    EXPECT_EQ(GL_LINEAR, getGLTextureFilter(VL_TEXTURE_FILTER_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateTextureWrap) {
@@ -67,6 +79,8 @@ TEST_F(TestGLTranslations, TranslateTextureWrap) {
     EXPECT_EQ(GL_MIRRORED_REPEAT, getGLTextureWrap(VL_TEXTURE_WRAP_MIRROR_REPEAT));
     EXPECT_EQ(GL_CLAMP_TO_EDGE, getGLTextureWrap(VL_TEXTURE_WRAP_CLAMP_EDGE));
     EXPECT_EQ(GL_CLAMP_TO_BORDER, getGLTextureWrap(VL_TEXTURE_WRAP_CLAMP_BORDER));
+
+    EXPECT_EQ(GL_REPEAT, getGLTextureWrap(VL_TEXTURE_WRAP_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateTextureFormat) {
@@ -111,6 +125,8 @@ TEST_F(TestGLTranslations, TranslateTextureFormat) {
     EXPECT_EQ(GL_DEPTH_COMPONENT32, getGLTextureFormat(VL_TEXTURE_DEPTH_32));
     EXPECT_EQ(GL_DEPTH24_STENCIL8, getGLTextureFormat(VL_TEXTURE_DEPTH_24_STENCIL_8));
     EXPECT_EQ(GL_DEPTH32F_STENCIL8, getGLTextureFormat(VL_TEXTURE_DEPTH_32_STENCIL_8));
+
+    EXPECT_EQ(GL_RGBA8, getGLTextureFormat(VL_TEXTURE_FORMAT_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateTextureChannelFormat) {
@@ -118,4 +134,19 @@ TEST_F(TestGLTranslations, TranslateTextureChannelFormat) {
     EXPECT_EQ(GL_RG, getGLTextureChannelFormat(VL_CHANNEL_RG));
     EXPECT_EQ(GL_RGB, getGLTextureChannelFormat(VL_CHANNEL_RGB));
     EXPECT_EQ(GL_RGBA, getGLTextureChannelFormat(VL_CHANNEL_RGBA));
+
+    EXPECT_EQ(GL_RGBA, getGLTextureChannelFormat(VL_CHANNEL_FORMAT_MAX_VALUE));
+}
+
+TEST_F(TestGLTranslations, TranslateStencilFunc) {
+    EXPECT_EQ(GL_KEEP, getGLStencilFunc(VL_STENCIL_FUNC_KEEP));
+    EXPECT_EQ(GL_ZERO, getGLStencilFunc(VL_STENCIL_FUNC_ZERO));
+    EXPECT_EQ(GL_REPLACE, getGLStencilFunc(VL_STENCIL_FUNC_REPLACE));
+    EXPECT_EQ(GL_INCR, getGLStencilFunc(VL_STENCIL_FUNC_INCR));
+    EXPECT_EQ(GL_INCR_WRAP, getGLStencilFunc(VL_STENCIL_FUNC_INCR_WRAP));
+    EXPECT_EQ(GL_DECR, getGLStencilFunc(VL_STENCIL_FUNC_DECR));
+    EXPECT_EQ(GL_DECR_WRAP, getGLStencilFunc(VL_STENCIL_FUNC_DECR_WRAP));
+    EXPECT_EQ(GL_INVERT, getGLStencilFunc(VL_STENCIL_FUNC_INVERT));
+
+    EXPECT_EQ(GL_KEEP, getGLStencilFunc(VL_STENCIL_FUNC_MAX_VALUE));
 }

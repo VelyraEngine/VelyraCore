@@ -24,7 +24,7 @@ namespace Velyra::Core {
         glSamplerParameterf(m_SamplerID, GL_TEXTURE_LOD_BIAS, m_LODBias);
 
         glSamplerParameterfv(m_SamplerID, GL_TEXTURE_BORDER_COLOR, m_BorderColor);
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, getGLComparisonFunc(m_ComparisonFunc));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, static_cast<GLint>(getGLComparisonFunc(m_ComparisonFunc)));
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Created GLSampler with ID {}", m_SamplerID);
     }
@@ -59,7 +59,7 @@ namespace Velyra::Core {
 
     void GLSampler::setComparisonFunc(const VL_COMPARISON_FUNC comparisonFunc) {
         m_ComparisonFunc = comparisonFunc;
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, getGLComparisonFunc(m_ComparisonFunc));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, static_cast<GLint>(getGLComparisonFunc(m_ComparisonFunc)));
     }
 
     void GLSampler::setBorderColor(const float r, const float g, const float b, const float a) {

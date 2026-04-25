@@ -62,6 +62,8 @@ namespace Velyra::Core {
 
         View<FrameBuffer> createFrameBuffer(const View<FrameBufferLayout> &frameBufferLayout) override;
 
+        View<DepthStencilState> createDepthStencilState(const DepthStencilStateDesc &desc) override;
+
     private:
 
         void initGlad() const;

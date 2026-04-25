@@ -12,7 +12,7 @@ namespace Velyra::Core {
 
     GLenum getGLDataType(VL_TYPE type);
 
-    GLint getGLComparisonFunc(VL_COMPARISON_FUNC func);
+    GLenum getGLComparisonFunc(VL_COMPARISON_FUNC func);
 
     GLint getGLTextureFilter(VL_TEXTURE_FILTER filter);
 
@@ -21,5 +21,7 @@ namespace Velyra::Core {
     GLenum getGLTextureFormat(VL_TEXTURE_FORMAT format);
 
     GLenum getGLTextureChannelFormat(VL_CHANNEL_FORMAT channelFormat);
+
+    GLenum getGLStencilFunc(VL_STENCIL_FUNC func);
 
 }

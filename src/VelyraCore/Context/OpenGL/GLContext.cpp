@@ -15,6 +15,7 @@
 #include "GLSampler.hpp"
 #include "GLTexture2D.hpp"
 #include "GLFrameBuffer.hpp"
+#include "GLDepthStencilState.hpp"
 
 namespace Velyra::Core {
 
@@ -232,6 +233,11 @@ namespace Velyra::Core {
     View<FrameBuffer> GLContext::createFrameBuffer(const View<FrameBufferLayout> &frameBufferLayout) {
         m_FrameBuffers.emplace_back(createUP<GLFrameBuffer>(frameBufferLayout, *m_Device));
         return m_FrameBuffers.back();
+    }
+
+    View<DepthStencilState> GLContext::createDepthStencilState(const DepthStencilStateDesc &desc) {
+        m_DepthStencilStates.emplace_back(createUP<GLDepthStencilState>(desc, *m_Device));
+        return m_DepthStencilStates.back();
     }
 
     void GLContext::initGlad() const {
