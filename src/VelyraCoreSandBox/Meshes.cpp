@@ -28,7 +28,23 @@ namespace Velyra::SandBox {
         }
     }
 
-    Mesh createSphere(const U32 rings, U32 sectors){
+    Mesh createRectangle(float size) {
+        Mesh mesh;
+        mesh.vertices = {
+            {{-size, -size, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{0.0f, 0.0f}},
+            {{size, -size, 0.0f},  {0.0f, 1.0f, 0.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{1.0f, 0.0f}},
+            {{size, size, 0.0f},   {0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f}, {1.0f, 0.0f, 0.0f},{1.0f, 1.0f}},
+            {{-size, size, 0.0f},  {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f}, {1.0f, 1.0f, 1.0f},{1.0f, 1.0f}}
+        };
+        mesh.indices = {
+            0, 3, 1,
+            3, 2, 1
+        };
+        calculateTangents(mesh);
+        return mesh;
+    }
+
+    Mesh createSphere(const U32 rings, const U32 sectors){
         Mesh mesh;
         const float R = 1.0f / static_cast<float>(rings - 1);
         const float S = 1.0f / static_cast<float>(sectors - 1);

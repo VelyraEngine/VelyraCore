@@ -200,6 +200,8 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/TexturedMVPProcedure.hpp
     src/VelyraCoreSandBox/Procedures/DepthStencilStateProcedure.cpp
     src/VelyraCoreSandBox/Procedures/DepthStencilStateProcedure.hpp
+    src/VelyraCoreSandBox/Procedures/FrameBufferProcedure.cpp
+    src/VelyraCoreSandBox/Procedures/FrameBufferProcedure.hpp
 )
 
 if (BUILD_SANDBOX)

@@ -14,6 +14,7 @@
 #include "Procedures/MeshBindingProcedure.hpp"
 #include "Procedures/TexturedMVPProcedure.hpp"
 #include "Procedures/DepthStencilStateProcedure.hpp"
+#include "Procedures/FrameBufferProcedure.hpp"
 
 #include <queue>
 
@@ -34,6 +35,7 @@ namespace Velyra::SandBox {
         registerProcedureFactory<TextureProcedureFactory>();
         registerProcedureFactory<TexturedMVPProcedureFactory>();
         registerProcedureFactory<DepthStencilStateProcedureFactory>();
+        registerProcedureFactory<FrameBufferProcedureFactory>();
     }
 
     void ProcedureExecutor::addProcedure(const VL_SBX_PROCEDURE_TYPE procedureType) {

@@ -18,5 +18,6 @@ VL_ENUM(VL_SBX_PROCEDURE_TYPE, int,
     Sampler,
     Texture2D,
     TexturedMVP,
-    DepthStencilState
+    DepthStencilState,
+    FrameBuffer
 );

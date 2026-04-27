@@ -4,6 +4,8 @@
 
 namespace Velyra::SandBox {
 
+    Mesh createRectangle(float size = 0.5f);
+
     Mesh createSphere(U32 rings, U32 sectors);
 
     Mesh createCube();

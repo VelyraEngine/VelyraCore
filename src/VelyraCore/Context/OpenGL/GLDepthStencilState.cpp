@@ -18,9 +18,9 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(
             m_Logger,
             "Created GLDepthStencilState with depth test {}, depth func {}, depth mask {}, stencil test {}, stencil func {}, stencil mask {}, stencil fail op {}, stencil pass op {}, stencil pass depth fail op {}",
-            m_EnableDepthTest ? "enabled" : "disabled", m_DepthFunc, m_DepthMask,
-            m_EnableStencilTest ? "enabled" : "disabled", m_StencilFunc, m_StencilMask,
-            m_StencilFail, m_StencilPass, m_StencilPassDepthFail);
+            m_DepthTestEnabled ? "enabled" : "disabled", m_DepthComparisonFunc, m_DepthMask,
+            m_StencilTestEnabled ? "enabled" : "disabled", m_StencilComparisonFunc, m_StencilMask,
+            m_StencilFailOp, m_StencilPassOp, m_StencilPassDepthFailOp);
 
     }
 
