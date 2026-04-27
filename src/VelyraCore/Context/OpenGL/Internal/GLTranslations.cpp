@@ -199,5 +199,61 @@ namespace Velyra::Core {
             }
         }
     }
+
+    GLFormatDesc getGLFormatDesc(const VL_TEXTURE_FORMAT format) {
+        // Filter out depth stencil formats, we will determine the data layout separately
+        GLFormatDesc desc{};
+        switch (format) {
+            case VL_TEXTURE_DEPTH_16:
+                /*
+                 * It seems that OpenGL only supports 32-bit depth formats. So even when DEPTH_16 was requested
+                 * F32 will still be used as a storage
+                 */
+                desc.dataType = VL_FLOAT32;
+                desc.channelFormat = VL_CHANNEL_R;
+                desc.glDataType = GL_FLOAT;
+                desc.glChannelFormat = GL_DEPTH_COMPONENT;
+                break;
+            case VL_TEXTURE_DEPTH_24:
+                desc.dataType = VL_FLOAT32; // Depth24 is typically stored in a 32-bit format for alignment reasons, even though only 24 bits are used for depth
+                desc.channelFormat = VL_CHANNEL_R;
+                desc.glDataType = GL_FLOAT;
+                desc.glChannelFormat = GL_DEPTH_COMPONENT;
+                break;
+            case VL_TEXTURE_DEPTH_32:
+                desc.dataType = VL_FLOAT32;
+                desc.channelFormat = VL_CHANNEL_R;
+                desc.glDataType = GL_FLOAT;
+                desc.glChannelFormat = GL_DEPTH_COMPONENT;
+                break;
+            case VL_TEXTURE_DEPTH_24_STENCIL_8:
+                /*
+                 * Packed format where 24 bits are used for depth and 8 bits for stencil. We have 2 options
+                 *   1. dataType = VL_UINT32 && channelFormat = VL_CHANNEL_R
+                 *   2. dataType = VL_UINT8 && channelFormat = VL_CHANNEL_RGBA
+                 *
+                 *   -> We let the user decide how to interpret the data, so VL_UINT32 it is
+                 *   TODO: We dont have support for VL_UINT32 VL_CHANNEL_R textures yet
+                 */
+                desc.dataType = VL_UINT8;
+                desc.channelFormat = VL_CHANNEL_RGBA;
+                desc.glDataType = GL_UNSIGNED_INT_24_8; // This is a special OpenGL data type that indicates the packed depth-stencil format
+                desc.glChannelFormat = GL_DEPTH_STENCIL; // This indicates that the data contains both depth and stencil information
+                break;
+            case VL_TEXTURE_DEPTH_32_STENCIL_8:
+                VL_THROW("Unsupported readback format! OpenGL does NOT support reading back from DEPTH_32_STENCIL_8 "
+                         "textures. This is a hardware limitation that cannot be worked around. If you need to read back"
+                         " depth and stencil data, consider using DEPTH_24_STENCIL_8 format instead, which can be read"
+                         " back as a single 32-bit unsigned integer where the depth and stencil values are packed together.");
+            default:
+                desc.dataType = getTextureDataType(format);
+                desc.channelFormat = getTextureChannelFormat(format);
+                desc.glDataType = getGLDataType(desc.dataType);
+                desc.glChannelFormat = getGLTextureChannelFormat(desc.channelFormat);
+                break;
+
+        }
+        return desc;
+    }
 }
 

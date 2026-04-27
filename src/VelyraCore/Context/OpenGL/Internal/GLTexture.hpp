@@ -71,10 +71,6 @@ namespace Velyra::Core {
         }
 
     private:
-
-        FormatDesc getFormatDesc() const;
-
-    private:
         const Utils::LogPtr m_Logger;
         const Device& m_Device;
 

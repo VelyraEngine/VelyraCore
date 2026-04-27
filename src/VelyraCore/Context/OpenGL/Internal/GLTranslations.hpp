@@ -24,4 +24,13 @@ namespace Velyra::Core {
 
     GLenum getGLStencilFunc(VL_STENCIL_FUNC func);
 
+    struct GLFormatDesc {
+        VL_TYPE dataType;
+        VL_CHANNEL_FORMAT channelFormat;
+        GLenum glDataType;
+        GLenum glChannelFormat;
+    };
+
+    GLFormatDesc getGLFormatDesc(VL_TEXTURE_FORMAT format);
+
 }

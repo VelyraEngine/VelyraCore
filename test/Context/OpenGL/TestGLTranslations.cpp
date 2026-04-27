@@ -150,3 +150,104 @@ TEST_F(TestGLTranslations, TranslateStencilFunc) {
 
     EXPECT_EQ(GL_KEEP, getGLStencilFunc(VL_STENCIL_FUNC_MAX_VALUE));
 }
+
+TEST_F(TestGLTranslations, TranslateFormatDesc) {
+    // Test single channel formats
+    GLFormatDesc desc = getGLFormatDesc(VL_TEXTURE_R_U8);
+    EXPECT_EQ(VL_UINT8, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
+    EXPECT_EQ(GL_UNSIGNED_BYTE, desc.glDataType);
+    EXPECT_EQ(GL_RED, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_R_I16);
+    EXPECT_EQ(VL_INT16, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
+    EXPECT_EQ(GL_SHORT, desc.glDataType);
+    EXPECT_EQ(GL_RED, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_R_F32);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_RED, desc.glChannelFormat);
+
+    // Test dual channel formats
+    desc = getGLFormatDesc(VL_TEXTURE_RG_U8);
+    EXPECT_EQ(VL_UINT8, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RG, desc.channelFormat);
+    EXPECT_EQ(GL_UNSIGNED_BYTE, desc.glDataType);
+    EXPECT_EQ(GL_RG, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_RG_F32);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RG, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_RG, desc.glChannelFormat);
+
+    // Test triple channel formats
+    desc = getGLFormatDesc(VL_TEXTURE_RGB_U8);
+    EXPECT_EQ(VL_UINT8, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGB, desc.channelFormat);
+    EXPECT_EQ(GL_UNSIGNED_BYTE, desc.glDataType);
+    EXPECT_EQ(GL_RGB, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_RGB_I32);
+    EXPECT_EQ(VL_INT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGB, desc.channelFormat);
+    EXPECT_EQ(GL_INT, desc.glDataType);
+    EXPECT_EQ(GL_RGB, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_RGB_F16);
+    EXPECT_EQ(VL_FLOAT16, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGB, desc.channelFormat);
+    EXPECT_EQ(GL_HALF_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_RGB, desc.glChannelFormat);
+
+    // Test quad channel formats
+    desc = getGLFormatDesc(VL_TEXTURE_RGBA_U8);
+    EXPECT_EQ(VL_UINT8, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGBA, desc.channelFormat);
+    EXPECT_EQ(GL_UNSIGNED_BYTE, desc.glDataType);
+    EXPECT_EQ(GL_RGBA, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_RGBA_U32);
+    EXPECT_EQ(VL_UINT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGBA, desc.channelFormat);
+    EXPECT_EQ(GL_UNSIGNED_INT, desc.glDataType);
+    EXPECT_EQ(GL_RGBA, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_RGBA_F32);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGBA, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_RGBA, desc.glChannelFormat);
+
+    // Test depth formats
+    desc = getGLFormatDesc(VL_TEXTURE_DEPTH_16);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_DEPTH_COMPONENT, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_DEPTH_24);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_DEPTH_COMPONENT, desc.glChannelFormat);
+
+    desc = getGLFormatDesc(VL_TEXTURE_DEPTH_32);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT, desc.glDataType);
+    EXPECT_EQ(GL_DEPTH_COMPONENT, desc.glChannelFormat);
+
+    // Test depth-stencil format
+    desc = getGLFormatDesc(VL_TEXTURE_DEPTH_24_STENCIL_8);
+    EXPECT_EQ(VL_UINT8, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RGBA, desc.channelFormat);
+    EXPECT_EQ(GL_UNSIGNED_INT_24_8, desc.glDataType);
+    EXPECT_EQ(GL_DEPTH_STENCIL, desc.glChannelFormat);
+
+    // Test that DEPTH_32_STENCIL_8 throws an exception
+    EXPECT_THROW(getGLFormatDesc(VL_TEXTURE_DEPTH_32_STENCIL_8), std::exception);
+}

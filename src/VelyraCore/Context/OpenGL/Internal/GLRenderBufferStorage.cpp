@@ -69,14 +69,9 @@ namespace Velyra::Core {
         VL_PRECONDITION(m_FramebufferID != 0, "RenderBuffer not attached to a framebuffer!");
 
         // Extract format information
-        const VL_TYPE dataType = getTextureDataType(m_RenderBuffer.getFormat());
-        const VL_CHANNEL_FORMAT channelFormat = getTextureChannelFormat(m_RenderBuffer.getFormat());
+        const auto [dataType, channelFormat, glDataType, glChannelFormat] = getGLFormatDesc(m_RenderBuffer.getFormat());
         const U32 channelCount = Image::getChannelCountFromFormat(channelFormat);
         const Size dataSize = m_RenderBuffer.getWidth() * m_RenderBuffer.getHeight() * channelCount * Utils::getTypeSize(dataType);
-
-        // Convert format information for OpenGL
-        const GLenum glDataType = getGLDataType(dataType);
-        const GLenum glChannelFormat = getGLTextureChannelFormat(channelFormat);
 
         // Bind the pixel pack buffer and allocate storage
         glBindBuffer(GL_PIXEL_PACK_BUFFER, m_PixelPackBufferID);
@@ -84,7 +79,11 @@ namespace Velyra::Core {
 
         // Bind framebuffer and set read buffer to our attachment
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FramebufferID);
-        glReadBuffer(m_AttachmentPoint);
+
+        // We have to call glReadBuffer only for color attachments!
+        if (m_AttachmentPoint >= GL_COLOR_ATTACHMENT0 && m_AttachmentPoint <= GL_COLOR_ATTACHMENT31) {
+            glReadBuffer(m_AttachmentPoint);
+        }
 
         // Read renderbuffer data into the pixel pack buffer via glReadPixels
         glReadPixels(0, 0, 
