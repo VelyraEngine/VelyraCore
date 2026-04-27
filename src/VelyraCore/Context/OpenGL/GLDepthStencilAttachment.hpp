@@ -25,6 +25,10 @@ namespace Velyra::Core {
         [[nodiscard]] U64 getIdentifier() const override;
 
     private:
+
+        GLenum getAttachmentType(VL_TEXTURE_FORMAT format) const;
+
+    private:
         UP<IGLFramebufferStorage> m_Storage;
         const Utils::LogPtr m_Logger;
 

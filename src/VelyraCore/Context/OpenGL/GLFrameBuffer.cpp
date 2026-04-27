@@ -16,6 +16,7 @@ namespace Velyra::Core {
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)){
         glCreateFramebuffers(1, &m_FrameBufferID);
         createColorAttachments(layout, device);
+        createDepthStencilAttachment(layout, device);
         checkFrameBufferStatus();
 
         SPDLOG_LOGGER_TRACE(m_Logger, "FrameBuffer: {} created", m_FrameBufferID);

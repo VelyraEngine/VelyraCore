@@ -14,7 +14,8 @@ namespace Velyra::Core {
     m_FrameBufferID(framebufferID) {
         VL_PRECONDITION(m_Storage != nullptr, "[GLDepthStencilAttachment]: Storage cannot be null");
 
-        m_Storage->attachToFramebuffer(m_FrameBufferID, GL_DEPTH_STENCIL_ATTACHMENT);
+        const GLenum attachmentType = getAttachmentType(desc.format);
+        m_Storage->attachToFramebuffer(m_FrameBufferID, attachmentType);
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
     }
@@ -53,6 +54,21 @@ namespace Velyra::Core {
 
     U64 GLDepthStencilAttachment::getIdentifier() const {
         return m_Storage->getID();
+    }
+
+    GLenum GLDepthStencilAttachment::getAttachmentType(const VL_TEXTURE_FORMAT format) const {
+        switch (format) {
+            case VL_TEXTURE_DEPTH_16:
+            case VL_TEXTURE_DEPTH_24:
+            case VL_TEXTURE_DEPTH_32:
+                return GL_DEPTH_ATTACHMENT;
+            case VL_TEXTURE_DEPTH_24_STENCIL_8:
+            case VL_TEXTURE_DEPTH_32_STENCIL_8:
+                return GL_DEPTH_STENCIL_ATTACHMENT;
+            default:
+                SPDLOG_LOGGER_ERROR(m_Logger, "Unsupported depth stencil format {} for attachment {}. Defaulting to GL_DEPTH24_STENCIL8", format, m_Storage->getID());
+                return GL_DEPTH_STENCIL_ATTACHMENT;
+        }
     }
 
 }

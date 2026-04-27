@@ -113,6 +113,59 @@ TYPED_TEST(TestFrameBuffer, ClearFrameBuffer1CARenderBuffer) {
     this->compareColorAttachmentDataF32(clearColor, ca1);
 }
 
+TYPED_TEST(TestFrameBuffer, ClearFrameBuffer1DSTexture) {
+    auto fbLayout = Environment<TypeParam>::m_Window->getContext()->createFrameBufferLayout();
+    fbLayout->setDimensions(this->m_Width, this->m_Height);
+    FrameBufferDepthStencilAttachmentDesc dsDesc;
+    dsDesc.clearDepth = 0.8f;
+    dsDesc.clearStencil = 52;
+    /*
+     * To make life easier, we use a depth-only format so that reading the data back is much easier. We don't have to
+     * do weird conversions to extract the depth and stencil values from a packed format like VL_TEXTURE_DEPTH_24_STENCIL_8.
+     * The actual data does not matter anyway
+     */
+    dsDesc.format = VL_TEXTURE_DEPTH_32;
+    dsDesc.enableShaderAccess = true;
+    dsDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
+    fbLayout->setDepthStencilAttachment(dsDesc);
+
+    // OpenGL requires also a CA to be present, so we add a dummy one that we won't use in this test
+    FrameBufferColorAttachmentDesc caDesc;
+    caDesc.clearColor = Utils::Color(0.0f, 0.0f, 0.0f, 1.0f);
+    caDesc.format = VL_TEXTURE_RGBA_F32;
+    caDesc.enableShaderAccess = false;
+    caDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
+    fbLayout->addColorAttachment(caDesc);
+
+    // Create the Frame Buffer
+    auto fb = Environment<TypeParam>::m_Window->getContext()->createFrameBuffer(fbLayout);
+    ASSERT_NE(fb, nullptr);
+    const auto& dsAttachment = fb->getDepthStencilAttachment();
+    ASSERT_NE(dsAttachment, nullptr);
+    EXPECT_EQ(dsAttachment->getWidth(), this->m_Width);
+    EXPECT_EQ(dsAttachment->getHeight(), this->m_Height);
+    EXPECT_EQ(dsAttachment->getFormat(), VL_TEXTURE_DEPTH_32);
+    EXPECT_EQ(dsAttachment->getClearDepth(), 0.8f);
+    EXPECT_EQ(dsAttachment->getClearStencil(), 52);
+
+    // Now Clear it!
+    fb->clear();
+
+    // Check if the clear depth and stencil values are correct
+    auto img = dsAttachment->getData();
+    EXPECT_EQ(img->getWidth(), this->m_Width);
+    EXPECT_EQ(img->getHeight(), this->m_Height);
+    const auto* imgData = static_cast<const float*>(img->getData());
+    bool equal = true;
+    for (size_t i = 0; i < this->m_Width * this->m_Height; ++i) {
+        if (imgData[i] != dsDesc.clearDepth) {
+            equal = false;
+            break;
+        }
+    }
+    EXPECT_TRUE(equal);
+}
+
 TYPED_TEST(TestFrameBuffer, ClearFrameBuffer2CATexture) {
     auto fbLayout = Environment<TypeParam>::m_Window->getContext()->createFrameBufferLayout();
     fbLayout->setDimensions(this->m_Width, this->m_Height);

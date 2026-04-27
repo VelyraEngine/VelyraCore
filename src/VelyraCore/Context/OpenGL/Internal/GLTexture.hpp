@@ -16,6 +16,15 @@ namespace Velyra::Core {
     };
 
     class GLTexture {
+    private:
+
+        struct FormatDesc {
+            VL_TYPE dataType;
+            VL_CHANNEL_FORMAT channelFormat;
+            GLenum glDataType;
+            GLenum glChannelFormat;
+        };
+
     public:
         GLTexture(const GLTextureDesc& desc, const Device& device);
 
@@ -31,7 +40,7 @@ namespace Velyra::Core {
 
         void copyFrom(const GLTexture& other);
 
-        UP<Image::IImage> getData() const;
+        [[nodiscard]] UP<Image::IImage> getData() const;
 
         [[nodiscard]] GLuint getTextureID() const {
             return m_TextureID;
@@ -62,6 +71,10 @@ namespace Velyra::Core {
         }
 
     private:
+
+        FormatDesc getFormatDesc() const;
+
+    private:
         const Utils::LogPtr m_Logger;
         const Device& m_Device;
 
@@ -74,5 +87,6 @@ namespace Velyra::Core {
         VL_BUFFER_USAGE m_Usage = VL_BUFFER_USAGE_DEFAULT;
 
         GLenum m_GLTarget = GL_TEXTURE_2D;
+
     };
 }
