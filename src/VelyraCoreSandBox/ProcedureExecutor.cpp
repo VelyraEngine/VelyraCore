@@ -3,7 +3,6 @@
 #include "Procedures/EventProcedure.hpp"
 #include "Procedures/ImGuiProcedure.hpp"
 #include "Procedures/ContextInfoProcedure.hpp"
-#include "Procedures/ClearDefaultFrameBufferProcedure.hpp"
 #include "Procedures/FileDialogProcedure.hpp"
 #include "Procedures/VertexDrawProcedure.hpp"
 #include "Procedures/IndexDrawProcedure.hpp"
@@ -24,7 +23,6 @@ namespace Velyra::SandBox {
         registerProcedureFactory<EventProcedureFactory>();
         registerProcedureFactory<ImGuiProcedureFactory>();
         registerProcedureFactory<ContextInfoProcedureFactory>();
-        registerProcedureFactory<ClearDefaultFrameBufferProcedureFactory>();
         registerProcedureFactory<FileDialogProcedureFactory>();
         registerProcedureFactory<VertexDrawProcedureFactory>();
         registerProcedureFactory<IndexDrawProcedureFactory>();

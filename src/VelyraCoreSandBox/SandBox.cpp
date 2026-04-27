@@ -73,8 +73,11 @@ namespace Velyra::SandBox {
 
         while (m_Window->isOpen()) {
             processEvents(context);
+
+            context->beginFrame();
             update(context);
             renderImGui(context);
+            context->endFrame();
 
             context->swapBuffers();
         }

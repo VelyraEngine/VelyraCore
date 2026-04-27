@@ -27,6 +27,6 @@ namespace Velyra::SandBox {
         Size m_MeshIndex = 0;
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(IndexDrawProcedure, IndexDraw, {ClearDefaultFrameBuffer})
+    VL_DECLARE_PROCEDURE_FACTORY(IndexDrawProcedure, IndexDraw, {})
 
 }

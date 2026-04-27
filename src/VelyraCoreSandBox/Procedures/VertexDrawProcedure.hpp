@@ -27,6 +27,6 @@ namespace Velyra::SandBox {
         std::string m_BufferData;
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(VertexDrawProcedure, VertexDraw, {ClearDefaultFrameBuffer})
+    VL_DECLARE_PROCEDURE_FACTORY(VertexDrawProcedure, VertexDraw, {})
 
 }

@@ -16,5 +16,5 @@ namespace Velyra::SandBox {
         void onImGui(const UP<Core::Context>& context, const UP<Core::Window>& window) override;
     };
 
-    VL_DECLARE_PROCEDURE_FACTORY(ContextInfoProcedure, ContextInfo, {ClearDefaultFrameBuffer})
+    VL_DECLARE_PROCEDURE_FACTORY(ContextInfoProcedure, ContextInfo, {})
 }

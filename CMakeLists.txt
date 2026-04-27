@@ -178,8 +178,6 @@ set(VELYRA_CORE_SANDBOX_SRC
     src/VelyraCoreSandBox/Procedures/ImGuiProcedure.hpp
     src/VelyraCoreSandBox/Procedures/ContextInfoProcedure.cpp
     src/VelyraCoreSandBox/Procedures/ContextInfoProcedure.hpp
-    src/VelyraCoreSandBox/Procedures/ClearDefaultFrameBufferProcedure.hpp
-    src/VelyraCoreSandBox/Procedures/ClearDefaultFrameBufferProcedure.cpp
     src/VelyraCoreSandBox/Procedures/FileDialogProcedure.hpp
     src/VelyraCoreSandBox/Procedures/FileDialogProcedure.cpp
     src/VelyraCoreSandBox/Procedures/VertexDrawProcedure.hpp
