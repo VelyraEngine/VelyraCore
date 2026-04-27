@@ -15,17 +15,23 @@ namespace Velyra::SandBox {
         m_ScreenQuadMeshBinding = loadMesh(rectangle, context);
         m_ScreenQuadShader = loadShader(context, "VertexDraw", "FrameBuffer");
 
+        Core::DepthStencilStateDesc desc;
+        desc.enableDepthTest = false;
+        desc.enableStencilTest =false;
+        m_DepthStencilState = context->createDepthStencilState(desc);
     }
 
     void FrameBufferProcedure::onUpdate(Duration deltaTime, const UP<Core::Context> &context, const UP<Core::Window> &window) {
-        m_FrameBuffer->clear();
         m_FrameBuffer->begin();
+        m_Viewport->bind();
+        m_FrameBuffer->clear();
 
         m_SubProcedureExecutor->onUpdate(deltaTime, context, window);
 
         m_FrameBuffer->end();
 
         // Now render the framebuffer to the screen
+        m_DepthStencilState->bind();
         m_FrameBuffer->getColorAttachment(0)->bindShaderResource(0);
         m_ScreenQuadShader.shaderProgram->bind();
         m_ScreenQuadMeshBinding->draw();
@@ -35,6 +41,7 @@ namespace Velyra::SandBox {
         m_SubProcedureExecutor->onEvent(event, context, window);
         if (event.type == VL_EVENT_WINDOW_RESIZED) {
             m_FrameBuffer->onResize(context->getClientWidth(), context->getClientHeight());
+            m_Viewport->resize(context->getClientWidth(), context->getClientHeight());
         }
     }
 
@@ -62,5 +69,13 @@ namespace Velyra::SandBox {
         m_FrameBufferLayout->setDepthStencilAttachment(dsDesc);
 
         m_FrameBuffer = context->createFrameBuffer(m_FrameBufferLayout);
+        
+        // Create viewport for framebuffer rendering
+        Core::ViewportDesc viewportDesc;
+        viewportDesc.width = context->getClientWidth();
+        viewportDesc.height = context->getClientHeight();
+        viewportDesc.xPosition = 0;
+        viewportDesc.yPosition = 0;
+        m_Viewport = context->createViewport(viewportDesc);
     }
 }

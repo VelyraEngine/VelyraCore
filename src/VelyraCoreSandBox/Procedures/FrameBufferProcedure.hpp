@@ -29,6 +29,8 @@ namespace Velyra::SandBox {
         UP<ProcedureExecutor> m_SubProcedureExecutor;
         View<Core::FrameBufferLayout> m_FrameBufferLayout;
         View<Core::FrameBuffer> m_FrameBuffer;
+        View<Core::Viewport> m_Viewport;
+        View<Core::DepthStencilState> m_DepthStencilState;
 
         View<Core::MeshBinding> m_ScreenQuadMeshBinding;
         ShaderProgram m_ScreenQuadShader;
