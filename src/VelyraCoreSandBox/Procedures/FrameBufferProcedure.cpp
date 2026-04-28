@@ -1,14 +1,26 @@
 #include "FrameBufferProcedure.hpp"
-#include "../ProcedureExecutor.hpp"
+
+#include "TexturedMVPProcedure.hpp"
+#include "MeshBindingProcedure.hpp"
+#include "CameraProcedure.hpp"
+#include "ProjectionProcedure.hpp"
+#include "DepthStencilStateProcedure.hpp"
+#include "TextureProcedure.hpp"
 #include "../Meshes.hpp"
 
 namespace Velyra::SandBox {
 
     void FrameBufferProcedure::onAttach(const UP<Core::Context> &context, const UP<Core::Window> &window) {
         // We use the TexturedMVP contents to render that to our framebuffer
-        m_SubProcedureExecutor = createUP<ProcedureExecutor>();
-        m_SubProcedureExecutor->addProcedure(TexturedMVP);
-        m_SubProcedureExecutor->constructStrategy(context, window);
+        m_SubProcedures.push_back(createUP<TexturedMVPProcedure>());
+        m_SubProcedures.push_back(createUP<CameraProcedure>());
+        m_SubProcedures.push_back(createUP<ProjectionProcedure>());
+        m_SubProcedures.push_back(createUP<DepthStencilStateProcedure>());
+        m_SubProcedures.push_back(createUP<TextureProcedure>());
+        m_SubProcedures.push_back(createUP<MeshBindingProcedure>()); // Has the draw call so should be last
+        for (const auto& procedure: m_SubProcedures) {
+            procedure->onAttach(context, window);
+        }
 
         createFrameBuffer(context);
         const Mesh rectangle = createRectangle(0.75f);
@@ -26,8 +38,9 @@ namespace Velyra::SandBox {
         m_Viewport->bind();
         m_FrameBuffer->clear();
 
-        m_SubProcedureExecutor->onUpdate(deltaTime, context, window);
-
+        for (const auto& procedure: m_SubProcedures) {
+            procedure->onUpdate(deltaTime, context, window);
+        }
         m_FrameBuffer->end();
 
         // Now render the framebuffer to the screen
@@ -38,7 +51,9 @@ namespace Velyra::SandBox {
     }
 
     void FrameBufferProcedure::onEvent(const Core::Event &event, const UP<Core::Context> &context, const UP<Core::Window> &window) {
-        m_SubProcedureExecutor->onEvent(event, context, window);
+        for (const auto& procedure: m_SubProcedures) {
+            procedure->onEvent(event, context, window);
+        }
         if (event.type == VL_EVENT_WINDOW_RESIZED) {
             m_FrameBuffer->onResize(context->getClientWidth(), context->getClientHeight());
             m_Viewport->resize(context->getClientWidth(), context->getClientHeight());
@@ -46,7 +61,9 @@ namespace Velyra::SandBox {
     }
 
     void FrameBufferProcedure::onImGui(const UP<Core::Context> &context, const UP<Core::Window> &window) {
-        m_SubProcedureExecutor->onImGui(context, window);
+        for (const auto& procedure: m_SubProcedures) {
+            procedure->onImGui(context, window);
+        }
 
         ImGui::Begin("FrameBuffer");
 

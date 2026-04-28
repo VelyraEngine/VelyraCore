@@ -55,7 +55,7 @@ namespace Velyra::Core {
 
         // Then draw call
         SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {}", m_ArrayID);
-        const GLsizei vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
+        const auto vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
         glDrawArrays(m_GlDrawMode, 0, vertexCount);
 
         VL_CORE_OPENGL_LOG_ERRORS();
@@ -67,7 +67,8 @@ namespace Velyra::Core {
 #endif
         glBindVertexArray(m_ArrayID);
 
-        const GLsizei vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {} with {} instances", m_ArrayID, instanceCount);
+        const auto vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
         glDrawArraysInstanced(m_GlDrawMode, 0, vertexCount, static_cast<GLsizei>(instanceCount));
 
         VL_CORE_OPENGL_LOG_ERRORS();
@@ -97,7 +98,8 @@ namespace Velyra::Core {
 #endif
         glBindVertexArray(m_ArrayID);
 
-        const GLsizei indexCount = static_cast<GLsizei>(m_IndexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing Indexed MeshBinding: {}", m_ArrayID);
+        const auto indexCount = static_cast<GLsizei>(m_IndexBuffer->getCount());
         glDrawElements(m_GlDrawMode, indexCount, m_IndexType, nullptr);
 
         VL_CORE_OPENGL_LOG_ERRORS();
@@ -110,7 +112,8 @@ namespace Velyra::Core {
 #endif
         glBindVertexArray(m_ArrayID);
 
-        const GLsizei indexCount = static_cast<GLsizei>(m_IndexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing Indexed MeshBinding: {} with {} instances", m_ArrayID, instanceCount);
+        const auto indexCount = static_cast<GLsizei>(m_IndexBuffer->getCount());
         glDrawElementsInstanced(m_GlDrawMode, indexCount, m_IndexType, nullptr, static_cast<GLsizei>(instanceCount));
 
         VL_CORE_OPENGL_LOG_ERRORS();
