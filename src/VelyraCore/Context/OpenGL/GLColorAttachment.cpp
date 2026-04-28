@@ -54,4 +54,40 @@ namespace Velyra::Core {
     U64 GLColorAttachment::getIdentifier() const {
         return m_Storage->getID();
     }
+
+    /////////////////// GLDefaultColorAttachment ///////////////////
+
+    GLDefaultColorAttachment::GLDefaultColorAttachment(const ColorAttachmentDesc& desc, const Device& device):
+    ColorAttachment(desc, device),
+    m_Logger(Utils::getLogger(VL_LOGGER_OGL)) {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDefaultColorAttachment");
+    }
+
+    GLDefaultColorAttachment::~GLDefaultColorAttachment() = default;
+
+    void GLDefaultColorAttachment::bind() const {
+        // No need to bind the default framebuffer's color attachment, as it is always bound to the framebuffer
+    }
+
+    void GLDefaultColorAttachment::bindShaderResource(const U32 slot) const {
+        SPDLOG_LOGGER_WARN(m_Logger, "Attempted to bind default color attachment as shader resource at slot {}, this is not supported", slot);
+    }
+
+    void GLDefaultColorAttachment::clear() const {
+        glClearNamedFramebufferfv(0, GL_COLOR, 0, m_ClearColor.toArray());
+    }
+
+    void GLDefaultColorAttachment::onResize(const Size width, const Size height) {
+        m_Width = width;
+        m_Height = height;
+    }
+
+    UP<Image::IImage> GLDefaultColorAttachment::getData() const {
+        SPDLOG_LOGGER_WARN(m_Logger, "Attempted to get data from default color attachment which is not supported");
+        return nullptr;
+    }
+
+    U64 GLDefaultColorAttachment::getIdentifier() const {
+        return 0; // The default framebuffer's color attachment does not have a texture ID, so we return 0
+    }
 }

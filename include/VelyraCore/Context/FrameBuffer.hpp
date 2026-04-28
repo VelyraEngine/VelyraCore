@@ -1,14 +1,19 @@
 #pragma once
 
-#include <VelyraCore/Context/FrameBufferLayout.hpp>
 #include <VelyraCore/Context/ColorAttachment.hpp>
 #include <VelyraCore/Context/DepthStencilAttachment.hpp>
 
 namespace Velyra::Core {
 
+    struct DefaultFrameBufferDesc {
+        Utils::Color clearColor     = {0.6f, 0.8f, 0.3f, 1.0f};
+        float clearDepth            = 1.0f;
+        U32 clearStencil            = 0;
+    };
+
     class VL_API FrameBuffer {
     public:
-        explicit FrameBuffer(const View<FrameBufferLayout>& /*layout*/){}
+        FrameBuffer(){}
 
         virtual ~FrameBuffer() = default;
 

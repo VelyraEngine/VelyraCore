@@ -34,4 +34,26 @@ namespace Velyra::Core {
 
         const U32 m_FrameBufferID;
     };
+
+    class GLDefaultDepthStencilAttachment: public DepthStencilAttachment {
+    public:
+        GLDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc& desc, const Device& device);
+
+        ~GLDefaultDepthStencilAttachment() override;
+
+        void bind() const override;
+
+        void bindShaderResource(U32 slot) const override;
+
+        void clear() const override;
+
+        void onResize(Size width, Size height) override;
+
+        [[nodiscard]] UP<Image::IImage> getData() const override;
+
+        [[nodiscard]] U64 getIdentifier() const override;
+
+    private:
+        const Utils::LogPtr m_Logger;
+    };
 }

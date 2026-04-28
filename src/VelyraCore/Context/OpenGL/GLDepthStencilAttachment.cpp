@@ -20,7 +20,9 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
     }
 
-    GLDepthStencilAttachment::~GLDepthStencilAttachment() = default;
+    GLDepthStencilAttachment::~GLDepthStencilAttachment(){
+        SPDLOG_LOGGER_TRACE(m_Logger, "Destroyed GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
+    }
 
     void GLDepthStencilAttachment::bind() const {
         m_Storage->bind();
@@ -71,4 +73,44 @@ namespace Velyra::Core {
         }
     }
 
+    /////////////////////// GLDefaultDepthStencilAttachment ///////////////////////
+
+    GLDefaultDepthStencilAttachment::GLDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Device &device):
+    DepthStencilAttachment(desc, device),
+    m_Logger(Utils::getLogger(VL_LOGGER_OGL)) {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDefaultDepthStencilAttachment");
+    }
+
+    GLDefaultDepthStencilAttachment::~GLDefaultDepthStencilAttachment() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Destroyed GLDefaultDepthStencilAttachment");
+    }
+
+    void GLDefaultDepthStencilAttachment::bind() const {
+        // The default framebuffer's depth stencil attachment is implicitly bound when the framebuffer is bound,
+        // so no action is needed here
+    }
+
+    void GLDefaultDepthStencilAttachment::bindShaderResource(const U32 slot) const {
+        SPDLOG_LOGGER_WARN(m_Logger, "Attempted to bind default depth stencil attachment as shader resource at slot {}, this is not supported", slot);
+    }
+
+    void GLDefaultDepthStencilAttachment::clear() const {
+        glClearNamedFramebufferfi(0, GL_DEPTH_STENCIL, 0, m_ClearDepth, m_ClearStencil);
+    }
+
+    void GLDefaultDepthStencilAttachment::onResize(const Size width, const Size height) {
+        m_Width = width;
+        m_Height = height;
+        // The default framebuffer's attachments are managed by the windowing system and automatically resize with the
+        // window, so no action is needed here
+    }
+
+    UP<Image::IImage> GLDefaultDepthStencilAttachment::getData() const {
+        SPDLOG_LOGGER_WARN(m_Logger, "Attempted to get data from default depth stencil attachment, this is not supported");
+        return nullptr;
+    }
+
+    U64 GLDefaultDepthStencilAttachment::getIdentifier() const {
+        return 0; // The default framebuffer's depth stencil attachment does not have a unique identifier
+    }
 }

@@ -26,8 +26,7 @@ namespace Velyra::Core {
         U8 blueBits         = 8;
         U8 greenBits        = 8;
         U8 alphaBits        = 8;
-        bool enableDepthTest   = false;
-        bool enableStencilTest = false;
+        DefaultFrameBufferDesc defaultFrameBufferDesc;
     };
 
     struct VL_API ImGuiContextDesc {
@@ -215,6 +214,26 @@ namespace Velyra::Core {
 
         virtual View<DepthStencilState> createDepthStencilState(const DepthStencilStateDesc& desc) = 0;
 
+        /**
+         * @brief Returns a reference to the default framebuffer.
+         * @return
+         */
+        const UP<FrameBuffer>& getDefaultFrameBuffer() const {
+            VL_PRECONDITION(m_DefaultFrameBuffer != nullptr, "Default framebuffer is null")
+
+            return m_DefaultFrameBuffer;
+        }
+
+        /**
+         * @brief Clears the default framebuffer. Equivalent to getDefaultFrameBuffer()->clear(), but provided for
+         * convenience.
+         */
+        void clear() const {
+            VL_PRECONDITION(m_DefaultFrameBuffer != nullptr, "Default framebuffer is null")
+
+            m_DefaultFrameBuffer->clear();
+        }
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
@@ -230,6 +249,7 @@ namespace Velyra::Core {
         bool m_ImGuiRendering = false;
 
         UP<Device> m_Device = nullptr;
+        UP<FrameBuffer> m_DefaultFrameBuffer = nullptr;
 
         std::vector<UP<Viewport>> m_Viewports;
         std::vector<UP<ShaderModule>> m_ShaderModules;

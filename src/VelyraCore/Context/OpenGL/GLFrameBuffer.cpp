@@ -12,7 +12,6 @@
 namespace Velyra::Core {
 
     GLFrameBuffer::GLFrameBuffer(const View<FrameBufferLayout> &layout, const Device& device):
-    FrameBuffer(layout),
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)){
         glCreateFramebuffers(1, &m_FrameBufferID);
         createColorAttachments(layout, device);
@@ -170,5 +169,52 @@ namespace Velyra::Core {
         }
         return status;
     }
+
+    /////////////////// GLDefaultFrameBuffer ///////////////////
+
+    GLDefaultFrameBuffer::GLDefaultFrameBuffer(const DefaultFrameBufferDesc& desc, const Device& device) :
+    m_Logger(Utils::getLogger(VL_LOGGER_OGL)) {
+        ColorAttachmentDesc caDesc;
+        caDesc.enableShaderAccess = false;
+        caDesc.clearColor = desc.clearColor;
+        auto defaultColorAttachment = createUP<GLDefaultColorAttachment>(caDesc, device);
+        m_ColorAttachments.push_back(std::move(defaultColorAttachment));
+
+        DepthStencilAttachmentDesc dsDesc;
+        dsDesc.clearDepth = desc.clearDepth;
+        dsDesc.clearStencil = desc.clearStencil;
+        auto defaultDepthStencilAttachment = createUP<GLDefaultDepthStencilAttachment>(dsDesc, device);
+        m_DepthStencilAttachment = std::move(defaultDepthStencilAttachment);
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Default FrameBuffer created");
+    }
+
+    GLDefaultFrameBuffer::~GLDefaultFrameBuffer() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Default FrameBuffer destroyed");
+    }
+
+    void GLDefaultFrameBuffer::begin() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Beginning Default FrameBuffer");
+
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    }
+
+    void GLDefaultFrameBuffer::end() {
+        SPDLOG_LOGGER_TRACE(m_Logger, "Ending Default FrameBuffer");
+    }
+
+    void GLDefaultFrameBuffer::clear() {
+        VL_PRECONDITION(!m_ColorAttachments.empty(), "Default FrameBuffer must have at least one color attachment");
+        VL_PRECONDITION(m_DepthStencilAttachment != nullptr, "Default FrameBuffer must have a depth stencil attachment");
+
+        m_ColorAttachments.front()->clear();
+        m_DepthStencilAttachment->clear();
+    }
+
+    void GLDefaultFrameBuffer::onResize(const Size /*width*/, const Size /*height*/) {
+
+    }
+
+
 }
 

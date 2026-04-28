@@ -1,5 +1,6 @@
 #pragma once
 
+#include <VelyraCore/Context/FrameBufferLayout.hpp>
 #include <VelyraCore/Context/FrameBuffer.hpp>
 
 namespace Velyra::Core {
@@ -29,6 +30,23 @@ namespace Velyra::Core {
     private:
         const Utils::LogPtr m_Logger = nullptr;
         U32 m_FrameBufferID = 0;
+    };
+
+    class GLDefaultFrameBuffer: public FrameBuffer {
+    public:
+        GLDefaultFrameBuffer(const DefaultFrameBufferDesc& desc, const Device& device);
+
+        ~GLDefaultFrameBuffer() override;
+
+        void begin() override;
+
+        void end() override;
+
+        void clear() override;
+
+        void onResize(Size width, Size height) override;
+    private:
+        const Utils::LogPtr m_Logger = nullptr;
     };
 
 }

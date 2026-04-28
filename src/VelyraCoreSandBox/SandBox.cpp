@@ -75,6 +75,7 @@ namespace Velyra::SandBox {
             processEvents(context);
 
             context->beginFrame();
+            context->clear();
             update(context);
             renderImGui(context);
             context->endFrame();
