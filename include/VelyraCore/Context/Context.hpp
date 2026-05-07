@@ -234,6 +234,26 @@ namespace Velyra::Core {
             m_DefaultFrameBuffer->clear();
         }
 
+        /**
+         * @brief Begins rendering to the default framebuffer. Equivalent to getDefaultFrameBuffer()->begin(), but
+         * provided for convenience.
+         */
+        void begin() const {
+            VL_PRECONDITION(m_DefaultFrameBuffer != nullptr, "Default framebuffer is null")
+
+            m_DefaultFrameBuffer->begin();
+        }
+
+        /**
+         * @brief Ends rendering to the default framebuffer. Equivalent to getDefaultFrameBuffer()->end(), but provided
+         * for convenience.
+         */
+        void end() const {
+            VL_PRECONDITION(m_DefaultFrameBuffer != nullptr, "Default framebuffer is null")
+
+            m_DefaultFrameBuffer->end();
+        }
+
     protected:
         explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
 

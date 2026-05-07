@@ -34,6 +34,7 @@ namespace Velyra::Core {
         }
         else {
             glDisable(GL_DEPTH_TEST);
+            glDisable(GL_FALSE);
         }
         if (m_StencilTestEnabled) {
             glEnable(GL_STENCIL_TEST);

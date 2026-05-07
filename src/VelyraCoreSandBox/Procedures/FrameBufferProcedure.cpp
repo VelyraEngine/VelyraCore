@@ -29,14 +29,14 @@ namespace Velyra::SandBox {
 
         Core::DepthStencilStateDesc desc;
         desc.enableDepthTest = false;
-        desc.enableStencilTest =false;
+        desc.enableStencilTest = false;
         m_DepthStencilState = context->createDepthStencilState(desc);
     }
 
     void FrameBufferProcedure::onUpdate(Duration deltaTime, const UP<Core::Context> &context, const UP<Core::Window> &window) {
-        m_FrameBuffer->begin();
         m_Viewport->bind();
         m_FrameBuffer->clear();
+        m_FrameBuffer->begin();
 
         for (const auto& procedure: m_SubProcedures) {
             procedure->onUpdate(deltaTime, context, window);
@@ -44,10 +44,12 @@ namespace Velyra::SandBox {
         m_FrameBuffer->end();
 
         // Now render the framebuffer to the screen
+        context->getDefaultFrameBuffer()->begin();
         m_DepthStencilState->bind();
         m_FrameBuffer->getColorAttachment(0)->bindShaderResource(0);
         m_ScreenQuadShader.shaderProgram->bind();
         m_ScreenQuadMeshBinding->draw();
+        context->getDefaultFrameBuffer()->end();
     }
 
     void FrameBufferProcedure::onEvent(const Core::Event &event, const UP<Core::Context> &context, const UP<Core::Window> &window) {

@@ -197,6 +197,12 @@ namespace Velyra::Core {
         SPDLOG_LOGGER_TRACE(m_Logger, "Beginning Default FrameBuffer");
 
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
+        /*
+         * Default framebuffer should always use back buffer for drawing.
+         *
+         * Not always needed but good practice as not all backends can switch between FBOs and plain backbuffer
+         */
+        glDrawBuffer(GL_BACK);
     }
 
     void GLDefaultFrameBuffer::end() {
