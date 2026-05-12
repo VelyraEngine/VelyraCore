@@ -38,6 +38,9 @@ namespace Velyra::Core {
 
     void GLDepthStencilAttachment::clear() const {
         glClearNamedFramebufferfi(m_FrameBufferID, GL_DEPTH_STENCIL, 0, m_ClearDepth, m_ClearStencil);
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Cleared GLDepthStencilAttachment with ID {} for framebuffer {} with depth {} and stencil {}",
+            m_Storage->getID(), m_FrameBufferID, m_ClearDepth, m_ClearStencil);
     }
 
     void GLDepthStencilAttachment::onResize(const Size width, const Size height) {

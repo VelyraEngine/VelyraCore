@@ -9,7 +9,8 @@ namespace Velyra::Core {
     m_XPos(desc.xPosition),
     m_YPos(desc.yPosition),
     m_MinDepth(desc.minDepth),
-    m_MaxDepth(desc.maxDepth) {
+    m_MaxDepth(desc.maxDepth),
+    m_Logger(Utils::getLogger(VL_LOGGER_OGL)){
     }
 
     void GLViewport::bind() {
@@ -18,6 +19,8 @@ namespace Velyra::Core {
             static_cast<GLsizei>(m_Width), static_cast<GLsizei>(m_Height)
         );
         glDepthRange(m_MinDepth, m_MaxDepth);
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Viewport bound with position ({}, {}) and size ({}x{})", m_XPos, m_YPos, m_Width, m_Height);
     }
 
     void GLViewport::resize(const U32 width, const U32 height) {

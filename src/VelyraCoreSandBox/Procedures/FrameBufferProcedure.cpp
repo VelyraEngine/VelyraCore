@@ -34,14 +34,16 @@ namespace Velyra::SandBox {
     }
 
     void FrameBufferProcedure::onUpdate(Duration deltaTime, const UP<Core::Context> &context, const UP<Core::Window> &window) {
-        m_Viewport->bind();
-        m_FrameBuffer->clear();
         m_FrameBuffer->begin();
+        m_FrameBuffer->clear();
 
         for (const auto& procedure: m_SubProcedures) {
             procedure->onUpdate(deltaTime, context, window);
         }
         m_FrameBuffer->end();
+
+        // auto caf32 = m_FrameBuffer->getColorAttachment(0)->getData();
+        // caf32->translateDataType({VL_UINT8, VL_SIMD_BEST})->write({"Ca0.png", true, VL_IMAGE_PNG});
 
         // Now render the framebuffer to the screen
         context->getDefaultFrameBuffer()->begin();
@@ -81,6 +83,7 @@ namespace Velyra::SandBox {
         Core::FrameBufferDepthStencilAttachmentDesc dsDesc;
         dsDesc.format = VL_TEXTURE_DEPTH_24_STENCIL_8;
         dsDesc.enableShaderAccess = true;
+        dsDesc.clearDepth = 1.0f;
 
         m_FrameBufferLayout = context->createFrameBufferLayout();
         m_FrameBufferLayout->setDimensions(context->getClientWidth(), context->getClientHeight());

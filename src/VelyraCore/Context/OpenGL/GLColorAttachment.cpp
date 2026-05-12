@@ -35,6 +35,9 @@ namespace Velyra::Core {
 
     void GLColorAttachment::clear() const {
         glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, static_cast<GLint>(m_AttachmentID), m_ClearColor.toArray());
+
+        SPDLOG_LOGGER_TRACE(m_Logger, "Cleared GLColorAttachment with ID {} for framebuffer {} at attachment point {} with color ({}, {}, {}, {})",
+            m_Storage->getID(), m_FrameBufferID, m_AttachmentID, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);
     }
 
     void GLColorAttachment::onResize(const Size width, const Size height) {

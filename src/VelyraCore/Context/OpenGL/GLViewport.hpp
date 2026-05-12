@@ -31,6 +31,8 @@ namespace Velyra::Core {
         [[nodiscard]] float getMaxDepth() const override;
 
     private:
+        const Utils::LogPtr m_Logger;
+
         U32 m_Width;
         U32 m_Height;
         U32 m_XPos;
