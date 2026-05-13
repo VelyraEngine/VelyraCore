@@ -165,19 +165,11 @@ namespace Velyra::Core {
     }
 
     View<VertexBuffer> GLContext::createVertexBuffer(const VertexBufferDesc &desc) {
-        if (desc.count > m_Device->getMaxVertexCount()) {
-            SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} vertices, but {} requested", m_Device->getMaxVertexCount(), desc.count);
-            return nullptr;
-        }
         m_VertexBuffers.emplace_back(createUP<GLVertexBuffer>(desc));
         return m_VertexBuffers.back();
     }
 
     View<IndexBuffer> GLContext::createIndexBuffer(const IndexBufferDesc &desc) {
-        if (desc.count > m_Device->getMaxIndexCount()) {
-            SPDLOG_LOGGER_ERROR(m_Logger, "Current device supports only {} indices, but {} requested", m_Device->getMaxIndexCount(), desc.count);
-            return nullptr;
-        }
         m_IndexBuffers.emplace_back(createUP<GLIndexBuffer>(desc));
         return m_IndexBuffers.back();
     }

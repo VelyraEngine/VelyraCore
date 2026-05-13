@@ -1,10 +1,9 @@
 #pragma once
 
 #include "../IProcedure.hpp"
-#include "../Utils.hpp"
 
 VL_ENUM(MeshType, int,
-    Rectanlge = 0,
+    Rectangle = 0,
     Cube = 1,
     Sphere = 2,
     Cone = 3,
@@ -45,7 +44,7 @@ namespace Velyra::SandBox {
         View<Core::ConstantBuffer> m_TransformBuffer = nullptr;
         std::unordered_map<MeshType, View<Core::MeshBinding>> m_MeshBindings;
 
-        MeshType m_SelectedMeshType = Rectanlge;
+        MeshType m_SelectedMeshType = Rectangle;
         VL_DRAW_MODE m_SelectedDrawMode = VL_DRAW_TRIANGLES;
         glm::vec3 m_InputTranslate = glm::vec3(0.0f);
         glm::vec3 m_InputRotate = glm::vec3(0.0f);

@@ -54,9 +54,12 @@ namespace Velyra::Core {
         glBindVertexArray(m_ArrayID);
 
         // Then draw call
-        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {}", m_ArrayID);
         const auto vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {} with {} vertices", m_ArrayID, vertexCount);
         glDrawArrays(m_GlDrawMode, 0, vertexCount);
+
+        // Unbind VAO to prevent state pollution
+        glBindVertexArray(0);
 
         VL_CORE_OPENGL_LOG_ERRORS();
     }
@@ -67,9 +70,12 @@ namespace Velyra::Core {
 #endif
         glBindVertexArray(m_ArrayID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {} with {} instances", m_ArrayID, instanceCount);
         const auto vertexCount = static_cast<GLsizei>(m_VertexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing MeshBinding: {} with {} vertices and {} instances", m_ArrayID, vertexCount, instanceCount);
         glDrawArraysInstanced(m_GlDrawMode, 0, vertexCount, static_cast<GLsizei>(instanceCount));
+
+        // Unbind VAO to prevent state pollution
+        glBindVertexArray(0);
 
         VL_CORE_OPENGL_LOG_ERRORS();
     }
@@ -92,29 +98,39 @@ namespace Velyra::Core {
 
     void GLIndexedMeshBinding::draw() const {
         // Same story here regarding RenderDoc and debug mode.
+        glBindVertexArray(m_ArrayID);
+
 #if defined(VL_DEBUG)
+        // Bind buffers AFTER VAO to avoid corrupting other VAOs' state
         m_VertexBuffer->bind();
         m_IndexBuffer->bind();
 #endif
-        glBindVertexArray(m_ArrayID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing Indexed MeshBinding: {}", m_ArrayID);
         const auto indexCount = static_cast<GLsizei>(m_IndexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing Indexed MeshBinding: {} with {} indices", m_ArrayID, indexCount);
         glDrawElements(m_GlDrawMode, indexCount, m_IndexType, nullptr);
+
+        // Unbind VAO to prevent state pollution
+        glBindVertexArray(0);
 
         VL_CORE_OPENGL_LOG_ERRORS();
     }
 
     void GLIndexedMeshBinding::drawInstanced(const U64 instanceCount) const {
+        glBindVertexArray(m_ArrayID);
+
 #if defined(VL_DEBUG)
+        // Bind buffers AFTER VAO to avoid corrupting other VAOs' state
         m_VertexBuffer->bind();
         m_IndexBuffer->bind();
 #endif
-        glBindVertexArray(m_ArrayID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing Indexed MeshBinding: {} with {} instances", m_ArrayID, instanceCount);
         const auto indexCount = static_cast<GLsizei>(m_IndexBuffer->getCount());
+        SPDLOG_LOGGER_TRACE(m_Logger, "Drawing Indexed MeshBinding: {} with {} indices and {} instances", m_ArrayID, indexCount, instanceCount);
         glDrawElementsInstanced(m_GlDrawMode, indexCount, m_IndexType, nullptr, static_cast<GLsizei>(instanceCount));
+
+        // Unbind VAO to prevent state pollution
+        glBindVertexArray(0);
 
         VL_CORE_OPENGL_LOG_ERRORS();
     }

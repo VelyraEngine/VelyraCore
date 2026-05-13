@@ -149,7 +149,6 @@ set(VELYRA_CORE_SRC
 )
 
 add_library(VelyraCore STATIC ${VELYRA_CORE_HEADERS} ${VELYRA_CORE_SRC})
-target_compile_definitions(VelyraCore PUBLIC VL_DEBUG)
 vl_configure_target(VelyraCore)
 target_precompile_headers(VelyraCore PRIVATE src/VelyraCore/Pch.hpp)
 target_include_directories(VelyraCore PUBLIC include)
