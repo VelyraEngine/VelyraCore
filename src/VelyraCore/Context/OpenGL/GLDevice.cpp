@@ -73,18 +73,6 @@ namespace Velyra::Core {
         return getGlConstantInt(GL_MAX_VERTEX_ATTRIBS);
     }
 
-    U64 GLDevice::getMaxVertexCount() const {
-        return getGlConstantInt(GL_MAX_ELEMENTS_VERTICES);
-    }
-
-    U64 GLDevice::getMaxIndexCount() const {
-        return getGlConstantInt(GL_MAX_ELEMENTS_INDICES);
-    }
-
-    U64 GLDevice::getMaxIndex() const {
-        return getGlConstantInt(GL_MAX_ELEMENT_INDEX);
-    }
-
     bool GLDevice::isDoubleBuffered() const {
         return getGlConstantInt(GL_DOUBLEBUFFER) == 1;
     }

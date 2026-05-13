@@ -117,26 +117,6 @@ namespace Velyra::Core {
         [[nodiscard]] virtual U32 getMaxVertexAttributes() const = 0;
 
         /**
-         * @brief Retrieves the maximum number of vertices that can be drawn in a single draw call. This value is equal
-         *        to the number of vertices that can be stored in a single vertex buffer.
-         * @return U64 containing the maximum number of vertices that can be drawn in a single draw call.
-         */
-        [[nodiscard]] virtual U64 getMaxVertexCount() const = 0;
-
-        /**
-         * @brief Retrieves the maximum number of indices that can be drawn in a single draw call. This value is equal
-         *       to the number of indices that can be stored in a single index buffer.
-         * @return U64 containing the maximum number of indices that can be drawn in a single draw call.
-         */
-        [[nodiscard]] virtual U64 getMaxIndexCount() const = 0; // maximum number of indices for a draw call
-
-        /**
-         * @brief The maximum index value that can be used in a draw call. This value can be different from the maximum
-         *        number of indices that can be drawn in a single draw call.
-         */
-        [[nodiscard]] virtual U64 getMaxIndex() const = 0; // largest index value for a draw call
-
-        /**
          * @brief Returns whether the graphics device supports double buffering.
          * @return true if the graphics device supports double buffering, false otherwise
          */

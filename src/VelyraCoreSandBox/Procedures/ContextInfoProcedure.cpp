@@ -27,9 +27,6 @@ namespace Velyra::SandBox {
         ImGui::Text("Max Shader Storage Buffer Size: %u bytes", device.getMaxShaderStorageBufferSize());
         ImGui::Text("Max Shader Storage Buffer Slots: %u", device.getMaxShaderStorageBufferSlots());
         ImGui::Text("Max Vertex Attributes: %u", device.getMaxVertexAttributes());
-        ImGui::Text("Max Vertex Count: %lu", device.getMaxVertexCount());
-        ImGui::Text("Max Index Count: %lu", device.getMaxIndexCount());
-        ImGui::Text("Largest index: %lu", device.getMaxIndex());
         ImGui::Text("Double Buffering Supported: %s", device.isDoubleBuffered() ? "Yes" : "No");
 
 

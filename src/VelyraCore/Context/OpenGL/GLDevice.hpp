@@ -42,12 +42,6 @@ namespace Velyra::Core {
 
         [[nodiscard]] U32 getMaxVertexAttributes() const override;
 
-        [[nodiscard]] U64 getMaxVertexCount() const override;
-
-        [[nodiscard]] U64 getMaxIndexCount() const override;
-
-        [[nodiscard]] U64 getMaxIndex() const override;
-
         [[nodiscard]] bool isDoubleBuffered() const override;
 
         [[nodiscard]] bool isTextureFormatSupported(VL_TEXTURE_FORMAT format) const override;
