@@ -69,6 +69,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/FrameBuffer.hpp
     include/VelyraCore/Context/DepthStencilAttachment.hpp
     include/VelyraCore/Context/DepthStencilState.hpp
+    include/VelyraCore/Context/ApiState.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -85,6 +86,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/GLFrameBuffer.hpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilState.hpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilAttachment.hpp
+    src/VelyraCore/Context/OpenGL/GLState.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
@@ -116,6 +118,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLFrameBuffer.cpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilState.cpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilAttachment.cpp
+    src/VelyraCore/Context/OpenGL/GLState.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp
@@ -146,6 +149,7 @@ set(VELYRA_CORE_SRC
 )
 
 add_library(VelyraCore STATIC ${VELYRA_CORE_HEADERS} ${VELYRA_CORE_SRC})
+target_compile_definitions(VelyraCore PUBLIC VL_DEBUG)
 vl_configure_target(VelyraCore)
 target_precompile_headers(VelyraCore PRIVATE src/VelyraCore/Pch.hpp)
 target_include_directories(VelyraCore PUBLIC include)

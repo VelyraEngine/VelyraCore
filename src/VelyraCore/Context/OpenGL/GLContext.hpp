@@ -64,6 +64,8 @@ namespace Velyra::Core {
 
         View<DepthStencilState> createDepthStencilState(const DepthStencilStateDesc &desc) override;
 
+        UP<ApiState> getState() override;
+
     private:
 
         void initGlad() const;

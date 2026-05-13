@@ -15,6 +15,7 @@
 #include <VelyraCore/Context/FrameBufferLayout.hpp>
 #include <VelyraCore/Context/FrameBuffer.hpp>
 #include <VelyraCore/Context/DepthStencilState.hpp>
+#include <VelyraCore/Context/ApiState.hpp>
 
 namespace Velyra::Core {
 
@@ -213,6 +214,13 @@ namespace Velyra::Core {
         virtual View<FrameBuffer> createFrameBuffer(const View<FrameBufferLayout>& frameBufferLayout) = 0;
 
         virtual View<DepthStencilState> createDepthStencilState(const DepthStencilStateDesc& desc) = 0;
+
+        /**
+         * @brief Returns the current API state which includes info like current binds, viewport config, framebuffers,
+         *        etc. Handy for debugging, this is quite an expensive call to make so don't use this in non debug builds.
+         * @return API state
+         */
+        virtual UP<ApiState> getState() = 0;
 
         /**
          * @brief Returns a reference to the default framebuffer.
