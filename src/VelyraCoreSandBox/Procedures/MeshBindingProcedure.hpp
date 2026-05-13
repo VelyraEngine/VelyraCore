@@ -4,12 +4,13 @@
 #include "../Utils.hpp"
 
 VL_ENUM(MeshType, int,
-    Cube = 0,
-    Sphere = 1,
-    Cone = 2,
-    Cylinder = 3,
-    Torus = 4,
-    Plane = 5
+    Rectanlge = 0,
+    Cube = 1,
+    Sphere = 2,
+    Cone = 3,
+    Cylinder = 4,
+    Torus = 5,
+    Plane = 6
 );
 
 namespace Velyra::SandBox {
@@ -44,7 +45,7 @@ namespace Velyra::SandBox {
         View<Core::ConstantBuffer> m_TransformBuffer = nullptr;
         std::unordered_map<MeshType, View<Core::MeshBinding>> m_MeshBindings;
 
-        MeshType m_SelectedMeshType = Cube;
+        MeshType m_SelectedMeshType = Rectanlge;
         VL_DRAW_MODE m_SelectedDrawMode = VL_DRAW_TRIANGLES;
         glm::vec3 m_InputTranslate = glm::vec3(0.0f);
         glm::vec3 m_InputRotate = glm::vec3(0.0f);

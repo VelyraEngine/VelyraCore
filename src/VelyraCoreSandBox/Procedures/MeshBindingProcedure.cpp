@@ -44,6 +44,7 @@ namespace Velyra::SandBox {
     }
 
     void MeshBindingProcedure::createMeshBindings(const UP<Core::Context> &context) {
+        m_MeshBindings[Rectanlge] = loadMesh(createRectangle(0.75f), context);
         m_MeshBindings[Cube] = loadMesh(createCube(), context);
         m_MeshBindings[Sphere] = loadMesh(createSphere(16, 16), context);
         m_MeshBindings[Cone] = loadMesh(createCone(16, 1.0f, 1.0f), context);
