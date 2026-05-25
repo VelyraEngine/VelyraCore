@@ -239,17 +239,13 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/OpenGL/TestGLTranslations.cpp
 )
 
-if (BUILD_TESTING)
-    vl_fetch_gtest()
-
+if (VL_BUILD_TESTING)
     add_executable(TestVelyraCore ${VELYRA_CORE_TEST_SRC})
     target_include_directories(TestVelyraCore PUBLIC include)
     target_include_directories(TestVelyraCore PRIVATE include/VelyraCore/ImGui)
     target_precompile_headers(TestVelyraCore PUBLIC test/TestPch.hpp)
-    target_link_libraries(TestVelyraCore PUBLIC ${VELYRA_CORE_LIBS} GTest::gtest GTest::gtest_main VelyraCore)
-    add_test(NAME CTestVelyraCore COMMAND ${PROOT} $<TARGET_FILE:TestVelyraCore>)
-    set_tests_properties(CTestVelyraCore PROPERTIES
-        WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}")
+    target_link_libraries(TestVelyraCore PUBLIC ${VELYRA_CORE_LIBS} VelyraCore)
+    vl_configure_test_target(TestVelyraCore)
     
     # Add code coverage targets
     add_coverage_target(

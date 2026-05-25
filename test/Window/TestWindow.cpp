@@ -1,11 +1,20 @@
 #include "../TestPch.hpp"
 
 #include <VelyraCore/VelyraCore.hpp>
+#include "../Context/Environment.hpp"
 
 using namespace Velyra;
 using namespace Velyra::Core;
 
 class TestWindow : public ::testing::Test {
+protected:
+    void TearDown() override {
+        // Restore the Environment's OpenGL context after creating/destroying test windows
+        if (Environment<ApiWrapper<VL_API_OPENGL>>::m_Init && 
+            Environment<ApiWrapper<VL_API_OPENGL>>::m_Window) {
+            Environment<ApiWrapper<VL_API_OPENGL>>::m_Window->getContext()->makeCurrent();
+        }
+    }
 };
 
 TEST_F(TestWindow, CreateWindow) {
