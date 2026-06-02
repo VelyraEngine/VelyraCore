@@ -127,6 +127,10 @@ namespace Velyra::Core {
             return m_Context;
         }
 
+        void destroyContext() {
+            m_Context.reset();
+        }
+
     protected:
         Window() = default;
 
