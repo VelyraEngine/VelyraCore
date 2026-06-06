@@ -36,33 +36,59 @@ namespace Velyra::Core {
 
         View<Viewport> createViewport(const ViewportDesc& desc) override;
 
+        void destroyViewport(const View<Viewport>& viewport) override;
+
         View<ShaderModule> createShaderModule(const ShaderModuleDesc& desc) override;
 
         View<ShaderModule> createShaderModule(const ShaderModuleFileDesc& desc) override;
 
+        void destroyShaderModule(const View<ShaderModule>& shaderModule) override;
+
         View<Shader> createShader(const ShaderDesc& desc) override;
+
+        void destroyShader(const View<Shader>& shader) override;
 
         View<VertexLayout> createVertexLayout() override;
 
+        void destroyVertexLayout(const View<VertexLayout>& vertexLayout) override;
+
         View<VertexBuffer> createVertexBuffer(const VertexBufferDesc& desc) override;
+
+        void destroyVertexBuffer(const View<VertexBuffer>& vertexBuffer) override;
 
         View<IndexBuffer> createIndexBuffer(const IndexBufferDesc& desc) override;
 
+        void destroyIndexBuffer(const View<IndexBuffer>& indexBuffer) override;
+
         View<MeshBinding> createMeshBinding(const MeshBindingDesc& desc) override;
+
+        void destroyMeshBinding(const View<MeshBinding>& meshBinding) override;
 
         View<ConstantBuffer> createConstantBuffer(const ConstantBufferDesc &desc) override;
 
+        void destroyConstantBuffer(const View<ConstantBuffer>& constantBuffer) override;
+
         View<Sampler> createSampler(const SamplerDesc &desc) override;
+
+        void destroySampler(const View<Sampler>& sampler) override;
 
         View<Texture2D> createTexture2D(const Texture2DDesc &desc) override;
 
         View<Texture2D> createTexture2D(const Texture2DImageDesc &desc) override;
 
+        void destroyTexture2D(const View<Texture2D>& texture2D) override;
+
         View<FrameBufferLayout> createFrameBufferLayout() override;
+
+        void destroyFrameBufferLayout(const View<FrameBufferLayout>& frameBufferLayout) override;
 
         View<FrameBuffer> createFrameBuffer(const View<FrameBufferLayout> &frameBufferLayout) override;
 
+        void destroyFrameBuffer(const View<FrameBuffer>& frameBuffer) override;
+
         View<DepthStencilState> createDepthStencilState(const DepthStencilStateDesc &desc) override;
+
+        void destroyDepthStencilState(const View<DepthStencilState>& depthStencilState) override;
 
         UP<ApiState> getState() override;
 

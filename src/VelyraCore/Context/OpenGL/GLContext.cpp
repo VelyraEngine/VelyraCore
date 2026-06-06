@@ -25,6 +25,16 @@ namespace Velyra::Core {
         resources.clear();
     }
 
+    template<typename T>
+    void destroyResource(std::vector<UP<T>>& resources, const View<T>& resource) {
+        if (resource == nullptr) {
+            return;
+        }
+        std::erase_if(resources, [&resource](const UP<T>& item) {
+            return item.get() == resource.get();
+        });
+    }
+
     U64 GLContext::m_ContextCount = 0;
 
     GLContext::GLContext(const ContextDesc &desc, UP<GLPlatformContext> platformContext):
@@ -231,6 +241,58 @@ namespace Velyra::Core {
 
     UP<ApiState> GLContext::getState() {
         return createUP<GLState>();
+    }
+
+    void GLContext::destroyViewport(const View<Viewport>& viewport) {
+        destroyResource(m_Viewports, viewport);
+    }
+
+    void GLContext::destroyShaderModule(const View<ShaderModule>& shaderModule) {
+        destroyResource(m_ShaderModules, shaderModule);
+    }
+
+    void GLContext::destroyShader(const View<Shader>& shader) {
+        destroyResource(m_Shaders, shader);
+    }
+
+    void GLContext::destroyVertexLayout(const View<VertexLayout>& vertexLayout) {
+        destroyResource(m_VertexLayouts, vertexLayout);
+    }
+
+    void GLContext::destroyVertexBuffer(const View<VertexBuffer>& vertexBuffer) {
+        destroyResource(m_VertexBuffers, vertexBuffer);
+    }
+
+    void GLContext::destroyIndexBuffer(const View<IndexBuffer>& indexBuffer) {
+        destroyResource(m_IndexBuffers, indexBuffer);
+    }
+
+    void GLContext::destroyMeshBinding(const View<MeshBinding>& meshBinding) {
+        destroyResource(m_MeshBindings, meshBinding);
+    }
+
+    void GLContext::destroyConstantBuffer(const View<ConstantBuffer>& constantBuffer) {
+        destroyResource(m_ConstantBuffers, constantBuffer);
+    }
+
+    void GLContext::destroySampler(const View<Sampler>& sampler) {
+        destroyResource(m_Samplers, sampler);
+    }
+
+    void GLContext::destroyTexture2D(const View<Texture2D>& texture2D) {
+        destroyResource(m_Texture2Ds, texture2D);
+    }
+
+    void GLContext::destroyFrameBufferLayout(const View<FrameBufferLayout>& frameBufferLayout) {
+        destroyResource(m_FrameBufferLayouts, frameBufferLayout);
+    }
+
+    void GLContext::destroyFrameBuffer(const View<FrameBuffer>& frameBuffer) {
+        destroyResource(m_FrameBuffers, frameBuffer);
+    }
+
+    void GLContext::destroyDepthStencilState(const View<DepthStencilState>& depthStencilState) {
+        destroyResource(m_DepthStencilStates, depthStencilState);
     }
 
     void GLContext::initGlad() const {
