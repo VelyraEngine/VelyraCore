@@ -30,7 +30,7 @@ namespace Velyra::Core {
         glCreateBuffers(1, &m_BufferID);
         glNamedBufferData(m_BufferID, static_cast<GLsizeiptr>(size), data, getGLBufferUsage(usage));
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Buffer object {} created! (size: {}, usage: {})",
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Buffer object {} created! (size: {}, usage: {})",
             m_BufferID, size, usage);
     }
 
@@ -43,14 +43,14 @@ namespace Velyra::Core {
         glCreateBuffers(1, &m_BufferID);
         glNamedBufferData(m_BufferID, static_cast<GLsizeiptr>(size), data, getGLBufferUsage(usage));
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Buffer object {} created! (size: {}, usage: {}, name: {})",
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Buffer object {} created! (size: {}, usage: {}, name: {})",
             m_BufferID, size, usage, m_Name);
     }
 
     GLBuffer::~GLBuffer() {
         glDeleteBuffers(1, &m_BufferID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Buffer object {} deleted! (name: {})", m_BufferID, m_Name);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Buffer object {} deleted! (name: {})", m_BufferID, m_Name);
     }
 
     void GLBuffer::bind() const {

@@ -26,13 +26,13 @@ namespace Velyra::Core {
         glSamplerParameterfv(m_SamplerID, GL_TEXTURE_BORDER_COLOR, m_BorderColor);
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, static_cast<GLint>(getGLComparisonFunc(m_ComparisonFunc)));
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLSampler with ID {}", m_SamplerID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLSampler with ID {}", m_SamplerID);
     }
 
     GLSampler::~GLSampler() {
         glDeleteSamplers(1, &m_SamplerID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Destroyed GLSampler with ID {}", m_SamplerID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Destroyed GLSampler with ID {}", m_SamplerID);
     }
 
     void GLSampler::bindShaderResource(const U32 slot) {

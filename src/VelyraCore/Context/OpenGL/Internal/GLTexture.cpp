@@ -43,7 +43,7 @@ namespace Velyra::Core {
             glCreateBuffers(1, &m_PixelPackBufferID);
         }
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Texture object {} created! (width: {}, height: {}, format: {}, usage: {})",
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Texture object {} created! (width: {}, height: {}, format: {}, usage: {})",
             m_TextureID, m_Width, m_Height, desc.format, desc.usage);
     }
 
@@ -56,7 +56,7 @@ namespace Velyra::Core {
         }
         glDeleteTextures(1, &m_TextureID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Texture object {} deleted!", m_TextureID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Texture object {} deleted!", m_TextureID);
     }
 
     void GLTexture::bind() const {

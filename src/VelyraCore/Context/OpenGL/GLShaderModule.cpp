@@ -27,7 +27,7 @@ namespace Velyra::Core {
     GLShaderModule::~GLShaderModule() {
         glDeleteShader(m_ShaderModuleID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Shader Module: {} destroyed", m_ShaderModuleID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Shader Module: {} destroyed", m_ShaderModuleID);
     }
 
     U64 GLShaderModule::getIdentifier() const {
@@ -73,7 +73,7 @@ namespace Velyra::Core {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to compile shader! ID = {}, type = {}, error = {}", m_ShaderModuleID, m_ShaderType, log);
         }
         else {
-            SPDLOG_LOGGER_TRACE(m_Logger, "Shader Module {} created!", m_ShaderModuleID);
+            SPDLOG_LOGGER_DEBUG(m_Logger, "Shader Module {} created!", m_ShaderModuleID);
         }
     }
 }

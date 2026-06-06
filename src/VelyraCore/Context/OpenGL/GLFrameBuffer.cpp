@@ -18,13 +18,13 @@ namespace Velyra::Core {
         createDepthStencilAttachment(layout, device);
         checkFrameBufferStatus();
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "FrameBuffer: {} created", m_FrameBufferID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "FrameBuffer: {} created", m_FrameBufferID);
     }
 
     GLFrameBuffer::~GLFrameBuffer() {
         glDeleteFramebuffers(1, &m_FrameBufferID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "FrameBuffer: {} destroyed", m_FrameBufferID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "FrameBuffer: {} destroyed", m_FrameBufferID);
     }
 
     void GLFrameBuffer::begin() {
@@ -186,11 +186,11 @@ namespace Velyra::Core {
         auto defaultDepthStencilAttachment = createUP<GLDefaultDepthStencilAttachment>(dsDesc, device);
         m_DepthStencilAttachment = std::move(defaultDepthStencilAttachment);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Default FrameBuffer created");
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Default FrameBuffer created");
     }
 
     GLDefaultFrameBuffer::~GLDefaultFrameBuffer() {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Default FrameBuffer destroyed");
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Default FrameBuffer destroyed");
     }
 
     void GLDefaultFrameBuffer::begin() {

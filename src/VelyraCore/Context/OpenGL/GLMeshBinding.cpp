@@ -36,7 +36,7 @@ namespace Velyra::Core {
         const auto vertexBufferID = static_cast<GLuint>(desc.vertexBuffer->getIdentifier());
         glVertexArrayVertexBuffer(m_ArrayID, 0, vertexBufferID, 0, static_cast<GLsizei>(offset));
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLMeshBinding with ID {} (Attributes: {}, Offset: {})", m_ArrayID, attribPtr, offset);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLMeshBinding with ID {} (Attributes: {}, Offset: {})", m_ArrayID, attribPtr, offset);
     }
 
     GLArrayMeshBinding::~GLArrayMeshBinding() {

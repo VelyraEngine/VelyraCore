@@ -15,7 +15,7 @@ namespace Velyra::Core {
     m_GLStencilFail(getGLStencilFunc(desc.stencilFail)),
     m_GLStencilPassDepthFail(getGLStencilFunc(desc.stencilPassDepthFail)),
     m_GLStencilPass(getGLStencilFunc(desc.stencilPass)) {
-        SPDLOG_LOGGER_TRACE(
+        SPDLOG_LOGGER_DEBUG(
             m_Logger,
             "Created GLDepthStencilState with depth test {}, depth func {}, depth mask {}, stencil test {}, stencil func {}, stencil mask {}, stencil fail op {}, stencil pass op {}, stencil pass depth fail op {}",
             m_DepthTestEnabled ? "enabled" : "disabled", m_DepthComparisonFunc, m_DepthMask,

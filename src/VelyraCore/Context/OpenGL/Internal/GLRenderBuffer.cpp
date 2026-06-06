@@ -21,14 +21,14 @@ namespace Velyra::Core {
         glCreateRenderbuffers(1, &m_RenderBufferID);
         glNamedRenderbufferStorage(m_RenderBufferID, getGLTextureFormat(desc.format), static_cast<GLint>(m_Width), static_cast<GLint>(m_Height));
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "RenderBuffer object {} created! (width: {}, height: {}, format: {})",
+        SPDLOG_LOGGER_DEBUG(m_Logger, "RenderBuffer object {} created! (width: {}, height: {}, format: {})",
             m_RenderBufferID, m_Width, m_Height, desc.format);
     }
 
     GLRenderBuffer::~GLRenderBuffer() {
         glDeleteRenderbuffers(1, &m_RenderBufferID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "RenderBuffer object {} deleted!", m_RenderBufferID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "RenderBuffer object {} deleted!", m_RenderBufferID);
     }
 
     void GLRenderBuffer::onResize(const Size width, const Size height) {

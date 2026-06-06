@@ -17,11 +17,11 @@ namespace Velyra::Core {
         const GLenum attachmentType = getAttachmentType(desc.format);
         m_Storage->attachToFramebuffer(m_FrameBufferID, attachmentType);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
     }
 
     GLDepthStencilAttachment::~GLDepthStencilAttachment(){
-        SPDLOG_LOGGER_TRACE(m_Logger, "Destroyed GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Destroyed GLDepthStencilAttachment with ID {} for framebuffer {}", m_Storage->getID(), m_FrameBufferID);
     }
 
     void GLDepthStencilAttachment::bind() const {
@@ -81,11 +81,11 @@ namespace Velyra::Core {
     GLDefaultDepthStencilAttachment::GLDefaultDepthStencilAttachment(const DepthStencilAttachmentDesc &desc, const Device &device):
     DepthStencilAttachment(desc, device),
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)) {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDefaultDepthStencilAttachment");
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLDefaultDepthStencilAttachment");
     }
 
     GLDefaultDepthStencilAttachment::~GLDefaultDepthStencilAttachment() {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Destroyed GLDefaultDepthStencilAttachment");
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Destroyed GLDefaultDepthStencilAttachment");
     }
 
     void GLDefaultDepthStencilAttachment::bind() const {

@@ -16,7 +16,7 @@ namespace Velyra::Core {
 
         m_Storage->attachToFramebuffer(m_FrameBufferID, GL_COLOR_ATTACHMENT0 + m_AttachmentID);
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLColorAttachment with ID {} for framebuffer {} at attachment point {}", m_Storage->getID(), m_FrameBufferID, m_AttachmentID);
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLColorAttachment with ID {} for framebuffer {} at attachment point {}", m_Storage->getID(), m_FrameBufferID, m_AttachmentID);
     }
 
     GLColorAttachment::~GLColorAttachment() = default;
@@ -63,7 +63,7 @@ namespace Velyra::Core {
     GLDefaultColorAttachment::GLDefaultColorAttachment(const ColorAttachmentDesc& desc, const Device& device):
     ColorAttachment(desc, device),
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)) {
-        SPDLOG_LOGGER_TRACE(m_Logger, "Created GLDefaultColorAttachment");
+        SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLDefaultColorAttachment");
     }
 
     GLDefaultColorAttachment::~GLDefaultColorAttachment() = default;
