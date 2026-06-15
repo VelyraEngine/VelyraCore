@@ -16,6 +16,11 @@ To enjoy faster builds, consider installing the following packages as well.
 sudo apt install ninja-build ccache mold
 ```
 
+If you are on UNIX or are using the GLFW3 backend, you will need these packages as well
+```bash
+sudo apt install libwayland-dev libxkbcommon-dev xorg-dev
+```
+
 ### Windows 11
 Install MSVC using the installer found on the microsoft webpage.
 
