@@ -239,7 +239,7 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/OpenGL/TestGLTranslations.cpp
 )
 
-if (VL_BUILD_TESTING)
+if (BUILD_TESTING)
     add_executable(TestVelyraCore ${VELYRA_CORE_TEST_SRC})
     target_include_directories(TestVelyraCore PUBLIC include)
     target_include_directories(TestVelyraCore PRIVATE include/VelyraCore/ImGui)

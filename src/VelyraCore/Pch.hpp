@@ -6,6 +6,9 @@
 #include <sstream>
 #include <algorithm>
 #include <ranges>
+#include <vector>
+#include <memory>
+#include <unordered_map>
 
 #include <VelyraUtils/VelyraUtils.hpp>
 
@@ -14,6 +17,8 @@
 #include "ImGui/imgui_impl_opengl3.h"
 
 #include <glad/glad.h>
+
+#include <spdlog/spdlog.h>
 
 #if defined(VL_PLATFORM_WINDOWS)
 
