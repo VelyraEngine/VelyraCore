@@ -1,6 +1,5 @@
 #pragma once
 
-#include <VelyraUtils/Memory/View.hpp>
 #include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {

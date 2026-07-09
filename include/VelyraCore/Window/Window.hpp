@@ -2,7 +2,6 @@
 
 #include <VelyraCore/Core/CoreInclude.hpp>
 #include <VelyraCore/Window/Event.hpp>
-#include <VelyraCore/Context/Context.hpp>
 
 #include <optional>
 
@@ -25,6 +24,9 @@ VL_ENUM(VL_WINDOW_ICON, int,
     );
 
 namespace Velyra::Core {
+
+    class Context;
+    struct ContextDesc;
 
     namespace fs = std::filesystem;
 
@@ -59,7 +61,7 @@ namespace Velyra::Core {
 
     class VL_API Window {
     public:
-        virtual ~Window() = default;
+        virtual ~Window();
 
         virtual I32 getPositionX() const = 0;
 
@@ -123,13 +125,9 @@ namespace Velyra::Core {
 
         virtual const UP<Context>& createContext(const ContextDesc& desc) = 0;
 
-        const UP<Context>& getContext() const {
-            return m_Context;
-        }
+        const UP<Context>& getContext() const;
 
-        void destroyContext() {
-            m_Context.reset();
-        }
+        void destroyContext();
 
     protected:
         Window() = default;

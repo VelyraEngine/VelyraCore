@@ -1,9 +1,11 @@
 #pragma once
 
-#include <VelyraCore/Context/Device.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 #include <VelyraUtils/Types/Color.hpp>
 
 namespace Velyra::Core {
+
+    class Device;
 
     struct VL_API ColorAttachmentDesc {
         Size width                  = VL_DEFAULT_WIDTH;

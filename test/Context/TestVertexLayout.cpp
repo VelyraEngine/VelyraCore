@@ -1,6 +1,6 @@
 #include "../TestPch.hpp"
 
-#include <VelyraCore/VelyraCore.hpp>
+#include <VelyraCore/Context/VertexLayout.hpp>
 #include "Environment.hpp"
 
 using namespace Velyra;

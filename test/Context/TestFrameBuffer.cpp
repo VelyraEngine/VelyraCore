@@ -1,6 +1,13 @@
 #include "../TestPch.hpp"
 
-#include <VelyraCore/VelyraCore.hpp>
+#include <VelyraCore/Context/FrameBuffer.hpp>
+#include <VelyraCore/Context/FrameBufferLayout.hpp>
+#include <VelyraCore/Context/ColorAttachment.hpp>
+#include <VelyraCore/Context/DepthStencilAttachment.hpp>
+#include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
+#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/MeshBinding.hpp>
 #include "Environment.hpp"
 #include "Meshes.hpp"
 #include "Shaders.hpp"

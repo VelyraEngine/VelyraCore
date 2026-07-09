@@ -1,6 +1,6 @@
 #include "../TestPch.hpp"
 
-#include <VelyraCore/VelyraCore.hpp>
+#include <VelyraCore/Context/ShaderModule.hpp>
 #include "Environment.hpp"
 #include "Shaders.hpp"
 

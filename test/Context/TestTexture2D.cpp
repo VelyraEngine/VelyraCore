@@ -1,6 +1,7 @@
 #include "../TestPch.hpp"
 
-#include <VelyraCore/VelyraCore.hpp>
+#include <VelyraCore/Context/Texture2D.hpp>
+#include <VelyraCore/Context/Device.hpp>
 #include "Environment.hpp"
 #include "Textures.hpp"
 #include <VelyraImage/ImageFactory.hpp>

@@ -1,5 +1,7 @@
 #include "../../Pch.hpp"
 
+#include <VelyraCore/Context/ShaderModule.hpp>
+
 #include "GLShader.hpp"
 #include "../../../Logging/LoggerNames.hpp"
 

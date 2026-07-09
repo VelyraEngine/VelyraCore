@@ -1,10 +1,11 @@
 #pragma once
 
-#include <VelyraUtils/Memory/View.hpp>
-#include <VelyraCore/Context/VertexBuffer.hpp>
-#include <VelyraCore/Context/IndexBuffer.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
+
+    class VertexBuffer;
+    class IndexBuffer;
 
     struct VL_API MeshBindingDesc {
         VL_DRAW_MODE drawMode   = VL_DRAW_TRIANGLES;

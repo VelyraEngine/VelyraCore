@@ -1,6 +1,6 @@
 #pragma once
 
-#include <VelyraCore/Context/Definitions.hpp>
+#include <VelyraCore/Core/CoreInclude.hpp>
 
 namespace Velyra::Core {
 

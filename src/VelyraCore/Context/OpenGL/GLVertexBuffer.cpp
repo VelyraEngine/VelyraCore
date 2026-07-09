@@ -1,6 +1,7 @@
 #include "../../Pch.hpp"
 
 #include "GLVertexBuffer.hpp"
+#include <VelyraCore/Context/VertexLayout.hpp>
 #include "../../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {

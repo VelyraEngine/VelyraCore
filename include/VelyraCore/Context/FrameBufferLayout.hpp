@@ -1,9 +1,11 @@
 #pragma once
 
-#include <VelyraCore/Context/Device.hpp>
 #include <VelyraUtils/Types/Color.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
+
+    class Device;
 
     struct VL_API FrameBufferColorAttachmentDesc {
         Utils::Color clearColor     = {0.2f, 0.3f, 0.8f, 1.0f}; // default clear color is a nice blue

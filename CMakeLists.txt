@@ -48,6 +48,7 @@ set(VELYRA_CORE_WINDOW_HEADERS
 
 set(VELYRA_CORE_WINDOW_SRC
     src/VelyraCore/Window/WindowFactory.cpp
+    src/VelyraCore/Window/Window.cpp
 )
 
 set(VELYRA_CORE_CONTEXT_HEADERS
@@ -102,6 +103,9 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/VertexLayout.cpp
     src/VelyraCore/Context/Definitions.cpp
     src/VelyraCore/Context/FrameBufferLayout.cpp
+    src/VelyraCore/Context/Texture2D.cpp
+    src/VelyraCore/Context/VertexBuffer.cpp
+    src/VelyraCore/Context/FrameBuffer.cpp
 
     src/VelyraCore/Context/OpenGL/GLContext.cpp
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
@@ -135,6 +139,8 @@ set(VELYRA_CORE_HEADERS
     ${VELYRA_CORE_CONTEXT_HEADERS}
 
     include/VelyraCore/VelyraCore.hpp
+
+    include/VelyraCore/ImGui/ImGui.hpp
 
     src/VelyraCore/Pch.hpp
 )

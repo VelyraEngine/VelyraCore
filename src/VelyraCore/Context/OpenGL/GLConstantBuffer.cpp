@@ -1,6 +1,7 @@
 #include "../../Pch.hpp"
 
 #include "GLConstantBuffer.hpp"
+#include <VelyraCore/Context/Device.hpp>
 
 namespace Velyra::Core {
 

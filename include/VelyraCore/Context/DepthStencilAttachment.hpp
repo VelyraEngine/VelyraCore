@@ -1,8 +1,10 @@
 #pragma once
 
-#include <VelyraCore/Context/Device.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
+
+    class Device;
 
     struct VL_API DepthStencilAttachmentDesc {
         Size width                  = VL_DEFAULT_WIDTH;

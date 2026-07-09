@@ -1,6 +1,8 @@
 #pragma once
 
 #include <VelyraCore/VelyraCore.hpp>
+#include <VelyraCore/Context/ShaderModule.hpp>
+#include <VelyraCore/Context/Shader.hpp>
 
 struct ShaderPackage {
     Velyra::View<Velyra::Core::ShaderModule> vertexShader;

@@ -1,6 +1,23 @@
 #include "../Pch.hpp"
 
 #include <VelyraCore/Context/Context.hpp>
+#include <VelyraCore/Context/Device.hpp>
+#include <VelyraCore/Context/ShaderModule.hpp>
+#include <VelyraCore/Context/Viewport.hpp>
+#include <VelyraCore/Context/Shader.hpp>
+#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
+#include <VelyraCore/Context/MeshBinding.hpp>
+#include <VelyraCore/Context/ConstantBuffer.hpp>
+#include <VelyraCore/Context/Sampler.hpp>
+#include <VelyraCore/Context/Texture2D.hpp>
+#include <VelyraCore/Context/FrameBufferLayout.hpp>
+#include <VelyraCore/Context/DepthStencilAttachment.hpp>
+#include <VelyraCore/Context/ColorAttachment.hpp>
+#include <VelyraCore/Context/DepthStencilState.hpp>
+#include <VelyraCore/Context/ApiState.hpp>
+
 #include "../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {
@@ -72,6 +89,8 @@ namespace Velyra::Core {
         ImGui::DestroyContext();
         m_ImGuiEnabled = false;
     }
+
+    Context::Context(const VL_GRAPHICS_API type): m_Type(type) {}
 
     void Context::imGuiSetStyle(const VL_IMGUI_STYLE style) {
         switch (style) {

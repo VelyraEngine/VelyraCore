@@ -1,11 +1,14 @@
 #pragma once
 
-#include <VelyraCore/Context/Device.hpp>
-#include <VelyraImage/IImage.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
-#include "VelyraUtils/Memory/View.hpp"
+namespace Velyra::Image {
+    class IImage;
+}
 
 namespace Velyra::Core {
+
+    class Device;
 
     struct VL_API Texture2DDesc {
         Size width = 0;
@@ -24,21 +27,9 @@ namespace Velyra::Core {
 
     class VL_API Texture2D {
     public:
-        Texture2D(const Texture2DDesc& desc, const Device& device):
-            m_Device(device),
-            m_Width(desc.width),
-            m_Height(desc.height),
-            m_Format(desc.format),
-            m_Usage(desc.usage) {
-        }
+        Texture2D(const Texture2DDesc& desc, const Device& device);
 
-        Texture2D(const Texture2DImageDesc& desc, const Device& device):
-            m_Device(device),
-            m_Width(desc.image->getWidth()),
-            m_Height(desc.image->getHeight()),
-            m_Format(getTextureFormat(desc.image)),
-            m_Usage(desc.usage) {
-        }
+        Texture2D(const Texture2DImageDesc& desc, const Device& device);
 
         virtual ~Texture2D() = default;
 

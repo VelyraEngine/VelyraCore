@@ -2,7 +2,7 @@
 
 #include <VelyraCore/Core/CoreInclude.hpp>
 #include <VelyraUtils/VelyraEnum.hpp>
-#include <VelyraImage/IImage.hpp>
+#include <VelyraImage/ImageDefs.hpp>
 
 #define VL_GL_MAJOR_VERSION 4
 #define VL_GL_MINOR_VERSION 6
@@ -134,6 +134,10 @@ VL_ENUM(VL_STENCIL_FUNC, int,
     VL_STENCIL_FUNC_DECR_WRAP        = 0x06,
     VL_STENCIL_FUNC_INVERT           = 0x07
 );
+
+namespace Velyra::Image {
+    class IImage;
+}
 
 namespace Velyra::Core {
 

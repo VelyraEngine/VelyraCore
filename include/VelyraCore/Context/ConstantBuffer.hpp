@@ -1,9 +1,10 @@
 #pragma once
 
-#include <VelyraUtils/Memory/View.hpp>
-#include <VelyraCore/Context/Device.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
+
+    class Device;
 
     struct VL_API ConstantBufferDesc {
         std::string name;

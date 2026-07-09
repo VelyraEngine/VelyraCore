@@ -1,9 +1,10 @@
 #pragma once
 
-#include <VelyraUtils/Memory/View.hpp>
-#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
+
+    class VertexLayout;
 
     struct VL_API VertexBufferDesc {
         const void* data        = nullptr;
@@ -14,8 +15,7 @@ namespace Velyra::Core {
 
     class VL_API VertexBuffer {
     public:
-        explicit VertexBuffer(const VertexBufferDesc& desc)
-            : m_Count(desc.count), m_Usage(desc.usage), m_Layout(desc.layout) {}
+        explicit VertexBuffer(const VertexBufferDesc& desc);
 
         virtual ~VertexBuffer() = default;
 
@@ -56,9 +56,7 @@ namespace Velyra::Core {
          * @brief Returns the size of the vertex buffer in bytes.
          * @return
          */
-        [[nodiscard]] U64 getSize() const {
-            return m_Count * m_Layout->getStride();
-        }
+        [[nodiscard]] U64 getSize() const;
 
         /**
          * @brief Returns the amount of vertices stored in the vertex buffer.

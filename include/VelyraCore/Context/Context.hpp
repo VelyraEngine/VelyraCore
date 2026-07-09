@@ -1,23 +1,36 @@
 #pragma once
 
 #include <VelyraCore/Context/Definitions.hpp>
-#include <VelyraCore/Context/Viewport.hpp>
-#include <VelyraUtils/Memory/View.hpp>
-#include <VelyraCore/Context/ShaderModule.hpp>
-#include <VelyraCore/Context/Shader.hpp>
-#include <VelyraCore/Context/VertexLayout.hpp>
-#include <VelyraCore/Context/VertexBuffer.hpp>
-#include <VelyraCore/Context/IndexBuffer.hpp>
-#include <VelyraCore/Context/MeshBinding.hpp>
-#include <VelyraCore/Context/ConstantBuffer.hpp>
-#include <VelyraCore/Context/Sampler.hpp>
-#include <VelyraCore/Context/Texture2D.hpp>
-#include <VelyraCore/Context/FrameBufferLayout.hpp>
 #include <VelyraCore/Context/FrameBuffer.hpp>
-#include <VelyraCore/Context/DepthStencilState.hpp>
-#include <VelyraCore/Context/ApiState.hpp>
 
 namespace Velyra::Core {
+
+    class Viewport;
+    class ViewportDesc;
+    class ShaderModule;
+    struct ShaderModuleDesc;
+    struct ShaderModuleFileDesc;
+    class Shader;
+    struct ShaderDesc;
+    class VertexLayout;
+    class VertexBuffer;
+    struct VertexBufferDesc;
+    class IndexBuffer;
+    struct IndexBufferDesc;
+    class MeshBinding;
+    struct MeshBindingDesc;
+    class ConstantBuffer;
+    struct ConstantBufferDesc;
+    class Sampler;
+    struct SamplerDesc;
+    class Texture2D;
+    struct Texture2DDesc;
+    struct Texture2DImageDesc;
+    class FrameBufferLayout;
+    class DepthStencilState;
+    struct DepthStencilStateDesc;
+    class Device;
+    class ApiState;
 
     struct VL_API ContextDesc {
         VL_GRAPHICS_API api = VL_API_BEST;
@@ -341,7 +354,7 @@ namespace Velyra::Core {
         }
 
     protected:
-        explicit Context(const VL_GRAPHICS_API type): m_Type(type) {}
+        explicit Context(VL_GRAPHICS_API type);
 
         static void imGuiSetStyle(VL_IMGUI_STYLE style);
 
@@ -354,8 +367,8 @@ namespace Velyra::Core {
         bool m_ImGuiEnabled = false;
         bool m_ImGuiRendering = false;
 
-        UP<Device> m_Device = nullptr;
-        UP<FrameBuffer> m_DefaultFrameBuffer = nullptr;
+        UP<Device> m_Device;
+        UP<FrameBuffer> m_DefaultFrameBuffer;
 
         std::vector<UP<Viewport>> m_Viewports;
         std::vector<UP<ShaderModule>> m_ShaderModules;

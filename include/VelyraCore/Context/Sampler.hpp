@@ -1,8 +1,10 @@
 #pragma once
 
-#include <VelyraCore/Context/Device.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 namespace Velyra::Core {
+
+    class Device;
 
     struct VL_API SamplerDesc {
         VL_TEXTURE_FILTER minFilter   = VL_TEXTURE_FILTER_LINEAR;

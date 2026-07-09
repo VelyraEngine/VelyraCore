@@ -1,12 +1,14 @@
 #pragma once
 
-#include <VelyraCore/Context/Device.hpp>
+#include <VelyraCore/Core/CoreInclude.hpp>
 
 namespace Velyra::Core {
 
+    class Device;
+
     struct VL_API VertexAttribute {
         std::string name;
-        VL_SCALAR_TYPE type;
+        VL_SCALAR_TYPE type = VL_SCALAR_TYPE_MAX_VALUE;
 
         VertexAttribute() = default;
         VertexAttribute(const std::string& name_, const VL_SCALAR_TYPE type_)

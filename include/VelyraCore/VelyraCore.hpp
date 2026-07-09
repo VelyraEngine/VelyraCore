@@ -6,10 +6,21 @@
 #include <VelyraCore/Window/KeyboardButtons.hpp>
 
 #include <VelyraCore/Context/Context.hpp>
+#include <VelyraCore/Context/Viewport.hpp>
+#include <VelyraCore/Context/ShaderModule.hpp>
+#include <VelyraCore/Context/Shader.hpp>
+#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
+#include <VelyraCore/Context/MeshBinding.hpp>
+#include <VelyraCore/Context/ConstantBuffer.hpp>
+#include <VelyraCore/Context/Sampler.hpp>
+#include <VelyraCore/Context/Texture2D.hpp>
+#include <VelyraCore/Context/FrameBufferLayout.hpp>
+#include <VelyraCore/Context/DepthStencilState.hpp>
+#include <VelyraCore/Context/ApiState.hpp>
 
-#include <VelyraCore/ImGui/imgui.h>
-#include <VelyraCore/ImGui/implot.h>
-#include <VelyraCore/ImGui/imgui_stdlib.h>
+#include <VelyraCore/ImGui/ImGui.hpp>
 
 namespace Velyra::Core {
 

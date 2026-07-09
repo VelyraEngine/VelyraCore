@@ -1,9 +1,10 @@
 #pragma once
 
 #include <VelyraUtils/Memory/View.hpp>
-#include <VelyraCore/Context/ShaderModule.hpp>
 
 namespace Velyra::Core {
+
+    class ShaderModule;
 
     struct VL_API ShaderDesc {
         View<ShaderModule> vertexShader;

@@ -1,7 +1,7 @@
 #include "../TestPch.hpp"
 
-#include <VelyraCore/VelyraCore.hpp>
 #include "Environment.hpp"
+#include <VelyraCore/Context/IndexBuffer.hpp>
 #include "Meshes.hpp"
 
 using namespace Velyra;

@@ -1,6 +1,7 @@
 #include "../Pch.hpp"
 
 #include <VelyraCore/Context/FrameBufferLayout.hpp>
+#include <VelyraCore/Context/Device.hpp>
 #include "../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {
