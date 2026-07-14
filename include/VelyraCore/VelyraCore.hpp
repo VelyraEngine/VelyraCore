@@ -19,6 +19,8 @@
 #include <VelyraCore/Context/FrameBufferLayout.hpp>
 #include <VelyraCore/Context/DepthStencilState.hpp>
 #include <VelyraCore/Context/ApiState.hpp>
+#include <VelyraCore/Context/ColorAttachment.hpp>
+#include <VelyraCore/Context/DepthStencilAttachment.hpp>
 
 #include <VelyraCore/ImGui/ImGui.hpp>
 
