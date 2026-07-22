@@ -1,16 +1,19 @@
+#include "../../Pch.hpp"
+
 #include "GLViewport.hpp"
+#include "../../Logging/LoggerNames.hpp"
 
 namespace Velyra::Core {
 
     GLViewport::GLViewport(const ViewportDesc &desc):
     Viewport(),
+    m_Logger(Utils::getLogger(VL_LOGGER_OGL)),
     m_Width(desc.width),
     m_Height(desc.height),
     m_XPos(desc.xPosition),
     m_YPos(desc.yPosition),
     m_MinDepth(desc.minDepth),
-    m_MaxDepth(desc.maxDepth),
-    m_Logger(Utils::getLogger(VL_LOGGER_OGL)){
+    m_MaxDepth(desc.maxDepth){
     }
 
     void GLViewport::bind() {

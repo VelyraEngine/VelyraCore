@@ -210,13 +210,14 @@ namespace Velyra::Core {
 
         glGetIntegerv(GL_ACTIVE_TEXTURE, &m_ActiveTexture);
         for (int i = 0; i < 32; ++i) {
-            glActiveTexture(GL_TEXTURE0 + i);
+            const auto activeTexture = static_cast<GLenum>(GL_TEXTURE0 + i);
+            glActiveTexture(activeTexture);
             glGetIntegerv(GL_TEXTURE_BINDING_2D, &m_BoundTextures[i]);
         }
         // Restore the active texture unit
-        glActiveTexture(m_ActiveTexture);
+        glActiveTexture(static_cast<GLenum>(m_ActiveTexture));
 
-        for (int i = 0; i < 32; ++i){
+        for (unsigned int i = 0; i < 32; ++i){
             glGetIntegeri_v(GL_UNIFORM_BUFFER_BINDING, i, &m_UniformBindings[i]);
         }
     }
