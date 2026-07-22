@@ -90,6 +90,10 @@ namespace Velyra::Core {
 
         void destroyDepthStencilState(const View<DepthStencilState>& depthStencilState) override;
 
+        View<StructuredBuffer> createStructuredBuffer(const StructuredBufferDesc &desc) override;
+
+        void destroyStructuredBuffer(const View<StructuredBuffer> &structuredBuffer) override;
+
         UP<ApiState> getState() override;
 
     private:

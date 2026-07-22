@@ -71,6 +71,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/DepthStencilAttachment.hpp
     include/VelyraCore/Context/DepthStencilState.hpp
     include/VelyraCore/Context/ApiState.hpp
+    include/VelyraCore/Context/StructuredBuffer.hpp
 
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
@@ -88,6 +89,7 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/GLDepthStencilState.hpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilAttachment.hpp
     src/VelyraCore/Context/OpenGL/GLState.hpp
+    src/VelyraCore/Context/OpenGL/GLStructuredBuffer.hpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLPlatformContext.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.hpp
@@ -123,6 +125,7 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/GLDepthStencilState.cpp
     src/VelyraCore/Context/OpenGL/GLDepthStencilAttachment.cpp
     src/VelyraCore/Context/OpenGL/GLState.cpp
+    src/VelyraCore/Context/OpenGL/GLStructuredBuffer.cpp
 
     src/VelyraCore/Context/OpenGL/Internal/GLTranslations.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLBuffer.cpp
@@ -241,6 +244,7 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestDefinitions.cpp
     test/Context/TestTexture2D.cpp
     test/Context/TestFrameBuffer.cpp
+    test/Context/TestStructuredBuffer.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
 )

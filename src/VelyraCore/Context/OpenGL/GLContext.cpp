@@ -17,6 +17,7 @@
 #include "GLFrameBuffer.hpp"
 #include "GLDepthStencilState.hpp"
 #include "GLState.hpp"
+#include "GLStructuredBuffer.hpp"
 
 namespace Velyra::Core {
 
@@ -239,6 +240,15 @@ namespace Velyra::Core {
         return m_DepthStencilStates.back();
     }
 
+    View<StructuredBuffer> GLContext::createStructuredBuffer(const StructuredBufferDesc &desc) {
+        m_StructuredBuffers.emplace_back(createUP<GLStructuredBuffer>(desc, *m_Device));
+        return m_StructuredBuffers.back();
+    }
+
+    void GLContext::destroyStructuredBuffer(const View<StructuredBuffer> &structuredBuffer) {
+        destroyResource(m_StructuredBuffers, structuredBuffer);
+    }
+
     UP<ApiState> GLContext::getState() {
         return createUP<GLState>();
     }
@@ -294,6 +304,7 @@ namespace Velyra::Core {
     void GLContext::destroyDepthStencilState(const View<DepthStencilState>& depthStencilState) {
         destroyResource(m_DepthStencilStates, depthStencilState);
     }
+
 
     void GLContext::initGlad() const {
         if (m_ContextCount == 0) {

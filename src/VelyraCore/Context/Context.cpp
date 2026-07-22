@@ -17,6 +17,7 @@
 #include <VelyraCore/Context/ColorAttachment.hpp>
 #include <VelyraCore/Context/DepthStencilState.hpp>
 #include <VelyraCore/Context/ApiState.hpp>
+#include <VelyraCore/Context/StructuredBuffer.hpp>
 
 #include "../Logging/LoggerNames.hpp"
 

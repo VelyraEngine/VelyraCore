@@ -61,16 +61,16 @@ namespace Velyra::Core {
         return getGlConstantInt(GL_MAX_UNIFORM_BUFFER_BINDINGS);
     }
 
-    U32 GLDevice::getMaxShaderStorageBufferSize() const {
+    U32 GLDevice::getMaxVertexAttributes() const {
+        return getGlConstantInt(GL_MAX_VERTEX_ATTRIBS);
+    }
+
+    Size GLDevice::getMaxStructuredBufferSize() const {
         return getGlConstantInt(GL_MAX_SHADER_STORAGE_BLOCK_SIZE);
     }
 
-    U32 GLDevice::getMaxShaderStorageBufferSlots() const {
+    U32 GLDevice::getMaxStructuredBufferSlots() const {
         return getGlConstantInt(GL_MAX_SHADER_STORAGE_BUFFER_BINDINGS);
-    }
-
-    U32 GLDevice::getMaxVertexAttributes() const {
-        return getGlConstantInt(GL_MAX_VERTEX_ATTRIBS);
     }
 
     bool GLDevice::isDoubleBuffered() const {

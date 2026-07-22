@@ -31,6 +31,8 @@ namespace Velyra::Core {
     struct DepthStencilStateDesc;
     class Device;
     class ApiState;
+    struct StructuredBufferDesc;
+    class StructuredBuffer;
 
     struct VL_API ContextDesc {
         VL_GRAPHICS_API api = VL_API_BEST;
@@ -307,6 +309,15 @@ namespace Velyra::Core {
         virtual void destroyDepthStencilState(const View<DepthStencilState>& depthStencilState) = 0;
 
         /**
+         * @brief Creates a structured buffer object
+         * @param desc
+         * @return
+         */
+        virtual View<StructuredBuffer> createStructuredBuffer(const StructuredBufferDesc& desc) = 0;
+
+        virtual void destroyStructuredBuffer(const View<StructuredBuffer>& structuredBuffer) = 0;
+
+        /**
          * @brief Returns the current API state which includes info like current binds, viewport config, framebuffers,
          *        etc. Handy for debugging, this is quite an expensive call to make so don't use this in non debug builds.
          * @return API state
@@ -383,7 +394,7 @@ namespace Velyra::Core {
         std::vector<UP<FrameBufferLayout>> m_FrameBufferLayouts;
         std::vector<UP<FrameBuffer>> m_FrameBuffers;
         std::vector<UP<DepthStencilState>> m_DepthStencilStates;
+        std::vector<UP<StructuredBuffer>> m_StructuredBuffers;
     };
-
 
 }

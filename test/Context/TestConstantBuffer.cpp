@@ -6,17 +6,6 @@
 using namespace Velyra;
 using namespace Velyra::Core;
 
-struct Vec4{
-    float x = 0.0f;
-    float y = 0.0f;
-    float z = 0.0f;
-    float w = 0.0f;
-
-    bool operator==(const Vec4& other) const {
-        return x == other.x && y == other.y && z == other.z && w == other.w;
-    }
-};
-
 struct Matrix4x4{
     Vec4 rows[4] = { 0 };
 

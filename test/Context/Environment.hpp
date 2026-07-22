@@ -10,6 +10,17 @@ struct ShaderPackage {
     Velyra::View<Velyra::Core::Shader> shader;
 };
 
+struct Vec4{
+    float x = 0.0f;
+    float y = 0.0f;
+    float z = 0.0f;
+    float w = 0.0f;
+
+    bool operator==(const Vec4& other) const {
+        return x == other.x && y == other.y && z == other.z && w == other.w;
+    }
+};
+
 template<typename WRAPPER>
 class Environment{
 public:

@@ -34,87 +34,87 @@ namespace Velyra::Core {
 
         /**
          * @brief Retrieves the maximum width of a framebuffer in pixels.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16384.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16384.
          * @return U32 containing the maximum width of a framebuffer in pixels
          */
         [[nodiscard]] virtual U32 getMaxFramebufferWidth() const = 0;
 
         /**
          * @brief Retrieves the maximum height of a framebuffer in pixels.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16384.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16384.
          * @return U32 containing the maximum height of a framebuffer in pixels
          */
         [[nodiscard]] virtual U32 getMaxFramebufferHeight() const = 0;
 
         /**
          * @brief Retrieves the maximum number of color attachments that can be bound to a framebuffer.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 8.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 8.
          * @return U32 containing the maximum number of color attachments that can be bound to a framebuffer
          */
         [[nodiscard]] virtual U32 getMaxFramebufferColorAttachments() const = 0;
 
         /**
          * @brief Retrieves the maximum width of a viewport in pixels.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16384.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16384.
          * @return U32 containing the maximum width of a viewport in pixels
          */
         [[nodiscard]] virtual U32 getMaxViewportWidth() const = 0;
 
         /**
          * @brief Retrieves the maximum height of a viewport in pixels.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16384.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16384.
          * @return U32 containing the maximum height of a viewport in pixels
          */
         [[nodiscard]] virtual U32 getMaxViewportHeight() const = 0;
 
         /**
          * @brief Retrieves the maximum number of texture slots that can be bound to a shader.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16.
          * @return U32 containing the maximum number of texture slots that can be bound to a shader
          */
         [[nodiscard]] virtual U32 getMaxTextureSlots() const = 0;
 
         /**
          * @brief Retrieves the maximum size of a texture in pixels.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16384.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16384.
          * @return U32 containing the maximum size of a texture in pixels
          */
         [[nodiscard]] virtual U32 getMaxTextureSize() const = 0;
 
         /**
          * @brief Retrieves the maximum size of a constant buffer in bytes.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 65536.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 65536.
          * @return U32 containing the maximum size of a constant buffer in bytes
          */
         [[nodiscard]] virtual U32 getMaxConstantBufferSize() const = 0;
 
         /**
          * @brief Retrieves the maximum number of constant buffer slots that can be bound to a shader.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 14.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 14.
          * @return U32 containing the maximum number of constant buffer slots that can be bound to a shader
          */
         [[nodiscard]] virtual U32 getMaxConstantBufferSlots() const = 0;
 
         /**
-         * @brief Retrieves the maximum size of a shader storage buffer in bytes.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 65536.
-         * @return U32 containing the maximum size of a constant buffer in bytes
-         */
-        [[nodiscard]] virtual U32 getMaxShaderStorageBufferSize() const = 0;
-
-        /**
-         * @brief Retrieves the maximum number of shader storage slots that can be bound to a shader.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 14.
-         * @return U32 containing the maximum number of constant buffer slots that can be bound to a shader
-         */
-        [[nodiscard]] virtual U32 getMaxShaderStorageBufferSlots() const = 0;
-
-        /**
          * @brief Retrieves the maximum number of attributes that a single vertex can have.
-         *        The supported graphics APIs by SyriusCore guarantee that this value is at least 16.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16.
          * @return U32 containing the maximum number of vertex attributes.
          */
         [[nodiscard]] virtual U32 getMaxVertexAttributes() const = 0;
+        
+        /**
+         * @brief Retrieves the maximum size of a structured buffer in bytes.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 65536.
+         * @return Size containing the maximum size of a constant buffer in bytes
+         */
+        [[nodiscard]] virtual Size getMaxStructuredBufferSize() const = 0;
+
+        /**
+         * @brief Retrieves the maximum number of structured buffer slots that can be bound to a shader.
+         *        The supported graphics APIs by VelyraCore guarantee that this value is at least 16.
+         * @return U32 containing the maximum number of constant buffer slots that can be bound to a shader
+         */
+        [[nodiscard]] virtual U32 getMaxStructuredBufferSlots() const = 0;
 
         /**
          * @brief Returns whether the graphics device supports double buffering.
