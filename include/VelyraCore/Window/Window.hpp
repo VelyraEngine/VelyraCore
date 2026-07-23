@@ -3,6 +3,7 @@
 #include <VelyraCore/Core/CoreInclude.hpp>
 #include <VelyraCore/Window/Event.hpp>
 
+#include <filesystem>
 #include <optional>
 
 VL_ENUM(VL_WINDOW_STYLE, int,
