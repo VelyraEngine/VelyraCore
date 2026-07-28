@@ -36,6 +36,10 @@ namespace Velyra::Core {
 
         virtual void onResize(Size width, Size height) = 0;
 
+        void setClearColor(const Utils::Color& color) {
+            m_ClearColor = color;
+        }
+
         [[nodiscard]] virtual UP<Image::IImage> getData() const = 0;
 
         [[nodiscard]] virtual U64 getIdentifier() const = 0;

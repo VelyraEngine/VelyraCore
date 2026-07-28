@@ -150,6 +150,42 @@ TYPED_TEST(TestFrameBuffer, ClearFrameBuffer1CA) {
     this->compareColorAttachmentData(clearColor, ca1);
 }
 
+TYPED_TEST(TestFrameBuffer, UpdateClearColor) {
+    auto fbLayout = Environment<typename TestFixture::WRAPPER>::m_Window->getContext()->createFrameBufferLayout();
+    fbLayout->setDimensions(this->m_Width, this->m_Height);
+    FrameBufferColorAttachmentDesc caDesc;
+    const Utils::Color firstColor(1.0f, 0.0f, 1.0f, 1.0f);
+    caDesc.clearColor = firstColor;
+    caDesc.format = this->m_CAFormat;
+    caDesc.enableShaderAccess = this->m_ShaderAccess;
+    caDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
+    fbLayout->addColorAttachment(caDesc);
+
+    // Create the Frame Buffer
+    auto fb = Environment<typename TestFixture::WRAPPER>::m_Window->getContext()->createFrameBuffer(fbLayout);
+    ASSERT_NE(fb, nullptr);
+    const auto& ca1 = fb->getColorAttachment(0);
+    ASSERT_NE(ca1, nullptr);
+    EXPECT_EQ(ca1->getClearColor(), firstColor);
+
+    // Now Clear it!
+    fb->clear();
+
+    // Check if the clear color is correct
+    auto img = ca1->getData();
+    EXPECT_EQ(img->getWidth(), this->m_Width);
+    EXPECT_EQ(img->getHeight(), this->m_Height);
+    this->compareColorAttachmentData(firstColor, ca1);
+
+    // Update the clear color
+    const Utils::Color secondColor(0.0f, 1.0f, 0.0f, 1.0f);
+    fb->getColorAttachment(0)->setClearColor(secondColor);
+    fb->clear(); // Clear again
+
+    // Check if the clear color is correct
+    this->compareColorAttachmentData(secondColor, ca1);
+}
+
 TYPED_TEST(TestFrameBuffer, ClearFrameBuffer1DS) {
     auto fbLayout = Environment<typename TestFixture::WRAPPER>::m_Window->getContext()->createFrameBufferLayout();
     fbLayout->setDimensions(this->m_Width, this->m_Height);
