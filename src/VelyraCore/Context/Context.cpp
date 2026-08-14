@@ -23,6 +23,8 @@
 
 namespace Velyra::Core {
 
+    Context::~Context() = default;
+
     void Context::createImGuiContext(const ImGuiContextDesc &desc) {
         VL_PRECONDITION(!m_ImGuiEnabled, "ImGui context already initialized!");
 

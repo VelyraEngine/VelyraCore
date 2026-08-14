@@ -4,6 +4,8 @@
 
 namespace Velyra::Core {
 
+    class Device;
+
     struct VL_API StructuredBufferDesc {
         const void* data = nullptr;
         Size size = 0; // Size in bytes

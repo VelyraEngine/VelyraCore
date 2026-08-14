@@ -6,6 +6,7 @@
 #include <VelyraCore/Window/KeyboardButtons.hpp>
 
 #include <VelyraCore/Context/Context.hpp>
+#include <VelyraCore/Context/Device.hpp>
 #include <VelyraCore/Context/Viewport.hpp>
 #include <VelyraCore/Context/ShaderModule.hpp>
 #include <VelyraCore/Context/Shader.hpp>
@@ -21,6 +22,7 @@
 #include <VelyraCore/Context/ApiState.hpp>
 #include <VelyraCore/Context/ColorAttachment.hpp>
 #include <VelyraCore/Context/DepthStencilAttachment.hpp>
+#include <VelyraCore/Context/StructuredBuffer.hpp>
 
 #include <VelyraCore/ImGui/ImGui.hpp>
 

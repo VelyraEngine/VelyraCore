@@ -16,8 +16,11 @@
 #include "GLTexture2D.hpp"
 #include "GLFrameBuffer.hpp"
 #include "GLDepthStencilState.hpp"
+#include "GLDepthStencilAttachment.hpp"
+#include "GLColorAttachment.hpp"
 #include "GLState.hpp"
 #include "GLStructuredBuffer.hpp"
+#include <VelyraCore/Context/VertexLayout.hpp>
 
 namespace Velyra::Core {
 

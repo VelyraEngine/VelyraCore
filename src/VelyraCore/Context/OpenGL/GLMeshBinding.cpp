@@ -4,6 +4,9 @@
 #include "../../Logging/LoggerNames.hpp"
 #include "../../Logging/GLLogging.hpp"
 #include "Internal/GLTranslations.hpp"
+#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
 
 namespace Velyra::Core {
 

@@ -8,6 +8,7 @@ namespace Velyra::Core {
 
     GLStructuredBuffer::GLStructuredBuffer(const StructuredBufferDesc &desc, const Device& device):
     StructuredBuffer(desc, device),
+    m_Logger(Utils::getLogger(VL_LOGGER_OGL)),
     m_Buffer(GL_SHADER_STORAGE_BUFFER, desc.size, desc.data, desc.usage){
 
     }

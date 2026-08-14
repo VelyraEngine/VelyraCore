@@ -23,7 +23,7 @@ namespace Velyra::Core {
 
         [[nodiscard]] U64 getIdentifier() override;
     private:
-        const Utils::LogPtr m_Logger = Utils::getLogger(VL_LOGGER_OGL);
+        const Utils::LogPtr m_Logger;
         GLBuffer m_Buffer;
     };
 

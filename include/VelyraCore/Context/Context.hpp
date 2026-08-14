@@ -54,7 +54,7 @@ namespace Velyra::Core {
 
     class VL_API Context {
     public:
-        virtual ~Context() = default;
+        virtual ~Context();
 
         [[nodiscard]] VL_GRAPHICS_API getType() const {
             return m_Type;

@@ -1,6 +1,7 @@
 #include "../TestPch.hpp"
 
 #include <VelyraImage/ImageFactory.hpp>
+#include <VelyraCore/Context/Definitions.hpp>
 
 using namespace Velyra;
 using namespace Velyra::Core;

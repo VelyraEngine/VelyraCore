@@ -131,7 +131,7 @@ namespace Velyra::Core {
         void destroyContext();
 
     protected:
-        Window() = default;
+        Window();
 
     protected:
         UP<Context> m_Context;

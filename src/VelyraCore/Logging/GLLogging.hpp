@@ -1,6 +1,6 @@
 #pragma once
 
-#include <VelyraUtils/Logging.hpp>
+#include <glad/glad.h>
 
 namespace Velyra::Core {
 
