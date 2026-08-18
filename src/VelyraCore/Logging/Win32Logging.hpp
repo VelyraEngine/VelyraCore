@@ -1,6 +1,6 @@
 #pragma once
 
-#include <VelyraUtils/Logging.hpp>
+#include <VelyraUtils/Logging/Logging.hpp>
 
 namespace Velyra::Core {
 

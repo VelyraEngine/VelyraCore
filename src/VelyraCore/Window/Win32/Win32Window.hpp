@@ -75,6 +75,8 @@ namespace Velyra::Core {
 
         float getDpiScale() const override;
 
+        void setIcon(const Image::IImage& image) override;
+
         std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) override;
 
         std::vector<fs::path> openFileDialog(const OpenFileDesc& desc) override;
@@ -133,6 +135,8 @@ namespace Velyra::Core {
 
         std::vector<fs::path> getDialogResults(IFileDialog* pDialog) const;
 
+        void setIconInternal(const Image::IImage& icon);
+
     private:
         static Size m_WindowCount;
 
@@ -140,6 +144,7 @@ namespace Velyra::Core {
 
         HWND m_HWND = nullptr;
         HINSTANCE m_HInstance = nullptr;
+        HICON m_HIcon = nullptr;
 
         std::deque<Event> m_EventQueue;
 

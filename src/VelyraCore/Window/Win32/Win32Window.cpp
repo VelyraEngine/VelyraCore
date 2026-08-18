@@ -251,6 +251,42 @@ namespace Velyra::Core {
         return 1.0f;
     }
 
+    void Win32Window::setIcon(const Image::IImage& image) {
+        // Checks to see if any conversions should be done
+        if (image.getDataType() == VL_UINT8 && image.getChannelFormat() == VL_CHANNEL_BGRA) {
+            setIconInternal(image);
+            return;
+        }
+
+        if (image.getChannelFormat() != VL_CHANNEL_BGRA) {
+            SPDLOG_LOGGER_PERFORMANCE(m_Logger, "Window Icon is in format {}, format VL_CHANNEL_BGRA is required so the image will be converted. To increase performance, consider doing this conversion beforehand", image.getChannelFormat());
+
+            Image::FormatConversionDesc formatConversionDesc;
+            formatConversionDesc.fillMode = VL_FILL_MIN;
+            formatConversionDesc.targetFormat = VL_CHANNEL_BGRA;
+            UP<Image::IImage> convertedImage = image.convertToFormat(formatConversionDesc);
+
+            if (convertedImage->getDataType() != VL_UINT8) {
+                SPDLOG_LOGGER_PERFORMANCE(m_Logger, "Window Icon is in data type {}, data type VL_UINT8 is required so the image will be converted. To increase performance, consider doing this conversion beforehand", convertedImage->getDataType());
+
+                Image::TranslationDesc translationDesc;
+                translationDesc.targetType = VL_UINT8;
+                convertedImage = convertedImage->translateDataType(translationDesc);
+            }
+            setIconInternal(*convertedImage);
+            return;
+        }
+
+        if (image.getDataType() != VL_UINT8) {
+            SPDLOG_LOGGER_PERFORMANCE(m_Logger, "Window Icon is in data type {}, data type VL_UINT8 is required so the image will be converted. To increase performance, consider doing this conversion beforehand", image.getDataType());
+
+            Image::TranslationDesc translationDesc;
+            translationDesc.targetType = VL_UINT8;
+            const UP<Image::IImage> convertedImage = image.translateDataType(translationDesc);
+            setIconInternal(*convertedImage);
+        }
+    }
+
     std::optional<fs::path> Win32Window::saveFileDialog(const SaveFileDesc &desc) {
         HRESULT hr;
 
@@ -742,4 +778,40 @@ namespace Velyra::Core {
         }
     }
 
-}
+    void Win32Window::setIconInternal(const Image::IImage& icon) {
+        VL_PRECONDITION(icon.getDataType() == VL_UINT8, "Image data type must be VL_UINT8");
+        VL_PRECONDITION(icon.getChannelFormat() == VL_CHANNEL_BGRA, "Image channel format must be VL_CHANNEL_BGRA")
+        VL_PRECONDITION(m_HWND != nullptr, "HWND is null");
+
+        if (m_HIcon) {
+            DestroyIcon(m_HIcon);
+        }
+        constexpr BYTE bitsPerPixel = 32; // BGRA is 4 channels of 8 bits each
+        m_HIcon = CreateIcon(GetModuleHandleW(nullptr),
+            static_cast<int>(icon.getWidth()), static_cast<int>(icon.getHeight()),
+            1, bitsPerPixel, nullptr, static_cast<const BYTE*>(icon.getData())
+        );
+
+        if (!m_HIcon) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Failed to set Icon");
+            return;
+        }
+
+        // Update both icons
+        LRESULT result = NULL;
+        result = SendMessageW(m_HWND, WM_SETICON, ICON_SMALL, reinterpret_cast<LPARAM>(m_HIcon));
+        if (result != NULL) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Something went wrong when updating ICON_SMALL (LRESULT = {})", result);
+        }
+        result = SendMessageW(m_HWND, WM_SETICON, ICON_SMALL2, reinterpret_cast<LPARAM>(m_HIcon));
+        if (result != NULL) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Something went wrong when updating ICON_SMALL2 (LRESULT = {})", result);
+        }
+        result = SendMessageW(m_HWND, WM_SETICON, ICON_BIG, reinterpret_cast<LPARAM>(m_HIcon));
+        if (result != NULL) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Something went wrong when updating ICON_BIG (LRESULT = {})", result);
+        }
+
+    }
+
+} // namespace Velyra::Core
