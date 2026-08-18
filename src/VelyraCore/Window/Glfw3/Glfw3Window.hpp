@@ -69,6 +69,8 @@ namespace Velyra::Core {
 
         float getDpiScale() const override;
 
+        void setIcon(const Image::IImage& image) override;
+
         std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) override;
 
         std::vector<fs::path> openFileDialog(const OpenFileDesc& desc) override;
@@ -105,6 +107,8 @@ namespace Velyra::Core {
         static void mousePositionCallback(GLFWwindow* window, double xpos, double ypos);
 
         static void mouseScrollCallback(GLFWwindow* window, double xoffset, double yoffset);
+
+        void setIconInternal(const Image::IImage& image) const;
 
     private:
         static Size m_GlfwWindowCount;

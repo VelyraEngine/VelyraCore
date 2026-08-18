@@ -13,9 +13,9 @@ namespace Velyra::SandBox {
 
     class TextureProcedure: public IProcedure {
     public:
-        TextureProcedure() = default;
+        TextureProcedure();
 
-        ~TextureProcedure() override = default;
+        ~TextureProcedure() override;
 
         void onAttach(const UP<Core::Context> &context, const UP<Core::Window> &window) override;
 
@@ -38,9 +38,9 @@ namespace Velyra::SandBox {
         View<Core::Texture2D> m_Texture2 = nullptr;
         View<Core::ConstantBuffer> m_ParametersBuffer = nullptr;
 
-        UP<Image::IImage> m_AwesomeFace = nullptr;
-        UP<Image::IImage> m_Instagram = nullptr;
-        UP<Image::IImage> m_VelyraLogo = nullptr;
+        UP<Image::IImage> m_AwesomeFace;
+        UP<Image::IImage> m_Instagram;
+        UP<Image::IImage> m_VelyraLogo;
     };
 
     static const std::vector s_TextureProcedures = {

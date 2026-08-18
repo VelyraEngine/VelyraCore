@@ -24,6 +24,18 @@ namespace Velyra::Core {
 
     Window::~Window() = default;
 
+    void Window::setIcon(const fs::path &file) {
+        using namespace Image;
+
+        ImageLoadDesc desc;
+        desc.fileName = file;
+        desc.flipOnLoad = true;
+        desc.requestedFormat = VL_CHANNEL_RGBA;
+        const auto image = ImageFactory::createImage(desc);
+
+        setIcon(*image);
+    }
+
     const UP<Context> &Window::getContext() const {
         return m_Context;
     }

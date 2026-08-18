@@ -7,6 +7,7 @@
 #include "DepthStencilStateProcedure.hpp"
 #include "TextureProcedure.hpp"
 #include "../Meshes.hpp"
+#include <VelyraImage/IImage.hpp>
 
 namespace Velyra::SandBox {
 

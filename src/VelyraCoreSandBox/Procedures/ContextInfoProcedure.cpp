@@ -24,8 +24,8 @@ namespace Velyra::SandBox {
         ImGui::Text("Max Texture Size: %u pixels", device.getMaxTextureSize());
         ImGui::Text("Max Constant Buffer Size: %u bytes", device.getMaxConstantBufferSize());
         ImGui::Text("Max Constant Buffer Slots: %u", device.getMaxConstantBufferSlots());
-        ImGui::Text("Max Shader Storage Buffer Size: %u bytes", device.getMaxShaderStorageBufferSize());
-        ImGui::Text("Max Shader Storage Buffer Slots: %u", device.getMaxShaderStorageBufferSlots());
+        ImGui::Text("Max Shader Storage Buffer Size: %llu bytes", device.getMaxStructuredBufferSize());
+        ImGui::Text("Max Shader Storage Buffer Slots: %u", device.getMaxStructuredBufferSlots());
         ImGui::Text("Max Vertex Attributes: %u", device.getMaxVertexAttributes());
         ImGui::Text("Double Buffering Supported: %s", device.isDoubleBuffered() ? "Yes" : "No");
 

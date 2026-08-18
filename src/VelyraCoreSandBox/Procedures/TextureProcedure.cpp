@@ -4,6 +4,10 @@
 
 namespace Velyra::SandBox {
 
+    TextureProcedure::TextureProcedure() = default;
+
+    TextureProcedure::~TextureProcedure() = default;
+
     void TextureProcedure::onAttach(const UP<Core::Context> &context, const UP<Core::Window> &window) {
         createTextureParametersBuffer(context);
 

@@ -18,6 +18,8 @@
 
 #include <queue>
 
+#include <VelyraUtils/Logging/Logging.hpp>
+
 namespace Velyra::SandBox {
 
     ProcedureExecutor::ProcedureExecutor() {

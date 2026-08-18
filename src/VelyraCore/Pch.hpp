@@ -13,7 +13,7 @@
 #include <VelyraUtils/VelyraUtils.hpp>
 #include <VelyraUtils/Conversions/String.hpp>
 
-#include <VelyraImage/IImage.hpp>
+#include <VelyraImage/VelyraImage.hpp>
 
 #include <VelyraCore/ImGui/imgui.h>
 #include <VelyraCore/ImGui/implot.h>

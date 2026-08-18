@@ -4,6 +4,7 @@
 #include "Glfw3Utils.hpp"
 #include "../../Context/OpenGL/Internal/Glfw3PlatformContext.hpp"
 #include "../../Context/OpenGL/GLContext.hpp"
+#include "VelyraUtils/Logging/Logging.hpp"
 
 namespace Velyra::Core {
 
@@ -162,6 +163,42 @@ namespace Velyra::Core {
             SPDLOG_LOGGER_WARN(m_Logger, "Non-uniform DPI scaling detected: xScale = {}, yScale = {}", xScale, yScale);
         }
         return xScale; // Assume x and y are the same
+    }
+
+    void Glfw3Window::setIcon(const Image::IImage &image) {
+        // Checks to see if any conversions should be done
+        if (image.getDataType() == VL_UINT8 && image.getChannelFormat() == VL_CHANNEL_RGBA) {
+            setIconInternal(image);
+            return;
+        }
+
+        if (image.getChannelFormat() != VL_CHANNEL_RGBA) {
+            SPDLOG_LOGGER_PERFORMANCE(m_Logger, "Window Icon is in format {}, format VL_CHANNEL_RGBA is required so the image will be converted. To increase performance, consider doing this conversion beforehand", image.getChannelFormat());
+
+            Image::FormatConversionDesc formatConversionDesc;
+            formatConversionDesc.fillMode = VL_FILL_MIN;
+            formatConversionDesc.targetFormat = VL_CHANNEL_RGBA;
+            UP<Image::IImage> convertedImage = image.convertToFormat(formatConversionDesc);
+
+            if (convertedImage->getDataType() != VL_UINT8) {
+                SPDLOG_LOGGER_PERFORMANCE(m_Logger, "Window Icon is in data type {}, data type VL_UINT8 is required so the image will be converted. To increase performance, consider doing this conversion beforehand", convertedImage->getDataType());
+
+                Image::TranslationDesc translationDesc;
+                translationDesc.targetType = VL_UINT8;
+                convertedImage = convertedImage->translateDataType(translationDesc);
+            }
+            setIconInternal(*convertedImage);
+            return;
+        }
+
+        if (image.getDataType() != VL_UINT8) {
+            SPDLOG_LOGGER_PERFORMANCE(m_Logger, "Window Icon is in data type {}, data type VL_UINT8 is required so the image will be converted. To increase performance, consider doing this conversion beforehand", image.getDataType());
+
+            Image::TranslationDesc translationDesc;
+            translationDesc.targetType = VL_UINT8;
+            const UP<Image::IImage> convertedImage = image.translateDataType(translationDesc);
+            setIconInternal(*convertedImage);
+        }
     }
 
     std::optional<fs::path> Glfw3Window::saveFileDialog(const SaveFileDesc &desc) {
@@ -426,5 +463,27 @@ namespace Velyra::Core {
 
         const Event event(VL_EVENT_CLASS_MOUSE, VL_EVENT_MOUSE_SCROLLED, static_cast<I32>(xoffset), static_cast<I32>(yoffset));
         glfw3Window->dispatchEvent(event);
+    }
+
+    void Glfw3Window::setIconInternal(const Image::IImage &image) const {
+        VL_PRECONDITION(image.getDataType() == VL_UINT8, "Image data type must be VL_UINT8");
+        VL_PRECONDITION(image.getChannelFormat() == VL_CHANNEL_RGBA, "Image channel format must be VL_CHANNEL_RGBA")
+        VL_PRECONDITION(m_Window != nullptr, "GLFWwindow is null");
+
+        std::vector<UP<Image::IImage>> icons;
+        std::vector<GLFWimage> glfwIcons;
+
+        static constexpr Size iconSizes[] = {16, 32, 48, 64, 128};
+
+        for (const Size size: iconSizes) {
+            icons.emplace_back(image.resize(size, size));
+            glfwIcons.push_back({
+                static_cast<int>(size),
+                static_cast<int>(size),
+                static_cast<unsigned char*>(icons.back()->getData())
+            });
+        }
+
+        glfwSetWindowIcon(m_Window, static_cast<int>(glfwIcons.size()), glfwIcons.data());
     }
 }

@@ -2,6 +2,8 @@
 
 #include "SandBox.hpp"
 
+#include <VelyraUtils/Logging/Logging.hpp>
+
 namespace Velyra::SandBox {
 
     SandBox::SandBox(const std::vector<std::string_view> &args) {
@@ -55,6 +57,8 @@ namespace Velyra::SandBox {
             }
         }
         m_Window = Core::WindowFactory::createWindow(windowDesc);
+        const fs::path iconFile = fs::current_path() / "Resources" / "Images" / "Velyra.png";
+        m_Window->setIcon(iconFile);
         
         VL_POSTCONDITION(m_Window != nullptr, "SandBox Failed to create window");
     }

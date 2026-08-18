@@ -24,6 +24,10 @@ VL_ENUM(VL_WINDOW_ICON, int,
     VL_WINDOW_ICON_BOTH  = 0x03
     );
 
+namespace Velyra::Image {
+    class IImage;
+}
+
 namespace Velyra::Core {
 
     class Context;
@@ -117,6 +121,10 @@ namespace Velyra::Core {
         virtual I32 getMousePositionY() const = 0;
 
         virtual float getDpiScale() const = 0;
+
+        virtual void setIcon(const Image::IImage& image) = 0;
+
+        void setIcon(const fs::path& file);
 
         virtual std::optional<fs::path> saveFileDialog(const SaveFileDesc& desc) = 0;
 
