@@ -10,6 +10,8 @@ namespace Velyra::SandBox {
         Core::WindowDesc windowDesc;
         windowDesc.title = "VelyraCore SandBox";
 
+        m_ContextDesc.api = VL_API_OPENGL; // TODO: Add a VL_API_BEST translation func
+
         for (Size i = 1; i < args.size(); i++) {
             const auto& arg = args[i];
             if (arg == "-width" || arg == "-w") {
@@ -68,7 +70,6 @@ namespace Velyra::SandBox {
     }
 
     void SandBox::run() {
-        m_ContextDesc.api = VL_API_OPENGL; // TODO: Add a VL_API_BEST translation func
         const UP<Core::Context>& context = m_Window->createContext(m_ContextDesc);
         context->setVerticalSynchronisation(true);
         context->createImGuiContext(m_ImGuiContextDesc);

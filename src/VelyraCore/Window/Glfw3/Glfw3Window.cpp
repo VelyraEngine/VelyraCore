@@ -1,9 +1,11 @@
 #include "../../Pch.hpp"
 
-#include "Glfw3Window.hpp"
-#include "Glfw3Utils.hpp"
 #include "../../Context/OpenGL/Internal/Glfw3PlatformContext.hpp"
 #include "../../Context/OpenGL/GLContext.hpp"
+#include "../../Context/OpenGLES/Internal/Glfw3GLESPlatformContext.hpp"
+#include "../../Context/OpenGLES/GLESContext.hpp"
+#include "Glfw3Utils.hpp"
+#include "Glfw3Window.hpp"
 #include "VelyraUtils/Logging/Logging.hpp"
 
 #define GLFW_EXPOSE_NATIVE_X11
@@ -379,15 +381,23 @@ namespace Velyra::Core {
     const UP<Context> &Glfw3Window::createContext(const ContextDesc &desc) {
         destroyGlfwWindow(); // Destroy the old window if it exists
 
-        Glfw3PlatformContext::setWindowHints(desc);
-        createGlfwWindow(m_Desc);
-
         const VL_GRAPHICS_API api = desc.api;
         switch (api) {
             case VL_API_BEST:
             case VL_API_OPENGL: {
+                Glfw3PlatformContext::setWindowHints(desc);
+                createGlfwWindow(m_Desc);
+
                 UP<GLPlatformContext> platformContext = createUP<Glfw3PlatformContext>(desc, m_Window);
                 m_Context = createUP<GLContext>(desc, std::move(platformContext));
+                break;
+            }
+            case VL_API_OPENGL_ES: {
+                GLES::Glfw3GLESPlatformContext::setWindowHints(desc);
+                createGlfwWindow(m_Desc);
+
+                UP<GLES::GLESPlatformContext> platformContext = createUP<GLES::Glfw3GLESPlatformContext>(desc, m_Window);
+                m_Context = createUP<GLES::GLESContext>(desc, std::move(platformContext));
                 break;
             }
             default: {

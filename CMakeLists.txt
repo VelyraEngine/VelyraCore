@@ -73,6 +73,8 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     include/VelyraCore/Context/ApiState.hpp
     include/VelyraCore/Context/StructuredBuffer.hpp
 
+    ####### OpenGL #######
+
     src/VelyraCore/Context/OpenGL/GLContext.hpp
     src/VelyraCore/Context/OpenGL/GLDevice.hpp
     src/VelyraCore/Context/OpenGL/GLViewport.hpp
@@ -98,6 +100,13 @@ set(VELYRA_CORE_CONTEXT_HEADERS
     src/VelyraCore/Context/OpenGL/Internal/GLRenderBuffer.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLTextureStorage.hpp
     src/VelyraCore/Context/OpenGL/Internal/GLRenderBufferStorage.hpp
+
+    ####### OpenGL ES #######
+    src/VelyraCore/Context/OpenGLES/GLESContext.hpp
+
+    src/VelyraCore/Context/OpenGLES/Internal/GLESPlatformContext.hpp
+    src/VelyraCore/Context/OpenGLES/Internal/Glfw3GLESPlatformContext.hpp
+
 )
 
 set(VELYRA_CORE_CONTEXT_SRC
@@ -108,6 +117,8 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/Texture2D.cpp
     src/VelyraCore/Context/VertexBuffer.cpp
     src/VelyraCore/Context/FrameBuffer.cpp
+
+    ####### OpenGL #######
 
     src/VelyraCore/Context/OpenGL/GLContext.cpp
     src/VelyraCore/Context/OpenGL/GLDevice.cpp
@@ -133,6 +144,12 @@ set(VELYRA_CORE_CONTEXT_SRC
     src/VelyraCore/Context/OpenGL/Internal/GLRenderBuffer.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLTextureStorage.cpp
     src/VelyraCore/Context/OpenGL/Internal/GLRenderBufferStorage.cpp
+
+    ####### OpenGL ES #######
+
+    src/VelyraCore/Context/OpenGLES/GLESContext.cpp
+
+    src/VelyraCore/Context/OpenGLES/Internal/Glfw3GLESPlatformContext.cpp
 )
 
 set(VELYRA_CORE_HEADERS
