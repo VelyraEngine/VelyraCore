@@ -6,7 +6,67 @@
 #include "../../Context/OpenGL/GLContext.hpp"
 #include "VelyraUtils/Logging/Logging.hpp"
 
+#define GLFW_EXPOSE_NATIVE_X11
+#include <nfd_glfw3.h>
+
 namespace Velyra::Core {
+
+    namespace {
+        void buildDialogFilters(const std::vector<std::string>& patterns,
+                                const std::string& description,
+                                std::string& filterName,
+                                std::string& filterSpec,
+                                std::vector<nfdu8filteritem_t>& filters) {
+            filterName = description.empty() ? "Files" : description;
+
+            for (const std::string& pattern : patterns) {
+                std::string normalizedPattern = pattern;
+                std::replace(normalizedPattern.begin(), normalizedPattern.end(), ';', ',');
+                std::stringstream patternStream(normalizedPattern);
+                std::string extension;
+                while (std::getline(patternStream, extension, ',')) {
+                    if (extension.starts_with("*.")) {
+                        extension.erase(0, 2);
+                    }
+                    else if (extension.starts_with('.')) {
+                        extension.erase(0, 1);
+                    }
+
+                    if (extension.empty() || extension == "*" ||
+                        extension.find_first_of("*?/\\") != std::string::npos) {
+                        continue;
+                    }
+
+                    if (!filterSpec.empty()) {
+                        filterSpec += ',';
+                    }
+                    filterSpec += extension;
+                }
+            }
+
+            if (!filterSpec.empty()) {
+                filters.push_back({filterName.c_str(), filterSpec.c_str()});
+            }
+        }
+
+        nfdwindowhandle_t getNativeWindowHandle(GLFWwindow* window) {
+            nfdwindowhandle_t nativeWindow{};
+            NFD_GetNativeWindowFromGLFWWindow(window, &nativeWindow);
+            return nativeWindow;
+        }
+
+        void setDisplayProperties(const Utils::LogPtr& logger) {
+            if (!NFD_SetDisplayPropertiesFromGLFW()) {
+                const char* error = NFD::GetError();
+                SPDLOG_LOGGER_WARN(logger, "Failed to configure native file dialog display: {}", error ? error : "unknown error");
+            }
+        }
+
+        void logDialogError(const Utils::LogPtr& logger, const char* operation) {
+            const char* error = NFD::GetError();
+            SPDLOG_LOGGER_WARN(logger, "{} file dialog failed: {}", operation, error ? error : "unknown error");
+        }
+    }
 
     Size Glfw3Window::m_GlfwWindowCount = 0;
 
@@ -202,75 +262,116 @@ namespace Velyra::Core {
     }
 
     std::optional<fs::path> Glfw3Window::saveFileDialog(const SaveFileDesc &desc) {
-        // Convert filter patterns to the format expected by tinyfiledialogs
-        std::vector<const char*> raw_filter_patterns;
-        raw_filter_patterns.reserve(desc.filterPatterns.size());
-        for (const auto& pattern : desc.filterPatterns) {
-            raw_filter_patterns.push_back(pattern.data());
+        if (!Glfw3Instance::isFileDialogInitialized()) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Native file dialogs are not initialized");
+            return std::nullopt;
         }
 
-        char const* aTitle = desc.title.empty()? "Open File" : desc.title.c_str();
-        char const* aDefaultPathAndFile = desc.defaultPath.empty()? "" : desc.defaultPath.c_str();
-        const int aNumOfFilterPatterns = static_cast<int>(raw_filter_patterns.size());
-        char const* const* const aFilterPatterns = aNumOfFilterPatterns > 0 ? raw_filter_patterns.data() : nullptr;
-        char const* aSingleFilterDescription = desc.filterDescription.empty() ? nullptr : desc.filterDescription.c_str();
+        setDisplayProperties(m_Logger);
+        std::string filterName;
+        std::string filterSpec;
+        std::vector<nfdu8filteritem_t> filters;
+        buildDialogFilters(desc.filterPatterns, desc.filterDescription, filterName, filterSpec, filters);
 
-        char const* result = tinyfd_saveFileDialog(
-            aTitle,
-            aDefaultPathAndFile,
-            aNumOfFilterPatterns,
-            aFilterPatterns,
-            aSingleFilterDescription
-        );
-        if (result) {
-            return fs::path(result);
+        nfdsavedialogu8args_t args{};
+        args.filterList = filters.empty() ? nullptr : filters.data();
+        args.filterCount = static_cast<nfdfiltersize_t>(filters.size());
+        args.defaultPath = desc.defaultPath.empty() ? nullptr : desc.defaultPath.c_str();
+        args.parentWindow = getNativeWindowHandle(m_Window);
+        args.title = desc.title.empty() ? nullptr : desc.title.c_str();
+
+        NFD::UniquePathU8 result;
+        nfdu8char_t* rawPath = nullptr;
+        const nfdresult_t dialogResult = NFD_SaveDialogU8_With(&rawPath, &args);
+        if (dialogResult == NFD_OKAY) {
+            result.reset(rawPath);
+            return fs::path(result.get());
+        }
+        if (dialogResult == NFD_ERROR) {
+            logDialogError(m_Logger, "Save");
         }
         return std::nullopt;
     }
 
     std::vector<fs::path> Glfw3Window::openFileDialog(const OpenFileDesc &desc) {
-        // Convert filter patterns to the format expected by tinyfiledialogs
-        std::vector<const char*> raw_filter_patterns;
-        raw_filter_patterns.reserve(desc.filterPatterns.size());
-        for (const auto& pattern : desc.filterPatterns) {
-            raw_filter_patterns.push_back(pattern.data());
+        std::vector<fs::path> paths;
+        if (!Glfw3Instance::isFileDialogInitialized()) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Native file dialogs are not initialized");
+            return paths;
         }
 
-        char const* aTitle = desc.title.empty()? "Open File" : desc.title.c_str();
-        char const* aDefaultPathAndFile = desc.defaultPath.empty()? "" : desc.defaultPath.c_str();
-        const int aNumOfFilterPatterns = static_cast<int>(raw_filter_patterns.size());
-        char const* const* const aFilterPatterns = aNumOfFilterPatterns > 0 ? raw_filter_patterns.data() : nullptr;
-        char const* aSingleFilterDescription = desc.filterDescription.empty() ? nullptr : desc.filterDescription.c_str();
-        const int aAllowMultipleSelects = desc.allowMultipleSelects;
+        setDisplayProperties(m_Logger);
+        std::string filterName;
+        std::string filterSpec;
+        std::vector<nfdu8filteritem_t> filters;
+        buildDialogFilters(desc.filterPatterns, desc.filterDescription, filterName, filterSpec, filters);
 
-        std::vector<fs::path> paths;
-        char const* result = tinyfd_openFileDialog(
-            aTitle,
-            aDefaultPathAndFile,
-            aNumOfFilterPatterns,
-            aFilterPatterns,
-            aSingleFilterDescription,
-            aAllowMultipleSelects
-        );
-        std::stringstream ss(result);
-        std::string item;
-        while (std::getline(ss, item, '|')) {
-            if (!item.empty()) {
-                paths.emplace_back(item);
+        nfdopendialogu8args_t args{};
+        args.filterList = filters.empty() ? nullptr : filters.data();
+        args.filterCount = static_cast<nfdfiltersize_t>(filters.size());
+        args.defaultPath = desc.defaultPath.empty() ? nullptr : desc.defaultPath.c_str();
+        args.parentWindow = getNativeWindowHandle(m_Window);
+        args.title = desc.title.empty() ? nullptr : desc.title.c_str();
+
+        if (desc.allowMultipleSelects) {
+            NFD::UniquePathSet pathSet;
+            const nfdpathset_t* rawPathSet = nullptr;
+            const nfdresult_t dialogResult = NFD_OpenDialogMultipleU8_With(&rawPathSet, &args);
+            if (dialogResult == NFD_ERROR) {
+                logDialogError(m_Logger, "Open");
+                return paths;
             }
+            if (dialogResult == NFD_CANCEL) {
+                return paths;
+            }
+
+            pathSet.reset(rawPathSet);
+            nfdpathsetsize_t pathCount = 0;
+            if (NFD::PathSet::Count(pathSet.get(), pathCount) == NFD_OKAY) {
+                for (nfdpathsetsize_t index = 0; index < pathCount; ++index) {
+                    NFD::UniquePathSetPath path;
+                    if (NFD::PathSet::GetPath(pathSet, index, path) == NFD_OKAY) {
+                        paths.emplace_back(path.get());
+                    }
+                }
+            }
+            return paths;
+        }
+
+        NFD::UniquePathU8 path;
+        nfdu8char_t* rawPath = nullptr;
+        const nfdresult_t dialogResult = NFD_OpenDialogU8_With(&rawPath, &args);
+        if (dialogResult == NFD_OKAY) {
+            path.reset(rawPath);
+            paths.emplace_back(path.get());
+        }
+        else if (dialogResult == NFD_ERROR) {
+            logDialogError(m_Logger, "Open");
         }
         return paths;
     }
 
     std::optional<fs::path> Glfw3Window::openFolderDialog(const OpenFolderDesc &desc) {
-        char const* aTitle = desc.title.empty()? "Open Folder" : desc.title.c_str();
-        char const* aDefaultPath = desc.defaultPath.empty()? "" : desc.defaultPath.c_str();
-        char const* result = tinyfd_selectFolderDialog(
-            aTitle,
-            aDefaultPath
-        );
-        if (result) {
-            return fs::path(result);
+        if (!Glfw3Instance::isFileDialogInitialized()) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Native file dialogs are not initialized");
+            return std::nullopt;
+        }
+
+        setDisplayProperties(m_Logger);
+        nfdpickfolderu8args_t args{};
+        args.defaultPath = desc.defaultPath.empty() ? nullptr : desc.defaultPath.c_str();
+        args.parentWindow = getNativeWindowHandle(m_Window);
+        args.title = desc.title.empty() ? nullptr : desc.title.c_str();
+
+        NFD::UniquePathU8 result;
+        nfdu8char_t* rawPath = nullptr;
+        const nfdresult_t dialogResult = NFD_PickFolderU8_With(&rawPath, &args);
+        if (dialogResult == NFD_OKAY) {
+            result.reset(rawPath);
+            return fs::path(result.get());
+        }
+        if (dialogResult == NFD_ERROR) {
+            logDialogError(m_Logger, "Folder");
         }
         return std::nullopt;
     }

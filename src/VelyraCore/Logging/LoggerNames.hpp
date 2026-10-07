@@ -11,5 +11,6 @@ namespace Velyra::Core {
     constexpr auto VL_LOGGER_WGL = "VL-COR-WGL";
     constexpr auto VL_LOGGER_GLX = "VL-COR-GLX";
     constexpr auto VL_LOGGER_OGL = "VL-COR-OGL";
+    constexpr auto VL_LOGGER_GL_ES = "VL-COR-EGL";
 
 }

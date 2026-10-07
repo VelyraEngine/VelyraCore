@@ -11,6 +11,8 @@ namespace Velyra::Core {
 
         static void destroyInstance();
 
+        static bool isFileDialogInitialized();
+
         static Size getInstanceCount();
 
     private:
@@ -19,6 +21,7 @@ namespace Velyra::Core {
 
     private:
         static Size m_InstanceCount;
+        static bool m_FileDialogInitialized;
         static Utils::LogPtr m_Logger;
     };
 

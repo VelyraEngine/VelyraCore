@@ -6,6 +6,7 @@
 namespace Velyra::Core {
 
     Size Glfw3Instance::m_InstanceCount = 0;
+    bool Glfw3Instance::m_FileDialogInitialized = false;
     Utils::LogPtr Glfw3Instance::m_Logger = Utils::getLogger(VL_LOGGER_WINDOW);
 
     void Glfw3Instance::createInstance() {
@@ -20,6 +21,12 @@ namespace Velyra::Core {
             int revision;
             glfwGetVersion(&major, &minor, &revision);
             SPDLOG_LOGGER_INFO(m_Logger, "GLFW initialised with version: {}.{}.{}", major, minor, revision);
+
+            m_FileDialogInitialized = NFD::Init() == NFD_OKAY;
+            if (!m_FileDialogInitialized) {
+                const char* error = NFD::GetError();
+                SPDLOG_LOGGER_ERROR(m_Logger, "Failed to initialize native file dialogs: {}", error ? error : "unknown error");
+            }
         }
         m_InstanceCount++;
         SPDLOG_LOGGER_INFO(m_Logger, "GLFW current instance count {}", m_InstanceCount);
@@ -29,8 +36,16 @@ namespace Velyra::Core {
         m_InstanceCount--;
         SPDLOG_LOGGER_INFO(m_Logger, "GLFW current instance count {}", m_InstanceCount);
         if (m_InstanceCount == 0) {
+            if (m_FileDialogInitialized) {
+                NFD::Quit();
+                m_FileDialogInitialized = false;
+            }
             glfwTerminate();
         }
+    }
+
+    bool Glfw3Instance::isFileDialogInitialized() {
+        return m_FileDialogInitialized;
     }
 
     Size Glfw3Instance::getInstanceCount() {

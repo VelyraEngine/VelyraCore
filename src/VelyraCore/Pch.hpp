@@ -52,5 +52,5 @@
 
     #include "ImGui/imgui_impl_glfw.h"
 
-    #include <tinyfiledialogs.h>
+    #include <nfd.hpp>
 #endif

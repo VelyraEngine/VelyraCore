@@ -18,8 +18,10 @@ sudo apt install ninja-build ccache mold
 
 If you are on UNIX or are using the GLFW3 backend, you will need these packages as well
 ```bash
-sudo apt install libwayland-dev libxkbcommon-dev xorg-dev
+sudo apt install libwayland-dev libxkbcommon-dev xorg-dev libdbus-1-dev
 ```
+
+Linux file dialogs use xdg-desktop-portal by default. To use the GTK backend instead, configure with `-DNFD_PORTAL=OFF` and install `libgtk-3-dev`.
 
 ### Windows 11
 Install MSVC using the installer found on the microsoft webpage.

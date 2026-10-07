@@ -1,11 +1,28 @@
-# Add tinyfiledialogs library from local Dependencies folder
-get_filename_component(VELYRA_CORE_DIR "${CMAKE_CURRENT_LIST_DIR}" DIRECTORY)
-add_subdirectory(${VELYRA_CORE_DIR}/Dependencies/Unix/tinyfiledialogs)
+include(FetchContent)
+
+set(NFD_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(NFD_BUILD_SDL2_TESTS OFF CACHE BOOL "" FORCE)
+set(NFD_BUILD_SDL3_TESTS OFF CACHE BOOL "" FORCE)
+set(NFD_BUILD_GLFW3_TESTS OFF CACHE BOOL "" FORCE)
+set(NFD_INSTALL OFF CACHE BOOL "" FORCE)
+option(NFD_PORTAL "Use xdg-desktop-portal for native file dialogs" ON)
+set(NFD_X11 ON CACHE BOOL "" FORCE)
+set(NFD_WAYLAND ON CACHE BOOL "" FORCE)
+
+FetchContent_Declare(
+    nfd
+    GIT_REPOSITORY https://github.com/btzy/nativefiledialog-extended.git
+    GIT_TAG v1.4.1
+    GIT_SHALLOW TRUE
+    GIT_SUBMODULES_RECURSE TRUE
+    GIT_PROGRESS TRUE
+)
+FetchContent_MakeAvailable(nfd)
 
 vl_fetch_glfw()
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
-    set(VELYRA_CORE_LIBS glad glfw tinyfiledialogs)
+    set(VELYRA_CORE_LIBS glad glfw nfd)
 else ()
     message(FATAL_ERROR "Unsupported compiler for UNIX!")
 endif()
