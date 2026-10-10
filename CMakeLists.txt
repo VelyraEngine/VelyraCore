@@ -103,9 +103,17 @@ set(VELYRA_CORE_CONTEXT_HEADERS
 
     ####### OpenGL ES #######
     src/VelyraCore/Context/OpenGLES/GLESContext.hpp
+    src/VelyraCore/Context/OpenGLES/GLESDevice.hpp
+    src/VelyraCore/Context/OpenGLES/GLESTexture2D.hpp
+    src/VelyraCore/Context/OpenGLES/GLESColorAttachment.hpp
+    src/VelyraCore/Context/OpenGLES/GLESDepthStencilAttachment.hpp
+    src/VelyraCore/Context/OpenGLES/GLESFrameBuffer.hpp
 
     src/VelyraCore/Context/OpenGLES/Internal/GLESPlatformContext.hpp
     src/VelyraCore/Context/OpenGLES/Internal/Glfw3GLESPlatformContext.hpp
+    src/VelyraCore/Context/OpenGLES/Internal/GLESTranslations.hpp
+    src/VelyraCore/Context/OpenGLES/Internal/GLESTexture.hpp
+    src/VelyraCore/Context/OpenGLES/Internal/GLESStateGuards.hpp
 
 )
 
@@ -148,8 +156,15 @@ set(VELYRA_CORE_CONTEXT_SRC
     ####### OpenGL ES #######
 
     src/VelyraCore/Context/OpenGLES/GLESContext.cpp
+    src/VelyraCore/Context/OpenGLES/GLESDevice.cpp
+    src/VelyraCore/Context/OpenGLES/GLESTexture2D.cpp
+    src/VelyraCore/Context/OpenGLES/GLESColorAttachment.cpp
+    src/VelyraCore/Context/OpenGLES/GLESDepthStencilAttachment.cpp
+    src/VelyraCore/Context/OpenGLES/GLESFrameBuffer.cpp
 
     src/VelyraCore/Context/OpenGLES/Internal/Glfw3GLESPlatformContext.cpp
+    src/VelyraCore/Context/OpenGLES/Internal/GLESTranslations.cpp
+    src/VelyraCore/Context/OpenGLES/Internal/GLESTexture.cpp
 )
 
 set(VELYRA_CORE_HEADERS

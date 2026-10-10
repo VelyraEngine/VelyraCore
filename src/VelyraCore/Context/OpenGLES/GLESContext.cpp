@@ -5,26 +5,42 @@
 
 #include "../../../Logging/LoggerNames.hpp"
 
-#include "../OpenGL/GLDevice.hpp"
-#include "../OpenGL/GLFrameBuffer.hpp"
-#include "../OpenGL/GLColorAttachment.hpp"
-#include "../OpenGL/GLDepthStencilAttachment.hpp"
+#include "GLESDevice.hpp"
+#include "GLESFrameBuffer.hpp"
+#include "GLESColorAttachment.hpp"
+#include "GLESDepthStencilAttachment.hpp"
+#include "GLESTexture2D.hpp"
+
+// destroyResource erases unique_ptrs, so all resource types must be complete
+#include <VelyraCore/Context/Viewport.hpp>
+#include <VelyraCore/Context/ShaderModule.hpp>
+#include <VelyraCore/Context/Shader.hpp>
+#include <VelyraCore/Context/VertexLayout.hpp>
+#include <VelyraCore/Context/VertexBuffer.hpp>
+#include <VelyraCore/Context/IndexBuffer.hpp>
+#include <VelyraCore/Context/MeshBinding.hpp>
+#include <VelyraCore/Context/ConstantBuffer.hpp>
+#include <VelyraCore/Context/Sampler.hpp>
+#include <VelyraCore/Context/FrameBufferLayout.hpp>
+#include <VelyraCore/Context/DepthStencilState.hpp>
+#include <VelyraCore/Context/StructuredBuffer.hpp>
+#include <VelyraCore/Context/ApiState.hpp>
 
 namespace Velyra::Core::GLES {
 
     template<typename T>
     void clearResources(std::vector<UP<T>>& resources) {
-        // resources.clear();
+        resources.clear();
     }
 
     template<typename T>
     void destroyResource(std::vector<UP<T>>& resources, const View<T>& resource) {
-        // if (resource == nullptr) {
-        //     return;
-        // }
-        // std::erase_if(resources, [&resource](const UP<T>& item) {
-        //     return item.get() == resource.get();
-        // });
+        if (resource == nullptr) {
+            return;
+        }
+        std::erase_if(resources, [&resource](const UP<T>& item) {
+            return item.get() == resource.get();
+        });
     }
 
     U64 GLESContext::m_ContextCount = 0;
@@ -38,8 +54,8 @@ namespace Velyra::Core::GLES {
         m_ContextCount++;
 
         initGlad();
-        m_Device = createUP<GLDevice>();
-        m_DefaultFrameBuffer = createUP<GLDefaultFrameBuffer>(desc.defaultFrameBufferDesc, *m_Device);
+        m_Device = createUP<GLESDevice>();
+        m_DefaultFrameBuffer = createUP<GLESDefaultFrameBuffer>(desc.defaultFrameBufferDesc, *m_Device);
     }
 
     GLESContext::~GLESContext() {
@@ -53,7 +69,7 @@ namespace Velyra::Core::GLES {
         // clearResources(m_MeshBindings);
         // clearResources(m_ConstantBuffers);
         // clearResources(m_Samplers);
-        // clearResources(m_Texture2Ds);
+        clearResources(m_Texture2Ds);
         // clearResources(m_FrameBufferLayouts);
         // clearResources(m_FrameBuffers);
 
@@ -210,13 +226,13 @@ namespace Velyra::Core::GLES {
     }
 
     View<Texture2D> GLESContext::createTexture2D(const Texture2DDesc &desc) {
-        // m_Texture2Ds.emplace_back(createUP<GLTexture2D>(desc, *m_Device));
-        // return m_Texture2Ds.back();
+        m_Texture2Ds.emplace_back(createUP<GLESTexture2D>(desc, *m_Device));
+        return m_Texture2Ds.back();
     }
 
     View<Texture2D> GLESContext::createTexture2D(const Texture2DImageDesc &desc) {
-        // m_Texture2Ds.emplace_back(createUP<GLTexture2D>(desc, *m_Device));
-        // return m_Texture2Ds.back();
+        m_Texture2Ds.emplace_back(createUP<GLESTexture2D>(desc, *m_Device));
+        return m_Texture2Ds.back();
     }
 
     View<FrameBufferLayout> GLESContext::createFrameBufferLayout() {
