@@ -9,10 +9,11 @@ namespace Velyra::Core {
     struct VL_API SamplerDesc {
         VL_TEXTURE_FILTER minFilter   = VL_TEXTURE_FILTER_LINEAR;
         VL_TEXTURE_FILTER magFilter   = VL_TEXTURE_FILTER_LINEAR;
+        VL_TEXTURE_FILTER mipFilter   = VL_TEXTURE_FILTER_LINEAR; // NONE disables mipmapping
         VL_TEXTURE_WRAP wrapU  = VL_TEXTURE_WRAP_REPEAT;
         VL_TEXTURE_WRAP wrapV  = VL_TEXTURE_WRAP_REPEAT;
         VL_TEXTURE_WRAP wrapW  = VL_TEXTURE_WRAP_REPEAT;
-        VL_COMPARISON_FUNC comparisonFunc = VL_COMPARISON_FUNC_NEVER;
+        VL_COMPARISON_FUNC comparisonFunc = VL_COMPARISON_FUNC_NEVER; // NEVER samples textures normally, anything else enables depth comparison
         float borderColorR = 0.0f;
         float borderColorG = 0.0f;
         float borderColorB = 0.0f;
@@ -28,6 +29,7 @@ namespace Velyra::Core {
             m_Device(device),
             m_MinFilter(desc.minFilter),
             m_MagFilter(desc.magFilter),
+            m_MipFilter(desc.mipFilter),
             m_WrapU(desc.wrapU),
             m_WrapV(desc.wrapV),
             m_WrapW(desc.wrapW),
@@ -44,6 +46,8 @@ namespace Velyra::Core {
 
         virtual void setFilter(VL_TEXTURE_FILTER minFilter, VL_TEXTURE_FILTER magFilter) = 0;
 
+        virtual void setMipFilter(VL_TEXTURE_FILTER mipFilter) = 0;
+
         virtual void setWrap(VL_TEXTURE_WRAP wrapU, VL_TEXTURE_WRAP wrapV, VL_TEXTURE_WRAP wrapW) = 0;
 
         virtual void setComparisonFunc(VL_COMPARISON_FUNC comparisonFunc) = 0;
@@ -57,6 +61,8 @@ namespace Velyra::Core {
         [[nodiscard]] VL_TEXTURE_FILTER getMinFilter() const { return m_MinFilter; }
 
         [[nodiscard]] VL_TEXTURE_FILTER getMagFilter() const { return m_MagFilter; }
+
+        [[nodiscard]] VL_TEXTURE_FILTER getMipFilter() const { return m_MipFilter; }
 
         [[nodiscard]] VL_TEXTURE_WRAP getWrapU() const { return m_WrapU; }
 
@@ -79,6 +85,7 @@ namespace Velyra::Core {
 
         VL_TEXTURE_FILTER m_MinFilter;
         VL_TEXTURE_FILTER m_MagFilter;
+        VL_TEXTURE_FILTER m_MipFilter;
         VL_TEXTURE_WRAP m_WrapU;
         VL_TEXTURE_WRAP m_WrapV;
         VL_TEXTURE_WRAP m_WrapW;

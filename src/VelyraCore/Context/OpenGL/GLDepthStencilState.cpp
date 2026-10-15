@@ -30,20 +30,22 @@ namespace Velyra::Core {
         if (m_DepthTestEnabled){
             glEnable(GL_DEPTH_TEST);
             glDepthFunc(m_GLDepthComparisonFunc);
-            glDepthMask(m_DepthMask);
         }
         else {
             glDisable(GL_DEPTH_TEST);
         }
+        // Masks are applied even with the test disabled: they still gate glClear and would otherwise leak between states
+        glDepthMask(m_DepthMask);
+
         if (m_StencilTestEnabled) {
             glEnable(GL_STENCIL_TEST);
-            SPDLOG_LOGGER_CRITICAL(m_Logger, "Stencil Comparison function not set correctly!");
-            // glStencilFunc(m_GLStencilComparisonFunc, m_ClearStencil, m_StencilMask);
+            glStencilFunc(m_GLStencilComparisonFunc, static_cast<GLint>(m_StencilReference), m_StencilMask);
             glStencilOp(m_GLStencilFail, m_GLStencilPassDepthFail, m_GLStencilPass);
         }
         else {
             glDisable(GL_STENCIL_TEST);
         }
+        glStencilMask(m_StencilMask);
         SPDLOG_LOGGER_TRACE(m_Logger, "Bound GLDepthStencilState with depth test {}, depth func {}, depth mask {}, stencil test {}, stencil func {}, stencil mask {}, stencil fail op {}, stencil pass op {}, stencil pass depth fail op {}",
             m_DepthTestEnabled ? "enabled" : "disabled", m_DepthComparisonFunc, m_DepthMask,
             m_StencilTestEnabled ? "enabled" : "disabled", m_StencilComparisonFunc, m_StencilMask,
@@ -51,12 +53,11 @@ namespace Velyra::Core {
     }
 
     void GLDepthStencilState::unbind() const {
-        if (m_DepthTestEnabled){
-            glDisable(GL_DEPTH_TEST);
-        }
-        if (m_StencilTestEnabled) {
-            glDisable(GL_STENCIL_TEST);
-        }
+        // Back to the GL defaults so a stale mask cannot affect later clears
+        glDisable(GL_DEPTH_TEST);
+        glDisable(GL_STENCIL_TEST);
+        glDepthMask(GL_TRUE);
+        glStencilMask(0xFFFFFFFF);
     }
 
     void GLDepthStencilState::setDepthTestEnabled(const bool enabled) {
@@ -84,6 +85,11 @@ namespace Velyra::Core {
         m_StencilComparisonFunc = func;
         m_GLStencilComparisonFunc = getGLComparisonFunc(func);
         SPDLOG_LOGGER_TRACE(m_Logger, "Set stencil comparison function to {}", func);
+    }
+
+    void GLDepthStencilState::setStencilReference(const U32 reference) {
+        m_StencilReference = reference;
+        SPDLOG_LOGGER_TRACE(m_Logger, "Set stencil reference to {}", reference);
     }
 
     void GLDepthStencilState::setStencilMask(const U32 mask) {

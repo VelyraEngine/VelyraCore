@@ -18,7 +18,7 @@ namespace Velyra::Core {
     }
 
     void GLStructuredBuffer::bindShaderResource(const U32 slot) {
-        if (slot > m_Device.getMaxStructuredBufferSlots()) {
+        if (slot >= m_Device.getMaxStructuredBufferSlots()) {
             SPDLOG_LOGGER_ERROR(m_Logger, "StructuredBuffer {}: supplied slot {} exceeds the maximum number of structured buffer slots {}",
                 m_Buffer.getName(), slot, m_Device.getMaxStructuredBufferSlots());
             return;

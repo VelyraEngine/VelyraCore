@@ -14,6 +14,8 @@ namespace Velyra::Core {
 
         void setFilter(VL_TEXTURE_FILTER minFilter, VL_TEXTURE_FILTER magFilter) override;
 
+        void setMipFilter(VL_TEXTURE_FILTER mipFilter) override;
+
         void setWrap(VL_TEXTURE_WRAP wrapU, VL_TEXTURE_WRAP wrapV, VL_TEXTURE_WRAP wrapW) override;
 
         void setComparisonFunc(VL_COMPARISON_FUNC comparisonFunc) override;
@@ -23,6 +25,9 @@ namespace Velyra::Core {
         void setLOD(float minLOD, float maxLOD, float LODBias) override;
 
         [[nodiscard]] U64 getIdentifier() override;
+
+    private:
+        void applyComparison() const;
 
     private:
         const Utils::LogPtr m_Logger;

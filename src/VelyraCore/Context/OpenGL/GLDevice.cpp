@@ -22,11 +22,12 @@ namespace Velyra::Core {
     }
 
     U32 GLDevice::getMaxFramebufferWidth() const {
-        return getGlConstantInt(GL_MAX_FRAMEBUFFER_WIDTH);
+        // GL_MAX_FRAMEBUFFER_WIDTH only applies to attachment-less framebuffers, attachments are limited by their own size
+        return std::min(getGlConstantInt(GL_MAX_TEXTURE_SIZE), getGlConstantInt(GL_MAX_RENDERBUFFER_SIZE));
     }
 
     U32 GLDevice::getMaxFramebufferHeight() const {
-        return getGlConstantInt(GL_MAX_FRAMEBUFFER_HEIGHT);
+        return std::min(getGlConstantInt(GL_MAX_TEXTURE_SIZE), getGlConstantInt(GL_MAX_RENDERBUFFER_SIZE));
     }
 
     U32 GLDevice::getMaxFramebufferColorAttachments() const {

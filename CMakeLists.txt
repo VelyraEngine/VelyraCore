@@ -247,6 +247,7 @@ set(VELYRA_CORE_TEST_SRC
     test/Context/TestStructuredBuffer.cpp
 
     test/Context/OpenGL/TestGLTranslations.cpp
+    test/Context/OpenGL/TestGLBehavior.cpp
 )
 
 if (BUILD_TESTING)

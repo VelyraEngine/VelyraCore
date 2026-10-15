@@ -49,6 +49,11 @@ namespace Velyra::Core {
     }
 
     void GLFrameBuffer::onResize(const Size width, const Size height) {
+        // A minimized window reports 0x0, which cannot be allocated; keep the current size until it is restored
+        if (width == 0 || height == 0) {
+            SPDLOG_LOGGER_DEBUG(m_Logger, "Ignoring resize of FrameBuffer {} to {}x{}", m_FrameBufferID, width, height);
+            return;
+        }
         for (const auto& attachment: m_ColorAttachments) {
             attachment->onResize(width, height);
         }
@@ -95,6 +100,12 @@ namespace Velyra::Core {
 
             drawBuffers.push_back(GL_COLOR_ATTACHMENT0 + attachmentIndex);
             attachmentIndex++;
+        }
+        if (drawBuffers.empty()) {
+            // Depth-only framebuffer: without this the default read buffer (COLOR_ATTACHMENT0) makes it incomplete
+            glNamedFramebufferDrawBuffer(m_FrameBufferID, GL_NONE);
+            glNamedFramebufferReadBuffer(m_FrameBufferID, GL_NONE);
+            return;
         }
         glNamedFramebufferDrawBuffers(m_FrameBufferID, static_cast<GLsizei>(drawBuffers.size()), drawBuffers.data());
     }

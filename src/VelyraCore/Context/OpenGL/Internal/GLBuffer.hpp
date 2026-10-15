@@ -12,6 +12,10 @@ namespace Velyra::Core {
 
         ~GLBuffer();
 
+        GLBuffer(const GLBuffer&) = delete;
+
+        GLBuffer& operator=(const GLBuffer&) = delete;
+
         void bind() const;
 
         void bindShaderResource(U32 slot) const;

@@ -77,12 +77,14 @@ namespace Velyra::Core {
         glBindBuffer(GL_PIXEL_PACK_BUFFER, m_PixelPackBufferID);
         glBufferData(GL_PIXEL_PACK_BUFFER, static_cast<GLsizeiptr>(dataSize), nullptr, GL_STREAM_READ);
 
-        // Bind framebuffer and set read buffer to our attachment
+        // glReadPixels has no DSA variant, so the framebuffer has to be bound; the previous binding is restored below
+        GLint previousReadFramebuffer = 0;
+        glGetIntegerv(GL_READ_FRAMEBUFFER_BINDING, &previousReadFramebuffer);
         glBindFramebuffer(GL_READ_FRAMEBUFFER, m_FramebufferID);
 
-        // We have to call glReadBuffer only for color attachments!
+        // We have to set the read buffer only for color attachments!
         if (m_AttachmentPoint >= GL_COLOR_ATTACHMENT0 && m_AttachmentPoint <= GL_COLOR_ATTACHMENT31) {
-            glReadBuffer(m_AttachmentPoint);
+            glNamedFramebufferReadBuffer(m_FramebufferID, m_AttachmentPoint);
         }
 
         // Read renderbuffer data into the pixel pack buffer via glReadPixels
@@ -91,8 +93,7 @@ namespace Velyra::Core {
             static_cast<GLsizei>(m_RenderBuffer.getHeight()),
             glChannelFormat, glDataType, nullptr); // nullptr indicates data goes to GL_PIXEL_PACK_BUFFER
 
-        // Unbind framebuffer
-        glBindFramebuffer(GL_READ_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_READ_FRAMEBUFFER, static_cast<GLuint>(previousReadFramebuffer));
 
         // Map the buffer to CPU memory for reading
         const void* mappedData = glMapBuffer(GL_PIXEL_PACK_BUFFER, GL_READ_ONLY);

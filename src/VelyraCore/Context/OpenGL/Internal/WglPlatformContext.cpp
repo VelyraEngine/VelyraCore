@@ -29,7 +29,8 @@ namespace Velyra::Core {
         pfd.nVersion   = 1;
         pfd.dwFlags    = PFD_DRAW_TO_WINDOW | PFD_SUPPORT_OPENGL | PFD_DOUBLEBUFFER;
         pfd.iPixelType = PFD_TYPE_RGBA;
-        pfd.cColorBits = desc.redBits + desc.greenBits + desc.blueBits + desc.alphaBits;
+        pfd.cColorBits = desc.redBits + desc.greenBits + desc.blueBits; // alpha bits are not part of cColorBits
+        pfd.cAlphaBits = desc.alphaBits;
         pfd.cDepthBits = desc.depthBits;
         pfd.cStencilBits = desc.stencilBits;
         pfd.iLayerType = PFD_MAIN_PLANE;
@@ -39,6 +40,7 @@ namespace Velyra::Core {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to set legacy pixel format: {}",
                 formatWin32ExceptionMessage(GetLastError()));
             ReleaseDC(m_Hwnd, m_HDC);
+            m_HDC = nullptr;
             return;
         }
 
@@ -48,7 +50,11 @@ namespace Velyra::Core {
         HGLRC tempContext = wglCreateContext(m_HDC);
         if (!tempContext || !wglMakeCurrent(m_HDC, tempContext)) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to create temporary WGL context");
+            if (tempContext) {
+                wglDeleteContext(tempContext);
+            }
             ReleaseDC(m_Hwnd, m_HDC);
+            m_HDC = nullptr;
             return;
         }
 
@@ -58,9 +64,14 @@ namespace Velyra::Core {
     }
 
     WglPlatformContext::~WglPlatformContext() {
-        terminateWGL();
-        wglDeleteContext(m_Context);
-        ReleaseDC(m_Hwnd, m_HDC);
+        // m_Context is only set once initWGL() ran, so a failed construction has nothing to tear down
+        if (m_Context != nullptr) {
+            terminateWGL();
+            wglDeleteContext(m_Context);
+        }
+        if (m_HDC != nullptr) {
+            ReleaseDC(m_Hwnd, m_HDC);
+        }
     }
 
     void WglPlatformContext::setVerticalSynchronisation(const bool enable) {

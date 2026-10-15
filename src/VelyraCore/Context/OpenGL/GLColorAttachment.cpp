@@ -1,6 +1,7 @@
 #include "../../Pch.hpp"
 
 #include "GLColorAttachment.hpp"
+#include "Internal/GLTranslations.hpp"
 
 #include "../../Logging/LoggerNames.hpp"
 
@@ -34,7 +35,28 @@ namespace Velyra::Core {
     }
 
     void GLColorAttachment::clear() const {
-        glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, static_cast<GLint>(m_AttachmentID), m_ClearColor.toArray());
+        // The clear command has to match the component type of the attachment
+        switch (getGLComponentKind(m_Format)) {
+            case GLComponentKind::SignedInteger: {
+                const GLint color[4] = {
+                    static_cast<GLint>(m_ClearColor.r), static_cast<GLint>(m_ClearColor.g),
+                    static_cast<GLint>(m_ClearColor.b), static_cast<GLint>(m_ClearColor.a)
+                };
+                glClearNamedFramebufferiv(m_FrameBufferID, GL_COLOR, static_cast<GLint>(m_AttachmentID), color);
+                break;
+            }
+            case GLComponentKind::UnsignedInteger: {
+                const GLuint color[4] = {
+                    static_cast<GLuint>(std::max(0.0f, m_ClearColor.r)), static_cast<GLuint>(std::max(0.0f, m_ClearColor.g)),
+                    static_cast<GLuint>(std::max(0.0f, m_ClearColor.b)), static_cast<GLuint>(std::max(0.0f, m_ClearColor.a))
+                };
+                glClearNamedFramebufferuiv(m_FrameBufferID, GL_COLOR, static_cast<GLint>(m_AttachmentID), color);
+                break;
+            }
+            case GLComponentKind::Normalized:
+                glClearNamedFramebufferfv(m_FrameBufferID, GL_COLOR, static_cast<GLint>(m_AttachmentID), m_ClearColor.toArray());
+                break;
+        }
 
         SPDLOG_LOGGER_TRACE(m_Logger, "Cleared GLColorAttachment with ID {} for framebuffer {} at attachment point {} with color ({}, {}, {}, {})",
             m_Storage->getID(), m_FrameBufferID, m_AttachmentID, m_ClearColor.r, m_ClearColor.g, m_ClearColor.b, m_ClearColor.a);

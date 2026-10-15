@@ -17,6 +17,10 @@ namespace Velyra::Core {
 
         ~GLRenderBuffer();
 
+        GLRenderBuffer(const GLRenderBuffer&) = delete;
+
+        GLRenderBuffer& operator=(const GLRenderBuffer&) = delete;
+
         void onResize(Size width, Size height);
 
         void bind() const;

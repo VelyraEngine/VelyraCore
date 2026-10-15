@@ -25,13 +25,20 @@ namespace Velyra::Core {
         for (const auto& attribute: attributes) {
             const VL_TYPE baseType = Utils::getBaseType(attribute.type);
             const GLenum glDataType = getGLDataType(baseType);
-            const GLint elementCount = static_cast<GLint>(Utils::getComponentCount(attribute.type));
+            const GLint componentCount = static_cast<GLint>(Utils::getComponentCount(attribute.type));
 
-            glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
-            glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
-            glVertexArrayAttribFormat(m_ArrayID, attribPtr, elementCount, glDataType, GL_FALSE, offset);
+            // GL attributes hold at most 4 components, so a matrix occupies one attribute location per column
+            const bool isMatrix = componentCount > 4;
+            const GLuint columns = isMatrix ? (componentCount == 9 ? 3 : 4) : 1;
+            const GLint columnComponents = isMatrix ? static_cast<GLint>(columns) : componentCount;
+            const GLuint columnSize = static_cast<GLuint>(columnComponents) * Utils::getTypeSize(baseType);
 
-            attribPtr++;
+            for (GLuint column = 0; column < columns; ++column) {
+                glEnableVertexArrayAttrib(m_ArrayID, attribPtr);
+                glVertexArrayAttribBinding(m_ArrayID, attribPtr, 0);
+                glVertexArrayAttribFormat(m_ArrayID, attribPtr, columnComponents, glDataType, GL_FALSE, offset + column * columnSize);
+                attribPtr++;
+            }
             offset += Utils::getTypeSize(attribute.type);
         }
 

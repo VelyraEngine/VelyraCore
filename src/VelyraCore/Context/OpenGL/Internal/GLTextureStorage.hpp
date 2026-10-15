@@ -39,6 +39,8 @@ namespace Velyra::Core {
 
     private:
         GLTexture m_Texture;
+        U32 m_FramebufferID = 0;
+        GLenum m_AttachmentPoint = GL_COLOR_ATTACHMENT0;
     };
 
 }

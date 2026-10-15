@@ -16,7 +16,7 @@ namespace Velyra::Core {
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_T, getGLTextureWrap(m_WrapV));
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_WRAP_R, getGLTextureWrap(m_WrapW));
 
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGLTextureFilter(m_MinFilter));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGLTextureMinFilter(m_MinFilter, m_MipFilter));
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_MAG_FILTER, getGLTextureFilter(m_MagFilter));
 
         glSamplerParameterf(m_SamplerID, GL_TEXTURE_MIN_LOD, m_MinLOD);
@@ -24,7 +24,7 @@ namespace Velyra::Core {
         glSamplerParameterf(m_SamplerID, GL_TEXTURE_LOD_BIAS, m_LODBias);
 
         glSamplerParameterfv(m_SamplerID, GL_TEXTURE_BORDER_COLOR, m_BorderColor);
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, static_cast<GLint>(getGLComparisonFunc(m_ComparisonFunc)));
+        applyComparison();
 
         SPDLOG_LOGGER_DEBUG(m_Logger, "Created GLSampler with ID {}", m_SamplerID);
     }
@@ -44,8 +44,13 @@ namespace Velyra::Core {
     void GLSampler::setFilter(const VL_TEXTURE_FILTER minFilter, const VL_TEXTURE_FILTER magFilter) {
         m_MinFilter = minFilter;
         m_MagFilter = magFilter;
-        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGLTextureFilter(m_MinFilter));
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGLTextureMinFilter(m_MinFilter, m_MipFilter));
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_MAG_FILTER, getGLTextureFilter(m_MagFilter));
+    }
+
+    void GLSampler::setMipFilter(const VL_TEXTURE_FILTER mipFilter) {
+        m_MipFilter = mipFilter;
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_MIN_FILTER, getGLTextureMinFilter(m_MinFilter, m_MipFilter));
     }
 
     void GLSampler::setWrap(const VL_TEXTURE_WRAP wrapU, const VL_TEXTURE_WRAP wrapV, const VL_TEXTURE_WRAP wrapW) {
@@ -59,6 +64,13 @@ namespace Velyra::Core {
 
     void GLSampler::setComparisonFunc(const VL_COMPARISON_FUNC comparisonFunc) {
         m_ComparisonFunc = comparisonFunc;
+        applyComparison();
+    }
+
+    void GLSampler::applyComparison() const {
+        // Without COMPARE_REF_TO_TEXTURE the comparison function is ignored by GL
+        const GLint mode = m_ComparisonFunc == VL_COMPARISON_FUNC_NEVER ? GL_NONE : GL_COMPARE_REF_TO_TEXTURE;
+        glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_MODE, mode);
         glSamplerParameteri(m_SamplerID, GL_TEXTURE_COMPARE_FUNC, static_cast<GLint>(getGLComparisonFunc(m_ComparisonFunc)));
     }
 

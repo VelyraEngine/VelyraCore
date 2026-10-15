@@ -9,6 +9,7 @@
 #include <vector>
 #include <memory>
 #include <unordered_map>
+#include <bit>
 
 #include <VelyraUtils/VelyraUtils.hpp>
 #include <VelyraUtils/Conversions/String.hpp>

@@ -48,6 +48,9 @@ namespace Velyra::Core {
         VL_PRECONDITION(m_PlatformContext != nullptr, "Platform context is null")
 
         initGlad();
+        // Every pixel transfer in this wrapper uses tightly packed rows, the default alignment of 4 would pad them
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
         m_Device = createUP<GLDevice>();
         m_DefaultFrameBuffer = createUP<GLDefaultFrameBuffer>(desc.defaultFrameBufferDesc, *m_Device);
     }
@@ -66,6 +69,8 @@ namespace Velyra::Core {
         clearResources(m_Texture2Ds);
         clearResources(m_FrameBufferLayouts);
         clearResources(m_FrameBuffers);
+        clearResources(m_DepthStencilStates);
+        clearResources(m_StructuredBuffers);
 
         terminateGlad();
     }
@@ -234,6 +239,10 @@ namespace Velyra::Core {
     }
 
     View<FrameBuffer> GLContext::createFrameBuffer(const View<FrameBufferLayout> &frameBufferLayout) {
+        if (frameBufferLayout == nullptr || !frameBufferLayout->isValid()) {
+            SPDLOG_LOGGER_ERROR(m_Logger, "Cannot create FrameBuffer: the FrameBufferLayout is missing or invalid");
+            return nullptr;
+        }
         m_FrameBuffers.emplace_back(createUP<GLFrameBuffer>(frameBufferLayout, *m_Device));
         return m_FrameBuffers.back();
     }

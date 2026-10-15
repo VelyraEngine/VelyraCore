@@ -40,7 +40,7 @@ protected:
         Environment<WRAPPER>::setup();
     }
 
-    void compareColorAttachmentData(const Utils::Color& expectedColor, const View<ColorAttachment>& colorAttachment) {
+    void compareColorAttachmentData(const Utils::Color& expectedColor, const View<ColorAttachment>& colorAttachment, const Size pixelCount = m_Width * m_Height) {
         const auto img = colorAttachment->getData();
         if (img == nullptr) {
             FAIL() << "Color attachment data is null";
@@ -50,7 +50,7 @@ protected:
         if constexpr (CASE::caFormat == VL_TEXTURE_RGBA_F32) {
             auto actualData = static_cast<const float*>(imgData);
             bool equal = true;
-            for (size_t i = 0; i < this->m_Width * this->m_Height * 4; ++i) {
+            for (size_t i = 0; i < pixelCount * 4; ++i) {
                 if (actualData[i] != expectedColor.toArray()[i % 4]) {
                     equal = false;
                     break;
@@ -61,7 +61,7 @@ protected:
         else if constexpr (CASE::caFormat == VL_TEXTURE_RGBA_U8) {
             auto actualData = static_cast<const U8*>(imgData);
             bool equal = true;
-            for (size_t i = 0; i < this->m_Width * this->m_Height * 4; ++i) {
+            for (size_t i = 0; i < pixelCount * 4; ++i) {
                 if (actualData[i] != static_cast<U8>(expectedColor.toArray()[i % 4] * 255)) {
                     equal = false;
                     break;
@@ -74,7 +74,7 @@ protected:
         }
     }
 
-    void compareDepthStencilData(const float clearDepth, const U32 clearStencil, const View<DepthStencilAttachment>& dsAttachment) {
+    void compareDepthStencilData(const float clearDepth, const U32 clearStencil, const View<DepthStencilAttachment>& dsAttachment, const Size pixelCount = m_Width * m_Height) {
         const auto img = dsAttachment->getData();
         if (img == nullptr) {
             FAIL() << "DepthStencilAttachment data is null";
@@ -84,7 +84,7 @@ protected:
         if constexpr (CASE::dsFormat == VL_TEXTURE_DEPTH_32) {
             auto actualData = static_cast<const float*>(imgData);
             bool equal = true;
-            for (size_t i = 0; i < this->m_Width * this->m_Height; ++i) {
+            for (size_t i = 0; i < pixelCount; ++i) {
                 if (actualData[i] != clearDepth) {
                     equal = false;
                     break;
@@ -95,7 +95,7 @@ protected:
         else if constexpr (CASE::dsFormat == VL_TEXTURE_DEPTH_24_STENCIL_8) {
             auto actualData = static_cast<const U32*>(imgData);
             bool equal = true;
-            for (size_t i = 0; i < this->m_Width * this->m_Height; ++i) {
+            for (size_t i = 0; i < pixelCount; ++i) {
                 U32 expectedValue = (static_cast<U32>(clearDepth * ((1 << 24) - 1)) << 8) | (clearStencil & 0xFF);
                 if (actualData[i] != expectedValue) {
                     equal = false;
@@ -226,6 +226,57 @@ TYPED_TEST(TestFrameBuffer, ClearFrameBuffer1DS) {
 
     // Check if the clear depth and stencil values are correct
     this->compareDepthStencilData(dsDesc.clearDepth, dsDesc.clearStencil, dsAttachment);
+}
+
+TYPED_TEST(TestFrameBuffer, ResizeFrameBuffer) {
+    auto& context = Environment<typename TestFixture::WRAPPER>::m_Window->getContext();
+    auto fbLayout = context->createFrameBufferLayout();
+    fbLayout->setDimensions(this->m_Width, this->m_Height);
+
+    FrameBufferColorAttachmentDesc caDesc;
+    const Utils::Color clearColor(1.0f, 0.0f, 1.0f, 1.0f);
+    caDesc.clearColor = clearColor;
+    caDesc.format = this->m_CAFormat;
+    caDesc.enableShaderAccess = this->m_ShaderAccess;
+    caDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
+    fbLayout->addColorAttachment(caDesc);
+
+    FrameBufferDepthStencilAttachmentDesc dsDesc;
+    dsDesc.clearDepth = 0.8f;
+    dsDesc.clearStencil = 52;
+    dsDesc.format = this->m_DSFormat;
+    dsDesc.enableShaderAccess = this->m_ShaderAccess;
+    dsDesc.usage = VL_BUFFER_USAGE_DYNAMIC;
+    fbLayout->setDepthStencilAttachment(dsDesc);
+
+    auto fb = context->createFrameBuffer(fbLayout);
+    ASSERT_NE(fb, nullptr);
+    const auto& ca = fb->getColorAttachment(0);
+    const auto& ds = fb->getDepthStencilAttachment();
+
+    // Grow, then shrink: both directions must keep the framebuffer complete and usable
+    constexpr std::array<std::pair<Size, Size>, 2> sizes = {{{100, 80}, {20, 30}}};
+    for (const auto& [width, height] : sizes) {
+        while (glGetError() != GL_NO_ERROR) {} // Drop errors from earlier tests
+
+        fb->onResize(width, height);
+        EXPECT_EQ(glGetError(), static_cast<GLenum>(GL_NO_ERROR)) << "Resizing to " << width << "x" << height << " raised a GL error";
+
+        EXPECT_EQ(ca->getWidth(), width);
+        EXPECT_EQ(ca->getHeight(), height);
+        EXPECT_EQ(ds->getWidth(), width);
+        EXPECT_EQ(ds->getHeight(), height);
+
+        // The attachments must still be bound to the framebuffer, otherwise the clear + readback below fails
+        fb->clear();
+        const auto caImage = ca->getData();
+        ASSERT_NE(caImage, nullptr);
+        EXPECT_EQ(caImage->getWidth(), width);
+        EXPECT_EQ(caImage->getHeight(), height);
+        this->compareColorAttachmentData(clearColor, ca, width * height);
+        this->compareDepthStencilData(dsDesc.clearDepth, dsDesc.clearStencil, ds, width * height);
+        EXPECT_EQ(glGetError(), static_cast<GLenum>(GL_NO_ERROR));
+    }
 }
 
 TYPED_TEST(TestFrameBuffer, ClearFrameBuffer2CA) {

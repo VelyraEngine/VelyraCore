@@ -28,7 +28,7 @@ namespace Velyra::Core {
             case VL_BUFFER_USAGE_STATIC:  return GL_STATIC_DRAW;
             default: {
                 const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
-                SPDLOG_LOGGER_WARN(logger, "Invalid usage {} given to converter, return default: GL_DYNAMIC_DRAW", usage);
+                SPDLOG_LOGGER_WARN(logger, "Invalid usage {} given to converter, return default: GL_STATIC_DRAW", usage);
                 return GL_STATIC_DRAW;
             }
         }
@@ -90,7 +90,7 @@ namespace Velyra::Core {
 
     GLint getGLTextureFilter(const VL_TEXTURE_FILTER filter) {
         switch (filter) {
-            case VL_TEXTURE_FILTER_NONE:     return GL_NONE;
+            case VL_TEXTURE_FILTER_NONE:     return GL_NEAREST; // GL_NONE is not a valid filter
             case VL_TEXTURE_FILTER_LINEAR:   return GL_LINEAR;
             case VL_TEXTURE_FILTER_POINT:    return GL_NEAREST;
             default: {
@@ -101,9 +101,23 @@ namespace Velyra::Core {
         }
     }
 
+    GLint getGLTextureMinFilter(const VL_TEXTURE_FILTER minFilter, const VL_TEXTURE_FILTER mipFilter) {
+        const bool linearMin = getGLTextureFilter(minFilter) == GL_LINEAR;
+        switch (mipFilter) {
+            case VL_TEXTURE_FILTER_NONE:    return linearMin ? GL_LINEAR : GL_NEAREST;
+            case VL_TEXTURE_FILTER_POINT:   return linearMin ? GL_LINEAR_MIPMAP_NEAREST : GL_NEAREST_MIPMAP_NEAREST;
+            case VL_TEXTURE_FILTER_LINEAR:  return linearMin ? GL_LINEAR_MIPMAP_LINEAR : GL_NEAREST_MIPMAP_LINEAR;
+            default: {
+                const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
+                SPDLOG_LOGGER_WARN(logger, "Invalid mip filter {} given to converter, mipmapping disabled", mipFilter);
+                return linearMin ? GL_LINEAR : GL_NEAREST;
+            }
+        }
+    }
+
     GLint getGLTextureWrap(const VL_TEXTURE_WRAP wrap) {
         switch (wrap) {
-            case VL_TEXTURE_WRAP_NONE:           return GL_NONE;
+            case VL_TEXTURE_WRAP_NONE:           return GL_CLAMP_TO_EDGE; // GL_NONE is not a valid wrap mode
             case VL_TEXTURE_WRAP_REPEAT:         return GL_REPEAT;
             case VL_TEXTURE_WRAP_MIRROR_REPEAT:  return GL_MIRRORED_REPEAT;
             case VL_TEXTURE_WRAP_CLAMP_EDGE:     return GL_CLAMP_TO_EDGE;
@@ -168,16 +182,38 @@ namespace Velyra::Core {
         }
     }
 
-    GLenum getGLTextureChannelFormat(const VL_CHANNEL_FORMAT channelFormat) {
+    GLComponentKind getGLComponentKind(const VL_TEXTURE_FORMAT format) {
+        switch (format) {
+            // The low nibble of the depth formats collides with the data type encoding, so they are handled first
+            case VL_TEXTURE_DEPTH_16:
+            case VL_TEXTURE_DEPTH_24:
+            case VL_TEXTURE_DEPTH_32:
+            case VL_TEXTURE_DEPTH_24_STENCIL_8:
+            case VL_TEXTURE_DEPTH_32_STENCIL_8:
+                return GLComponentKind::Normalized;
+            default:
+                break;
+        }
+        // Must mirror getGLTextureFormat: only the I8/I16/I32/U32 formats map to GL integer formats
+        switch (getTextureDataType(format)) {
+            case VL_INT8:
+            case VL_INT16:
+            case VL_INT32:  return GLComponentKind::SignedInteger;
+            case VL_UINT32: return GLComponentKind::UnsignedInteger;
+            default:        return GLComponentKind::Normalized;
+        }
+    }
+
+    GLenum getGLTextureChannelFormat(const VL_CHANNEL_FORMAT channelFormat, const bool integer) {
         switch (channelFormat) {
-            case VL_CHANNEL_R: return GL_RED;
-            case VL_CHANNEL_RG: return GL_RG;
-            case VL_CHANNEL_RGB: return GL_RGB;
-            case VL_CHANNEL_RGBA: return GL_RGBA;
+            case VL_CHANNEL_R: return integer ? GL_RED_INTEGER : GL_RED;
+            case VL_CHANNEL_RG: return integer ? GL_RG_INTEGER : GL_RG;
+            case VL_CHANNEL_RGB: return integer ? GL_RGB_INTEGER : GL_RGB;
+            case VL_CHANNEL_RGBA: return integer ? GL_RGBA_INTEGER : GL_RGBA;
             default: {
                 const Utils::LogPtr logger = Utils::getLogger(VL_LOGGER_OGL);
                 SPDLOG_LOGGER_WARN(logger, "Invalid texture channel format {} given to converter, return default: GL_RGBA", channelFormat);
-                return GL_RGBA;
+                return integer ? GL_RGBA_INTEGER : GL_RGBA;
             }
         }
     }
@@ -241,15 +277,21 @@ namespace Velyra::Core {
                 desc.glChannelFormat = GL_DEPTH_STENCIL; // This indicates that the data contains both depth and stencil information
                 break;
             case VL_TEXTURE_DEPTH_32_STENCIL_8:
-                VL_THROW("Unsupported readback format! OpenGL does NOT support reading back from DEPTH_32_STENCIL_8 "
-                         "textures. This is a hardware limitation that cannot be worked around. If you need to read back"
-                         " depth and stencil data, consider using DEPTH_24_STENCIL_8 format instead, which can be read"
-                         " back as a single 32-bit unsigned integer where the depth and stencil values are packed together.");
+                /*
+                 * Packed as one float (depth) followed by one 32-bit word whose lowest 8 bits are the stencil value
+                 * (GL_FLOAT_32_UNSIGNED_INT_24_8_REV). We expose it as two 32-bit floats per pixel; as for
+                 * DEPTH_24_STENCIL_8 it is up to the user to interpret the packed word.
+                 */
+                desc.dataType = VL_FLOAT32;
+                desc.channelFormat = VL_CHANNEL_RG;
+                desc.glDataType = GL_FLOAT_32_UNSIGNED_INT_24_8_REV;
+                desc.glChannelFormat = GL_DEPTH_STENCIL;
+                break;
             default:
                 desc.dataType = getTextureDataType(format);
                 desc.channelFormat = getTextureChannelFormat(format);
                 desc.glDataType = getGLDataType(desc.dataType);
-                desc.glChannelFormat = getGLTextureChannelFormat(desc.channelFormat);
+                desc.glChannelFormat = getGLTextureChannelFormat(desc.channelFormat, getGLComponentKind(format) != GLComponentKind::Normalized);
                 break;
 
         }

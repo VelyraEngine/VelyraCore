@@ -9,6 +9,16 @@
 
 namespace Velyra::Core {
 
+    namespace {
+        // Full mip chain down to 1x1 when mipmaps are requested, otherwise only the base level
+        GLsizei getMipLevelCount(const bool generateMipmap, const Size width, const Size height) {
+            if (!generateMipmap) {
+                return 1;
+            }
+            return static_cast<GLsizei>(std::bit_width(std::max<Size>({width, height, 1})));
+        }
+    }
+
     GLTexture::GLTexture(const GLTextureDesc& desc, const Device &device):
     m_Logger(Utils::getLogger(VL_LOGGER_OGL)),
     m_Device(device),
@@ -16,6 +26,7 @@ namespace Velyra::Core {
     m_Height(desc.height),
     m_Format(desc.format),
     m_Usage(desc.usage),
+    m_GenerateMipmap(desc.generateMipmap),
     m_GLTarget(desc.target) {
         if (!m_Device.isTextureFormatSupported(desc.format)) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Texture format {} is not supported by the device", desc.format);
@@ -25,13 +36,10 @@ namespace Velyra::Core {
         // Create the actual texture object and potentially fill it
         glCreateTextures(desc.target, 1, &m_TextureID);
         const GLenum internalFormat = getGLTextureFormat(desc.format);
-        glTextureStorage2D(m_TextureID, 1, internalFormat, static_cast<GLint>(m_Width), static_cast<GLint>(m_Height));
+        glTextureStorage2D(m_TextureID, getMipLevelCount(m_GenerateMipmap, m_Width, m_Height), internalFormat, static_cast<GLint>(m_Width), static_cast<GLint>(m_Height));
         if (desc.data != nullptr) {
-            const VL_TYPE vlType = getTextureDataType(desc.format);
-            const VL_CHANNEL_FORMAT vlChannelFormat = getTextureChannelFormat(desc.format);
-            const GLenum glDataType = getGLDataType(vlType);
-            const GLenum glChannelFormat = getGLTextureChannelFormat(vlChannelFormat);
-            glTextureSubImage2D(m_TextureID, 0, 0, 0, static_cast<GLint>(m_Width), static_cast<GLint>(m_Height), glChannelFormat, glDataType, desc.data);
+            const GLFormatDesc transfer = getGLFormatDesc(desc.format);
+            glTextureSubImage2D(m_TextureID, 0, 0, 0, static_cast<GLint>(m_Width), static_cast<GLint>(m_Height), transfer.glChannelFormat, transfer.glDataType, desc.data);
         }
         // Only generate mipmaps if requested
         if (desc.generateMipmap) {
@@ -82,9 +90,12 @@ namespace Velyra::Core {
 
         m_Width = width;
         m_Height = height;
-        glTextureStorage2D(m_TextureID, 1, getGLTextureFormat(m_Format), static_cast<GLint>(width), static_cast<GLint>(height));
+        // glTextureStorage2D makes the storage immutable, so a resize needs a new texture object (contents are lost)
+        glDeleteTextures(1, &m_TextureID);
+        glCreateTextures(m_GLTarget, 1, &m_TextureID);
+        glTextureStorage2D(m_TextureID, getMipLevelCount(m_GenerateMipmap, width, height), getGLTextureFormat(m_Format), static_cast<GLint>(width), static_cast<GLint>(height));
 
-        SPDLOG_LOGGER_TRACE(m_Logger, "Resized texture object {} to new dimensions: {}x{}", m_TextureID, width, height);
+        SPDLOG_LOGGER_TRACE(m_Logger, "Resized texture object to new dimensions: {}x{} (new id: {})", width, height, m_TextureID);
     }
 
     void GLTexture::setData(const void *data, const U32 x, const U32 y, const U32 width, const U32 height) {
@@ -105,28 +116,23 @@ namespace Velyra::Core {
         }
 
         // Conversion variables
-        const VL_CHANNEL_FORMAT vlChannelFormat = getTextureChannelFormat(m_Format);
-        const VL_TYPE vlType = getTextureDataType(m_Format);
-        const GLenum glDataType = getGLDataType(vlType);
-        const GLenum glChannelFormat = getGLTextureChannelFormat(vlChannelFormat);
-        const U32 channelCount = Image::getChannelCountFromFormat(vlChannelFormat);
+        const GLFormatDesc transfer = getGLFormatDesc(m_Format);
+        const U32 channelCount = Image::getChannelCountFromFormat(transfer.channelFormat);
 
         // use the pbo for more efficient data transfer
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, m_PixelUnpackBufferID);
-        glBufferData(GL_PIXEL_UNPACK_BUFFER, width * height * channelCount * Utils::getTypeSize(vlType), data, GL_DYNAMIC_DRAW);
-        /*
-         * DSA does currently not provide a function like glNamedReadPixelsToBuffer. so we have to bind the texture to the context
-         */
-        glBindTexture(m_GLTarget, m_TextureID);
-        glTexSubImage2D(m_GLTarget, 0,
+        glBufferData(GL_PIXEL_UNPACK_BUFFER, width * height * channelCount * Utils::getTypeSize(transfer.dataType), data, GL_DYNAMIC_DRAW);
+        // With a PBO bound the data argument is an offset into that buffer, hence the nullptr
+        glTextureSubImage2D(m_TextureID, 0,
             static_cast<GLint>(x), static_cast<GLint>(y),
             static_cast<GLint>(width), static_cast<GLint>(height),
-            glChannelFormat, glDataType, nullptr // nullptr is used to indicate that the data is stored in the buffer bound to GL_PIXEL_UNPACK_BUFFER
+            transfer.glChannelFormat, transfer.glDataType, nullptr
         );
-
-        // Cleanup bindings
         glBindBuffer(GL_PIXEL_UNPACK_BUFFER, 0);
-        glBindTexture(m_GLTarget, 0);
+
+        if (m_GenerateMipmap) {
+            glGenerateTextureMipmap(m_TextureID);
+        }
     }
 
     void GLTexture::copyFrom(const GLTexture &other) {
@@ -149,6 +155,9 @@ namespace Velyra::Core {
                            m_TextureID, m_GLTarget, 0, 0, 0, 0,
                            width, height, 1);
 
+        if (m_GenerateMipmap) {
+            glGenerateTextureMipmap(m_TextureID);
+        }
     }
 
     UP<Image::IImage> GLTexture::getData() const {

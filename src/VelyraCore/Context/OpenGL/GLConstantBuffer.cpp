@@ -16,7 +16,7 @@ namespace Velyra::Core {
     }
 
     void GLConstantBuffer::bindShaderResource(const U32 slot) {
-        if (slot > m_Device.getMaxConstantBufferSlots()) {
+        if (slot >= m_Device.getMaxConstantBufferSlots()) {
             SPDLOG_LOGGER_ERROR(m_Logger, "ConstantBuffer {}: supplied slot {} exceeds the maximum number of constant buffer slots {}",
                 m_Buffer.getName(), slot, m_Device.getMaxConstantBufferSlots());
             return;

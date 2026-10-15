@@ -13,7 +13,8 @@ namespace Velyra::Core {
 
         bool enableStencilTest                  = false;
         VL_COMPARISON_FUNC stencilComparisonFunc= VL_COMPARISON_FUNC_ALWAYS;
-        U32 stencilMask                         = 0xFFFFFFFF;
+        U32 stencilReference                    = 0;
+        U32 stencilMask                         = 0xFFFFFFFF; // used as both the read and the write mask
         VL_STENCIL_FUNC stencilFail             = VL_STENCIL_FUNC_KEEP;
         VL_STENCIL_FUNC stencilPass             = VL_STENCIL_FUNC_KEEP;
         VL_STENCIL_FUNC stencilPassDepthFail    = VL_STENCIL_FUNC_KEEP;
@@ -28,6 +29,7 @@ namespace Velyra::Core {
         m_DepthMask(desc.depthMask),
         m_StencilTestEnabled(desc.enableStencilTest),
         m_StencilComparisonFunc(desc.stencilComparisonFunc),
+        m_StencilReference(desc.stencilReference),
         m_StencilMask(desc.stencilMask),
         m_StencilFailOp(desc.stencilFail),
         m_StencilPassOp(desc.stencilPass),
@@ -50,6 +52,8 @@ namespace Velyra::Core {
 
         virtual void setStencilComparisonFunc(VL_COMPARISON_FUNC func) = 0;
 
+        virtual void setStencilReference(U32 reference) = 0;
+
         virtual void setStencilMask(U32 mask) = 0;
 
         virtual void setStencilFailOp(VL_STENCIL_FUNC func) = 0;
@@ -68,6 +72,8 @@ namespace Velyra::Core {
 
         [[nodiscard]] VL_COMPARISON_FUNC getStencilComparisonFunc() const { return m_StencilComparisonFunc; }
 
+        [[nodiscard]] U32 getStencilReference() const { return m_StencilReference; }
+
         [[nodiscard]] U32 getStencilMask() const { return m_StencilMask; }
 
         [[nodiscard]] VL_STENCIL_FUNC getStencilFailOp() const { return m_StencilFailOp; }
@@ -85,6 +91,7 @@ namespace Velyra::Core {
 
         bool m_StencilTestEnabled;
         VL_COMPARISON_FUNC m_StencilComparisonFunc;
+        U32 m_StencilReference;
         U32 m_StencilMask;
         VL_STENCIL_FUNC m_StencilFailOp;
         VL_STENCIL_FUNC m_StencilPassOp;

@@ -70,8 +70,23 @@ TEST_F(TestGLTranslations, TranslateComparisonFunc) {
 TEST_F(TestGLTranslations, TranslateTextureFilter) {
     EXPECT_EQ(GL_LINEAR, getGLTextureFilter(VL_TEXTURE_FILTER_LINEAR));
     EXPECT_EQ(GL_NEAREST, getGLTextureFilter(VL_TEXTURE_FILTER_POINT));
+    EXPECT_EQ(GL_NEAREST, getGLTextureFilter(VL_TEXTURE_FILTER_NONE)); // GL_NONE would be GL_INVALID_ENUM
 
     EXPECT_EQ(GL_LINEAR, getGLTextureFilter(VL_TEXTURE_FILTER_MAX_VALUE));
+}
+
+TEST_F(TestGLTranslations, TranslateTextureMinFilter) {
+    EXPECT_EQ(GL_NEAREST, getGLTextureMinFilter(VL_TEXTURE_FILTER_POINT, VL_TEXTURE_FILTER_NONE));
+    EXPECT_EQ(GL_LINEAR, getGLTextureMinFilter(VL_TEXTURE_FILTER_LINEAR, VL_TEXTURE_FILTER_NONE));
+    EXPECT_EQ(GL_NEAREST_MIPMAP_NEAREST, getGLTextureMinFilter(VL_TEXTURE_FILTER_POINT, VL_TEXTURE_FILTER_POINT));
+    EXPECT_EQ(GL_NEAREST_MIPMAP_LINEAR, getGLTextureMinFilter(VL_TEXTURE_FILTER_POINT, VL_TEXTURE_FILTER_LINEAR));
+    EXPECT_EQ(GL_LINEAR_MIPMAP_NEAREST, getGLTextureMinFilter(VL_TEXTURE_FILTER_LINEAR, VL_TEXTURE_FILTER_POINT));
+    EXPECT_EQ(GL_LINEAR_MIPMAP_LINEAR, getGLTextureMinFilter(VL_TEXTURE_FILTER_LINEAR, VL_TEXTURE_FILTER_LINEAR));
+
+    // An unfiltered minification behaves like point sampling
+    EXPECT_EQ(GL_NEAREST_MIPMAP_LINEAR, getGLTextureMinFilter(VL_TEXTURE_FILTER_NONE, VL_TEXTURE_FILTER_LINEAR));
+
+    EXPECT_EQ(GL_LINEAR, getGLTextureMinFilter(VL_TEXTURE_FILTER_LINEAR, VL_TEXTURE_FILTER_MAX_VALUE));
 }
 
 TEST_F(TestGLTranslations, TranslateTextureWrap) {
@@ -79,6 +94,7 @@ TEST_F(TestGLTranslations, TranslateTextureWrap) {
     EXPECT_EQ(GL_MIRRORED_REPEAT, getGLTextureWrap(VL_TEXTURE_WRAP_MIRROR_REPEAT));
     EXPECT_EQ(GL_CLAMP_TO_EDGE, getGLTextureWrap(VL_TEXTURE_WRAP_CLAMP_EDGE));
     EXPECT_EQ(GL_CLAMP_TO_BORDER, getGLTextureWrap(VL_TEXTURE_WRAP_CLAMP_BORDER));
+    EXPECT_EQ(GL_CLAMP_TO_EDGE, getGLTextureWrap(VL_TEXTURE_WRAP_NONE)); // GL_NONE would be GL_INVALID_ENUM
 
     EXPECT_EQ(GL_REPEAT, getGLTextureWrap(VL_TEXTURE_WRAP_MAX_VALUE));
 }
@@ -138,6 +154,33 @@ TEST_F(TestGLTranslations, TranslateTextureChannelFormat) {
     EXPECT_EQ(GL_RGBA, getGLTextureChannelFormat(VL_CHANNEL_FORMAT_MAX_VALUE));
 }
 
+TEST_F(TestGLTranslations, TranslateIntegerTextureChannelFormat) {
+    EXPECT_EQ(GL_RED_INTEGER, getGLTextureChannelFormat(VL_CHANNEL_R, true));
+    EXPECT_EQ(GL_RG_INTEGER, getGLTextureChannelFormat(VL_CHANNEL_RG, true));
+    EXPECT_EQ(GL_RGB_INTEGER, getGLTextureChannelFormat(VL_CHANNEL_RGB, true));
+    EXPECT_EQ(GL_RGBA_INTEGER, getGLTextureChannelFormat(VL_CHANNEL_RGBA, true));
+}
+
+TEST_F(TestGLTranslations, ComponentKind) {
+    // Mirrors getGLTextureFormat: U8/U16 are normalized, I8/I16/I32/U32 are integer formats
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_R_U8));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_RGBA_U16));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_RG_F16));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_RGBA_F32));
+    EXPECT_EQ(GLComponentKind::SignedInteger, getGLComponentKind(VL_TEXTURE_R_I8));
+    EXPECT_EQ(GLComponentKind::SignedInteger, getGLComponentKind(VL_TEXTURE_RG_I16));
+    EXPECT_EQ(GLComponentKind::SignedInteger, getGLComponentKind(VL_TEXTURE_RGBA_I32));
+    EXPECT_EQ(GLComponentKind::UnsignedInteger, getGLComponentKind(VL_TEXTURE_R_U32));
+    EXPECT_EQ(GLComponentKind::UnsignedInteger, getGLComponentKind(VL_TEXTURE_RGB_U32));
+
+    // The depth formats share their low nibble with integer type encodings, they must still be normalized
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_DEPTH_16));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_DEPTH_24));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_DEPTH_32));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_DEPTH_24_STENCIL_8));
+    EXPECT_EQ(GLComponentKind::Normalized, getGLComponentKind(VL_TEXTURE_DEPTH_32_STENCIL_8));
+}
+
 TEST_F(TestGLTranslations, TranslateStencilFunc) {
     EXPECT_EQ(GL_KEEP, getGLStencilFunc(VL_STENCIL_FUNC_KEEP));
     EXPECT_EQ(GL_ZERO, getGLStencilFunc(VL_STENCIL_FUNC_ZERO));
@@ -163,7 +206,7 @@ TEST_F(TestGLTranslations, TranslateFormatDesc) {
     EXPECT_EQ(VL_INT16, desc.dataType);
     EXPECT_EQ(VL_CHANNEL_R, desc.channelFormat);
     EXPECT_EQ(GL_SHORT, desc.glDataType);
-    EXPECT_EQ(GL_RED, desc.glChannelFormat);
+    EXPECT_EQ(GL_RED_INTEGER, desc.glChannelFormat);
 
     desc = getGLFormatDesc(VL_TEXTURE_R_F32);
     EXPECT_EQ(VL_FLOAT32, desc.dataType);
@@ -195,7 +238,7 @@ TEST_F(TestGLTranslations, TranslateFormatDesc) {
     EXPECT_EQ(VL_INT32, desc.dataType);
     EXPECT_EQ(VL_CHANNEL_RGB, desc.channelFormat);
     EXPECT_EQ(GL_INT, desc.glDataType);
-    EXPECT_EQ(GL_RGB, desc.glChannelFormat);
+    EXPECT_EQ(GL_RGB_INTEGER, desc.glChannelFormat);
 
     desc = getGLFormatDesc(VL_TEXTURE_RGB_F16);
     EXPECT_EQ(VL_FLOAT16, desc.dataType);
@@ -214,7 +257,7 @@ TEST_F(TestGLTranslations, TranslateFormatDesc) {
     EXPECT_EQ(VL_UINT32, desc.dataType);
     EXPECT_EQ(VL_CHANNEL_RGBA, desc.channelFormat);
     EXPECT_EQ(GL_UNSIGNED_INT, desc.glDataType);
-    EXPECT_EQ(GL_RGBA, desc.glChannelFormat);
+    EXPECT_EQ(GL_RGBA_INTEGER, desc.glChannelFormat);
 
     desc = getGLFormatDesc(VL_TEXTURE_RGBA_F32);
     EXPECT_EQ(VL_FLOAT32, desc.dataType);
@@ -248,6 +291,10 @@ TEST_F(TestGLTranslations, TranslateFormatDesc) {
     EXPECT_EQ(GL_UNSIGNED_INT_24_8, desc.glDataType);
     EXPECT_EQ(GL_DEPTH_STENCIL, desc.glChannelFormat);
 
-    // Test that DEPTH_32_STENCIL_8 throws an exception
-    EXPECT_THROW(getGLFormatDesc(VL_TEXTURE_DEPTH_32_STENCIL_8), std::exception);
+    // Two 32-bit words per pixel: float depth + a word holding the stencil in its lowest 8 bits
+    desc = getGLFormatDesc(VL_TEXTURE_DEPTH_32_STENCIL_8);
+    EXPECT_EQ(VL_FLOAT32, desc.dataType);
+    EXPECT_EQ(VL_CHANNEL_RG, desc.channelFormat);
+    EXPECT_EQ(GL_FLOAT_32_UNSIGNED_INT_24_8_REV, desc.glDataType);
+    EXPECT_EQ(GL_DEPTH_STENCIL, desc.glChannelFormat);
 }

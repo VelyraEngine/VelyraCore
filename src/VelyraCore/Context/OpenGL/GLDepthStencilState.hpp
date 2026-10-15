@@ -24,6 +24,8 @@ namespace Velyra::Core {
 
         void setStencilComparisonFunc(VL_COMPARISON_FUNC func) override;
 
+        void setStencilReference(U32 reference) override;
+
         void setStencilMask(U32 mask) override;
 
         void setStencilFailOp(VL_STENCIL_FUNC func) override;

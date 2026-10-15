@@ -62,7 +62,8 @@ namespace Velyra::Core {
         auto glTexture2D = dynamic_cast<const GLTexture2D*>(other.get());
         if (glTexture2D == nullptr) {
             SPDLOG_LOGGER_ERROR(m_Logger, "Failed to copy from texture2D object {} to texture2D object {}! Source "
-                                          "texture is not of type GLTexture2D!", glTexture2D->getIdentifier(), getIdentifier());
+                                          "texture is not of type GLTexture2D!", other->getIdentifier(), getIdentifier());
+            return;
         }
         m_Texture.copyFrom(glTexture2D->m_Texture);
     }

@@ -30,6 +30,10 @@ namespace Velyra::Core {
 
         ~GLTexture();
 
+        GLTexture(const GLTexture&) = delete;
+
+        GLTexture& operator=(const GLTexture&) = delete;
+
         void bind() const;
 
         void bindShaderResource(U32 slot) const;
@@ -81,6 +85,7 @@ namespace Velyra::Core {
         Size m_Height = 0;
         VL_TEXTURE_FORMAT m_Format = VL_TEXTURE_FORMAT_MAX_VALUE;
         VL_BUFFER_USAGE m_Usage = VL_BUFFER_USAGE_DEFAULT;
+        bool m_GenerateMipmap = false;
 
         GLenum m_GLTarget = GL_TEXTURE_2D;
 
