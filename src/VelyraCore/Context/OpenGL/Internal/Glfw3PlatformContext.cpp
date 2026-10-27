@@ -1,4 +1,5 @@
 #include "../../../Pch.hpp"
+#include "../../../Logging/LoggerNames.hpp"
 
 #include "Glfw3PlatformContext.hpp"
 
@@ -6,6 +7,7 @@ namespace Velyra::Core {
 
     Glfw3PlatformContext::Glfw3PlatformContext(const ContextDesc& /*desc*/, GLFWwindow* window):
     GLPlatformContext(VL_GL_PLATFORM_GLFW3),
+    m_Logger(Utils::getLogger(VL_LOGGER_GLFW3)),
     m_Window(window) {
         glfwMakeContextCurrent(m_Window);
     }
@@ -32,12 +34,27 @@ namespace Velyra::Core {
     void Glfw3PlatformContext::makeCurrent() {
         VL_PRECONDITION(m_Window != nullptr, "GLFW window is null, cannot swap buffers")
 
+        float scaleX = 1.0f;
+        float scaleY = 1.0f;
+        glfwGetWindowContentScale(m_Window, &scaleX, &scaleY);
+        if (scaleX != 1.0f || scaleY != 1.0f) {
+            SPDLOG_LOGGER_WARN(m_Logger, "Window content scale is not 1.0 (scaleX: {}, scaleY: {}). This may cause rendering issues.", scaleX, scaleY);
+        }
+
+        ImGuiStyle& style = ImGui::GetStyle();
+        style.ScaleAllSizes(scaleX); // Scale all sizes by the x scale factor (assuming uniform scaling)
+        style.FontScaleDpi = scaleX; // Set the font scale DPI to the x scale factor (assuming uniform scaling)
+
         glfwMakeContextCurrent(m_Window);
     }
 
     void Glfw3PlatformContext::initPlatformImGui(const ImGuiContextDesc& desc) {
-        ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
         m_ImGuiDesc = desc;
+
+        // Fix DPI issues
+        const float scale =
+
+        ImGui_ImplGlfw_InitForOpenGL(m_Window, true);
     }
 
     void Glfw3PlatformContext::terminatePlatformImGui() {

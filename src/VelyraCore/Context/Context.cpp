@@ -42,9 +42,13 @@ namespace Velyra::Core {
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
         io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
-        // Enable DPI scaling (looks better on high-DPI monitors like my 4K one)
-        io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleFonts;
-        io.ConfigFlags |= ImGuiConfigFlags_DpiEnableScaleViewports;
+        /*
+         * Since ImGui 1.92, the ConfigDpiFlags were replaced by actual parameters in the ImGuiIO structure.
+         * We cet them here
+         */
+        io.ConfigDpiScaleFonts = true;
+        io.ConfigDpiScaleViewports = true;
+        io.Fonts->AddFontDefaultVector();
 
         if (desc.useDocking) {
             io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;       // Enable docking

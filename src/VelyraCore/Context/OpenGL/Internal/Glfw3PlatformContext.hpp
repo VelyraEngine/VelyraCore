@@ -33,6 +33,8 @@ namespace Velyra::Core {
         static void setWindowHints(const ContextDesc& desc);
 
     private:
+        Utils::LogPtr m_Logger;
+
         bool m_VSyncEnabled = false;
         GLFWwindow* m_Window = nullptr;
 
