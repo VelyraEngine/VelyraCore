@@ -91,3 +91,10 @@ target_include_directories(ImLib PUBLIC ${VELYRA_CORE_IMGUI_INCLUDE_DIR})
 if (UNIX)
     target_link_libraries(ImLib PRIVATE glfw)
 endif ()
+
+# ImLib links the system libraries it uses itself. GNU ld (MinGW) only resolves symbols from libraries listed after the
+# code that uses them, so these must come after ImLib on the link line, not before it via VELYRA_CORE_LIBS.
+# imgui.cpp: IME (imm32) and clipboard (user32). imgui_impl_win32.cpp: DWM transparency (dwmapi).
+if (WIN32)
+    target_link_libraries(ImLib PRIVATE imm32 user32 dwmapi)
+endif ()
