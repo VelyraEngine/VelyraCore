@@ -1,3 +1,5 @@
+# Copy to .github/workflows/main.yml in a Velyra repo. All logic lives in the scripts next to this file, so the
+# workflows of all repos stay identical and CI changes reach a repo when its VelyraBuildUtils submodule is updated.
 name: CI
 
 on: [push, pull_request]
@@ -5,45 +7,24 @@ on: [push, pull_request]
 jobs:
   build-ubuntu:
     runs-on: ubuntu-24.04
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
       - name: Install dependencies
-        run: sudo apt-get update && sudo apt-get install -y cmake git g++
+        run: bash VelyraBuildUtils/ci/install-deps-linux.sh
 
-      - name: Build
-        run: |
-          mkdir -p build
-          cd build
-          cmake .. -DBUILD_TESTING=ON
-          cmake --build .
-
-#      - name: Test
-#        run: |
-#          cd build
-#          ctest --output-on-failure
+      - name: Build and test
+        run: bash VelyraBuildUtils/ci/build-and-test.sh
 
   build-windows:
     runs-on: windows-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Build
-        run: |
-          mkdir build
-          cd build
-          cmake .. -DBUILD_TESTING=ON
-          cmake --build . --config Debug
-
-#      - name: Test
-#        run: |
-#          cd build
-#          ctest -C Debug --output-on-failure
+      - name: Build and test
+        shell: bash
+        run: bash VelyraBuildUtils/ci/build-and-test.sh

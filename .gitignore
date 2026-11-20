@@ -53,3 +53,5 @@ coverage_gcovr_*/
 
 ./cmake-build-debug
 ./cmake-build-release
+# Build folder of VelyraBuildUtils/ci/build-and-test.sh
+build-ci/
